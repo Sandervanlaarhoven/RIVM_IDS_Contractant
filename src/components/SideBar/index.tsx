@@ -75,7 +75,7 @@ const SideBar: React.FC<IProps> = () => {
 					>
 						<ListItemIcon><PlaylistAddIcon /></ListItemIcon>
 						<ListItemText
-							primary='Mijn bevindingen'
+							primary='Mijn tickets'
 						/>
 					</ListItem>
 					{hasTestCoordinatorRole && <ListItem
@@ -84,7 +84,7 @@ const SideBar: React.FC<IProps> = () => {
 					>
 						<ListItemIcon><ListIcon /></ListItemIcon>
 						<ListItemText
-							primary='Beheren bevindingen'
+							primary='Calls'
 						/>
 					</ListItem>}
 					{hasProductOwnerRole && <ListItem
@@ -93,7 +93,7 @@ const SideBar: React.FC<IProps> = () => {
 					>
 						<ListItemIcon><ListIcon /></ListItemIcon>
 						<ListItemText
-							primary='Product owner overzicht'
+							primary='Change requests'
 						/>
 					</ListItem>}
 					{hasTestCoordinatorRole && <ListItem

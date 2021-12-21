@@ -13,9 +13,14 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import BugReportIcon from '@material-ui/icons/BugReport'
 import MailOutlineIcon from '@material-ui/icons/MailOutline'
+import PriorityLowIcon from '@material-ui/icons/KeyboardArrowDown'
+import PriorityMediumIcon from '@material-ui/icons/KeyboardArrowUp'
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh'
+import PriorityBlockingIcon from '@material-ui/icons/Block'
 import { useSnackbar } from 'notistack'
+import { blue, green, orange, red } from '@material-ui/core/colors'
 
-import { Finding, FindingTheme, FindingType, FindingFieldName } from '../../types'
+import { Finding, FindingTheme, FindingType, FindingFieldName, Priority } from '../../types'
 import { useRealmApp } from '../App/RealmApp'
 import { useHistory } from 'react-router-dom'
 import { format } from 'date-fns'
@@ -34,7 +39,19 @@ const useStyles: any = makeStyles(() => ({
 	buttonBase: {
 		width: "100%",
 		marginBottom: 10
-	}
+	},
+	prioLow: {
+		color: green[400]
+	},
+	prioMedium: {
+		color: blue[700]
+	},
+	prioHigh: {
+		color: orange[700]
+	},
+	prioBlocking: {
+		color: red[800]
+	},
 }))
 
 interface IProps {
@@ -346,6 +363,17 @@ const Archive: React.FC<IProps> = () => {
 											justifyContent="flex-start"
 										>
 											<MailOutlineIcon />
+										</Box>}
+										{finding?.priority && <Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+										>
+											{finding?.priority === Priority.low && <PriorityLowIcon className={classes.prioLow} />}
+											{finding?.priority === Priority.medium && <PriorityMediumIcon className={classes.prioMedium} />}
+											{finding?.priority === Priority.high && <PriorityHighIcon className={classes.prioHigh} />}
+											{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={classes.prioBlocking} />}
 										</Box>}
 										<Box
 											display="flex"

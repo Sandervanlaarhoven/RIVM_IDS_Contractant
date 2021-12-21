@@ -52,16 +52,17 @@ export type FindingData = {
 	uid?: BSON.ObjectId;
 	userEmail?: string;
 	type: FindingType;
+	priority?: Priority;
 	description: string;
 	featureRequestDescription?: string;
+	featureRequestProposal?: string;
 	expectedResult?: string;
 	actualResult?: string;
 	additionalInfo?: string;
 	browser?: Browser[];
 	theme?: string;
 	status?: Status;
-	feedbackDeveloper?: string;
-	feedbackToGATUser?: string;
+	feedbackTeam?: string;
 	feedbackProductOwner?: string;
 	testDate: Date;
 	history?: HistoryElement[];
@@ -78,16 +79,17 @@ export type Finding = {
 	uid?: BSON.ObjectId;
 	userEmail?: string;
 	type: FindingType;
+	priority: Priority;
 	description: string;
 	featureRequestDescription?: string;
+	featureRequestProposal?: string;
 	expectedResult?: string;
 	actualResult?: string;
 	additionalInfo?: string;
 	browser?: Browser[];
 	theme?: string;
 	status?: Status;
-	feedbackDeveloper?: string;
-	feedbackToGATUser?: string;
+	feedbackTeam?: string;
 	feedbackProductOwner?: string;
 	testDate: Date;
 	history: HistoryElement[];
@@ -117,4 +119,12 @@ export type Information = {
 	text: string;
 	links: LinkType[];
 	contacts: Contact[]
+}
+
+
+export enum Priority {
+	low = 'Laag',
+	medium = 'Normaal',
+	high = 'Hoog',
+	blocking = 'Blokkerend',
 }

@@ -17,7 +17,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Browser, Finding, FindingData, FindingType, Status } from '../../../types'
+import { Browser, Finding, FindingData, FindingType, Priority, Status } from '../../../types'
 import { catitaliseFirstLetter } from '../../utils'
 import { FindingTheme } from '../../../types/index';
 import { format } from 'date-fns'
@@ -103,6 +103,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 				description: "",
 				status: Status.Open,
 				type: FindingType.Bug,
+				priority: Priority.low,
 				testDate: new Date(),
 				history: []
 			}
@@ -187,13 +188,14 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 		actualResult = 'actualResult',
 		additionalInfo = 'additionalInfo',
 		type = 'type',
+		priority = 'priority',
 		findingTheme = 'theme',
 		browser = 'browser',
 		status = 'status',
-		feedbackDeveloper = 'feedbackDeveloper',
-		feedbackToGATUser = 'feedbackToGATUser',
+		feedbackTeam = 'feedbackTeam',
 		feedbackProductOwner = 'feedbackProductOwner',
 		featureRequestDescription = 'featureRequestDescription',
+		featureRequestProposal = 'featureRequestProposal',
 	}
 
 	const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: FindingFieldName) => {
@@ -320,7 +322,30 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						</Select>
 					</FormControl>
 				</Box>
-				{finding?.type === FindingType.Verbetering &&
+				<Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="flex-start"
+					width="100%"
+					pb={3}
+				>
+					<FormControl className={classes.formControl}>
+						<InputLabel id="type">Prioriteit</InputLabel>
+						<Select
+							labelId="priority"
+							id="priority"
+							value={finding?.priority || ''}
+							onChange={(event) => handleChangeSelect(event, FindingFieldName.priority)}
+						>
+							<MenuItem value={Priority.low}>{Priority.low}</MenuItem>
+							<MenuItem value={Priority.medium}>{Priority.medium}</MenuItem>
+							<MenuItem value={Priority.high}>{Priority.high}</MenuItem>
+							<MenuItem value={Priority.blocking}>{Priority.blocking}</MenuItem>
+						</Select>
+					</FormControl>
+				</Box>
+				{finding?.type === FindingType.Verbetering && <>
 					<Box
 						display="flex"
 						flexDirection="row"
@@ -330,7 +355,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						pb={3}
 					>
 						<TextField
-							label="Beschrijving"
+							label="Beschrijving van de verbetering"
 							value={finding?.featureRequestDescription || ''}
 							fullWidth
 							variant="outlined"
@@ -338,7 +363,24 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 							helperText="Beschrijf zo goed mogelijk wat je graag zou willen verbeteren in de applicatie"
 						/>
 					</Box>
-				}
+					<Box
+						display="flex"
+						flexDirection="row"
+						alignItems="center"
+						justifyContent="center"
+						width="100%"
+						pb={3}
+					>
+						<TextField
+							label="Oplossingsrichting"
+							value={finding?.featureRequestProposal || ''}
+							fullWidth
+							variant="outlined"
+							onChange={(event) => handleChangeTextField(event, FindingFieldName.featureRequestProposal)}
+							helperText="Beschrijf zo goed mogelijk wat de voorgestelde oplossingsrichting is"
+						/>
+					</Box>
+				</>}
 				{finding?.type === FindingType.Bug && finding?.featureRequestDescription && <>
 					<Box
 						display="flex"
@@ -610,30 +652,12 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 					my={3}
 				>
 					<TextField
-						label="Terugkoppeling van de ontwikkelaar"
-						value={finding?.feedbackDeveloper || ''}
+						label="Terugkoppeling van het team"
+						value={finding?.feedbackTeam || ''}
 						multiline
 						fullWidth
 						variant="outlined"
-						onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackDeveloper)}
-					/>
-				</Box>
-				<Box
-					display="flex"
-					flexDirection="row"
-					alignItems="center"
-					justifyContent="center"
-					width="100%"
-					my={3}
-				>
-					<TextField
-						label="Terugkoppeling van de testcoördinator"
-						value={finding?.feedbackToGATUser || ''}
-						multiline
-						fullWidth
-						variant="outlined"
-						onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackToGATUser)}
-						helperText="Terugkoppeling van de testcoördinator naar de GAT tester"
+						onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackTeam)}
 					/>
 				</Box>
 				<Box

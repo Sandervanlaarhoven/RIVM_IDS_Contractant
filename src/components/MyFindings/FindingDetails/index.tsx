@@ -20,7 +20,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Browser, Finding, FindingType, Status } from '../../../types'
+import { Browser, Finding, FindingType, Priority, Status } from '../../../types'
 import { catitaliseFirstLetter } from '../../utils'
 import { FindingTheme, FindingData } from '../../../types/index';
 import { format } from 'date-fns'
@@ -71,6 +71,7 @@ const FindingDetails = () => {
 				description: "",
 				status: Status.Open,
 				type: FindingType.Bug,
+				priority: Priority.low,
 				testDate: new Date(),
 				uid: app.currentUser.id,
 				userEmail: app.currentUser.profile?.email || "Onbekend",
@@ -165,6 +166,7 @@ const FindingDetails = () => {
 				const newFinding: Finding = {
 					description: '',
 					type: FindingType.Bug,
+					priority: Priority.low,
 					status: Status.Open,
 					testDate: new Date(),
 					uid: app.currentUser.id,
@@ -200,12 +202,13 @@ const FindingDetails = () => {
 		actualResult = 'actualResult',
 		additionalInfo = 'additionalInfo',
 		type = 'type',
+		priority = 'priority',
 		findingTheme = 'theme',
 		browser = 'browser',
 		status = 'status',
-		feedbackDeveloper = 'feedbackDeveloper',
-		feedbackToGATUser = 'feedbackToGATUser',
+		feedbackTeam = 'feedbackTeam',
 		featureRequestDescription = 'featureRequestDescription',
+		featureRequestProposal = 'featureRequestProposal',
 	}
 
 	const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: FindingFieldName) => {
@@ -319,7 +322,30 @@ const FindingDetails = () => {
 						</Select>
 					</FormControl>
 				</Box>
-				{finding?.type === FindingType.Verbetering &&
+				<Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="flex-start"
+					width="100%"
+					pb={3}
+				>
+					<FormControl className={classes.formControl}>
+						<InputLabel id="type">Prioriteit</InputLabel>
+						<Select
+							labelId="priority"
+							id="priority"
+							value={finding?.priority || ''}
+							onChange={(event) => handleChangeSelect(event, FindingFieldName.priority)}
+						>
+							<MenuItem value={Priority.low}>{Priority.low}</MenuItem>
+							<MenuItem value={Priority.medium}>{Priority.medium}</MenuItem>
+							<MenuItem value={Priority.high}>{Priority.high}</MenuItem>
+							<MenuItem value={Priority.blocking}>{Priority.blocking}</MenuItem>
+						</Select>
+					</FormControl>
+				</Box>
+				{finding?.type === FindingType.Verbetering && <>
 					<Box
 						display="flex"
 						flexDirection="row"
@@ -329,7 +355,7 @@ const FindingDetails = () => {
 						pb={3}
 					>
 						<TextField
-							label="Beschrijving"
+							label="Beschrijving van de verbetering"
 							value={finding?.featureRequestDescription || ''}
 							fullWidth
 							variant="outlined"
@@ -337,7 +363,24 @@ const FindingDetails = () => {
 							helperText="Beschrijf zo goed mogelijk wat je graag zou willen verbeteren in de applicatie"
 						/>
 					</Box>
-				}
+					<Box
+						display="flex"
+						flexDirection="row"
+						alignItems="center"
+						justifyContent="center"
+						width="100%"
+						pb={3}
+					>
+						<TextField
+							label="Oplossingsrichting"
+							value={finding?.featureRequestProposal || ''}
+							fullWidth
+							variant="outlined"
+							onChange={(event) => handleChangeTextField(event, FindingFieldName.featureRequestProposal)}
+							helperText="Beschrijf zo goed mogelijk wat de voorgestelde oplossingsrichting is"
+						/>
+					</Box>
+				</>}
 				{finding?.type === FindingType.Bug && finding?.featureRequestDescription && <>
 					<Box
 						display="flex"
@@ -548,7 +591,7 @@ const FindingDetails = () => {
 				>
 					<Typography variant="caption">Status: {finding?.status || Status.Open}</Typography>
 				</Box>
-				{finding?.feedbackDeveloper && <Box
+				{finding?.feedbackTeam && <Box
 					display="flex"
 					flexDirection="row"
 					alignItems="center"
@@ -557,24 +600,8 @@ const FindingDetails = () => {
 					my={3}
 				>
 					<TextField
-						label="Terugkoppeling van de ontwikkelaar"
-						value={finding?.feedbackDeveloper || ''}
-						fullWidth
-						multiline
-						variant="outlined"
-					/>
-				</Box>}
-				{finding?.feedbackToGATUser && <Box
-					display="flex"
-					flexDirection="row"
-					alignItems="center"
-					justifyContent="center"
-					width="100%"
-					my={3}
-				>
-					<TextField
-						label="Terugkoppeling van de testcoördinator"
-						value={finding?.feedbackToGATUser || ''}
+						label="Terugkoppeling van het team"
+						value={finding?.feedbackTeam || ''}
 						fullWidth
 						multiline
 						variant="outlined"

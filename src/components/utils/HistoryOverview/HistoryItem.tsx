@@ -7,15 +7,32 @@ import {
 } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles'
 import BugReportIcon from '@material-ui/icons/BugReport'
+import PriorityLowIcon from '@material-ui/icons/KeyboardArrowDown'
+import PriorityMediumIcon from '@material-ui/icons/KeyboardArrowUp'
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh'
+import PriorityBlockingIcon from '@material-ui/icons/Block'
 import MailOutlineIcon from '@material-ui/icons/MailOutline'
 
-import { HistoryElement } from '../../../types'
+import { HistoryElement, Priority } from '../../../types'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
+import { blue, green, grey, orange, red } from '@material-ui/core/colors'
 
 const useStyles: any = makeStyles(() => ({
 	greyedOutText: {
-		color: 'grey'
+		color: grey[700]
+	},
+	prioLow: {
+		color: green[400]
+	},
+	prioMedium: {
+		color: blue[700]
+	},
+	prioHigh: {
+		color: orange[700]
+	},
+	prioBlocking: {
+		color: red[800]
 	},
 }))
 
@@ -69,6 +86,17 @@ const HistoryItem: React.FC<IProps> = ({ item }) => {
 						>
 							<MailOutlineIcon />
 						</Box>}
+						{item?.finding?.priority && <Box
+							display="flex"
+							flexDirection="row"
+							alignItems="center"
+							justifyContent="flex-start"
+						>
+							{item?.finding?.priority === Priority.low && <PriorityLowIcon className={classes.prioLow} />}
+							{item?.finding?.priority === Priority.medium && <PriorityMediumIcon className={classes.prioMedium} />}
+							{item?.finding?.priority === Priority.high && <PriorityHighIcon className={classes.prioHigh} />}
+							{item?.finding?.priority === Priority.blocking && <PriorityBlockingIcon className={classes.prioBlocking} />}
+						</Box>}
 						<Box
 							display="flex"
 							flexDirection="row"
@@ -113,8 +141,7 @@ const HistoryItem: React.FC<IProps> = ({ item }) => {
 						{item?.finding?.actualResult && <Typography className={classes.greyedOutText} variant="caption">Daadwerkelijke uitkomst: {item?.finding?.actualResult}</Typography>}
 						{item?.finding?.additionalInfo && <Typography className={classes.greyedOutText} variant="caption">Extra informatie: {item?.finding?.additionalInfo}</Typography>}
 						{item?.finding?.browser && <Typography className={classes.greyedOutText} variant="caption">Browser: {item?.finding?.browser}</Typography>}
-						{item?.finding?.feedbackDeveloper && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van de ontwikkelaar: {item?.finding?.feedbackDeveloper}</Typography>}
-						{item?.finding?.feedbackToGATUser && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van de testcoördinator: {item?.finding?.feedbackToGATUser}</Typography>}
+						{item?.finding?.feedbackTeam && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van het team: {item?.finding?.feedbackTeam}</Typography>}
 						{item?.finding?.feedbackProductOwner && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van de product owner: {item?.finding?.feedbackProductOwner}</Typography>}
 						</Box>}
 					</Box>

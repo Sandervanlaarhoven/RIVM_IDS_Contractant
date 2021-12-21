@@ -101,9 +101,8 @@ const ManageFindings: React.FC<IProps> = () => {
 			setfilteredFindings(findings.filter((finding) => {
 				let isGesloten: boolean = false
 				switch (finding.status) {
-					case Status.Gesloten:
-					case Status.Geimplementeerd:
-					case Status.Afgewezen:
+					case Status.Closed:
+					case Status.Denied:
 						isGesloten = true
 						break;
 				
@@ -311,7 +310,7 @@ const ManageFindings: React.FC<IProps> = () => {
 			</Box>
 			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary">
 				<Tab label={Status.Open} />
-				<Tab label={Status.Gesloten} />
+				<Tab label={Status.Closed} />
 			</Tabs>
 			<Box
 				display="flex"

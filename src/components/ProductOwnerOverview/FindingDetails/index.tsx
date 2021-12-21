@@ -628,15 +628,14 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 									onChange={(event) => handleChangeSelect(event, FindingFieldName.status)}
 								>
 									<MenuItem key={Status.Open} value={Status.Open}>{Status.Open}</MenuItem>
-									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.InOverweging} value={Status.InOverweging}>{Status.InOverweging}</MenuItem>}
-									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Backlog} value={Status.Backlog}>{Status.Backlog}</MenuItem>}
+									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Submitted} value={Status.Submitted}>{Status.Submitted}</MenuItem>}
+									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Verified} value={Status.Verified}>{Status.Verified}</MenuItem>}
 									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Gepland} value={Status.Gepland}>{Status.Gepland}</MenuItem>}
-									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Afgewezen} value={Status.Afgewezen}>{Status.Afgewezen}</MenuItem>}
-									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Geimplementeerd} value={Status.Geimplementeerd}>{Status.Geimplementeerd}</MenuItem>}
-									{finding?.type === FindingType.Bug && <MenuItem key={Status.Geverifieerd} value={Status.Geverifieerd}>{Status.Geverifieerd}</MenuItem>}
-									{finding?.type === FindingType.Bug && <MenuItem key={Status.Afgewezen} value={Status.Afgewezen}>{Status.Afgewezen}</MenuItem>}
-									{finding?.type === FindingType.Bug && <MenuItem key={Status.Hertest} value={Status.Hertest}>{Status.Hertest}</MenuItem>}
-									{finding?.type === FindingType.Bug && <MenuItem key={Status.Gesloten} value={Status.Gesloten}>{Status.Gesloten}</MenuItem>}
+									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.ReadyForRelease} value={Status.ReadyForRelease}>{Status.ReadyForRelease}</MenuItem>}
+									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Hertest} value={Status.Hertest}>{Status.Hertest}</MenuItem>}
+									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.TestFailed} value={Status.TestFailed}>{Status.TestFailed}</MenuItem>}
+									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Denied} value={Status.Denied}>{Status.Denied}</MenuItem>}
+									{finding?.type === FindingType.Verbetering && <MenuItem key={Status.Closed} value={Status.Closed}>{Status.Closed}</MenuItem>}
 								</Select>
 							</FormControl>
 						</Box>

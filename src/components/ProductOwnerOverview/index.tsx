@@ -111,41 +111,52 @@ const ProductOwnerOverview: React.FC<IProps> = () => {
 				if (propsFilter) {
 					if (propsFilter.theme && finding.theme !== propsFilter.theme) passedPropsFilter = false
 				}
-				let statusFilterValue = Status.Open
 				switch (currentTab) {
 					case 0: {
-						statusFilterValue = Status.Open
+						passedPropsFilter = finding.status === Status.Open
 						break
 					}
 					case 1: {
-						statusFilterValue = Status.InOverweging
+						passedPropsFilter = finding.status === Status.Submitted && finding.type === FindingType.Bug
 						break
 					}
 					case 2: {
-						statusFilterValue = Status.Backlog
+						passedPropsFilter = finding.status === Status.Verified && finding.type === FindingType.Bug
 						break
 					}
 					case 3: {
-						statusFilterValue = Status.Gepland
+						passedPropsFilter = finding.status === Status.Gepland && finding.type === FindingType.Bug
 						break
 					}
 					case 4: {
-						statusFilterValue = Status.Afgewezen
+						passedPropsFilter = finding.status === Status.ReadyForRelease && finding.type === FindingType.Bug
 						break
 					}
 					case 5: {
-						statusFilterValue = Status.Geimplementeerd
+						passedPropsFilter = finding.status === Status.Hertest && finding.type === FindingType.Bug
 						break
 					}
 					case 6: {
-						statusFilterValue = Status.AllStatussus
+						passedPropsFilter = finding.status === Status.TestFailed && finding.type === FindingType.Bug
+						break
+					}
+					case 7: {
+						passedPropsFilter = finding.status === Status.Denied && finding.type === FindingType.Bug
+						break
+					}
+					case 8: {
+						passedPropsFilter = finding.status === Status.Closed && finding.type === FindingType.Bug
+						break
+					}
+					case 9: {
+						passedPropsFilter = finding.type === FindingType.Bug
 						break
 					}
 
 					default:
+						passedPropsFilter = false
 						break
 				}
-				if (finding.status !== statusFilterValue && statusFilterValue !== Status.AllStatussus) passedPropsFilter = false
 				if (propsFilter.userEmail && finding.userEmail !== propsFilter.userEmail) passedPropsFilter = false
 				return passedPropsFilter && (finding.description.toLowerCase().includes(filterString.toLowerCase()) || format(finding.testDate, 'Pp', { locale: nl }).includes(filterString.toLowerCase()))
 			}).sort((a, b) => b.testDate.valueOf() - a.testDate.valueOf())
@@ -395,11 +406,14 @@ const ProductOwnerOverview: React.FC<IProps> = () => {
 			</Box>
 			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary">
 				<Tab label={Status.Open} />
-				<Tab label={Status.InOverweging} />
-				<Tab label={Status.Backlog} />
+				<Tab label={Status.Submitted} />
+				<Tab label={Status.Verified} />
 				<Tab label={Status.Gepland} />
-				<Tab label={Status.Afgewezen} />
-				<Tab label={Status.Geimplementeerd} />
+				<Tab label={Status.ReadyForRelease} />
+				<Tab label={Status.Hertest} />
+				<Tab label={Status.TestFailed} />
+				<Tab label={Status.Denied} />
+				<Tab label={Status.Closed} />
 				<Tab label={Status.AllStatussus} />
 			</Tabs>
 			<Box

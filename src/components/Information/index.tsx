@@ -127,7 +127,7 @@ const InformationPage: React.FC<IProps> = () => {
 						mb={3}
 					>
 						<List>
-							{information?.links?.map((link) => <ListItem><ListItemText><Link href={link.url} target="_blank">{link.name}</Link></ListItemText></ListItem>)}
+							{information?.links?.map((link, index) => <ListItem key={index}><ListItemText><Link href={link.url} target="_blank">{link.name}</Link></ListItemText></ListItem>)}
 						</List>
 					</Box>
 					<Box
@@ -145,7 +145,7 @@ const InformationPage: React.FC<IProps> = () => {
 						justifyContent="center"
 					>
 						<List>
-							{information?.contacts?.map((contact) => <ListItem><ListItemText primary={`${contact.name} (${contact.role}) - ${contact.telephone_number}`} secondary={<Link href={`mailto:${contact.email}`} target="_top">{contact.email}</Link>} /></ListItem>)}
+							{information?.contacts?.map((contact, index) => <ListItem key={index}><ListItemText primary={`${contact.name} (${contact.role}) - ${contact.telephone_number}`} secondary={<Link href={`mailto:${contact.email}`} target="_top">{contact.email}</Link>} /></ListItem>)}
 						</List>
 					</Box>
 				</Box>

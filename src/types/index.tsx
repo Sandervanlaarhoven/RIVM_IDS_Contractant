@@ -28,14 +28,14 @@ export enum FindingType {
 
 export enum Status {
 	Open = 'open',
-	Geverifieerd = 'geverifieerd',
-	Hertest = 'hertest',
-	Gesloten = 'gesloten',
-	Afgewezen = 'afgewezen',
-	InOverweging = 'in overweging',
-	Backlog = 'toegevoegd aan de backlog',
+	Submitted = 'ingediend',
+	Verified = 'geverifieerd',
 	Gepland = 'ingepland',
-	Geimplementeerd = 'geïmplementeerd',
+	ReadyForRelease = 'klaar voor release',
+	Hertest = 'hertest',
+	TestFailed = 'hertest niet ok',
+	Denied = 'afgewezen',
+	Closed = 'gesloten',
 	AllStatussus = 'alle statussen',
 	Archived = 'gearchiveerd',
 }

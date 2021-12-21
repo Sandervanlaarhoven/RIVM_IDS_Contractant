@@ -84,7 +84,9 @@ const FindingsOverview: React.FC<IProps> = () => {
 
 	const getData = async () => {
 		try {
-			const findingsData = mongoFindingsCollection.find(null, {
+			const findingsData = mongoFindingsCollection.find({
+				type: "bug"
+			}, {
 				sort: { testDate: -1 }
 			})
 			let findingThemesData = mongoFindingThemesCollection.find()
@@ -115,22 +117,38 @@ const FindingsOverview: React.FC<IProps> = () => {
 						break
 					}
 					case 1: {
-						passedPropsFilter = finding.status === Status.Geverifieerd && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Submitted && finding.type === FindingType.Bug
 						break
 					}
 					case 2: {
-						passedPropsFilter = finding.status === Status.Hertest && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Verified && finding.type === FindingType.Bug
 						break
 					}
 					case 3: {
-						passedPropsFilter = finding.status === Status.Afgewezen && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Gepland && finding.type === FindingType.Bug
 						break
 					}
 					case 4: {
-						passedPropsFilter = finding.status === Status.Gesloten && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.ReadyForRelease && finding.type === FindingType.Bug
 						break
 					}
 					case 5: {
+						passedPropsFilter = finding.status === Status.Hertest && finding.type === FindingType.Bug
+						break
+					}
+					case 6: {
+						passedPropsFilter = finding.status === Status.TestFailed && finding.type === FindingType.Bug
+						break
+					}
+					case 7: {
+						passedPropsFilter = finding.status === Status.Denied && finding.type === FindingType.Bug
+						break
+					}
+					case 8: {
+						passedPropsFilter = finding.status === Status.Closed && finding.type === FindingType.Bug
+						break
+					}
+					case 9: {
 						passedPropsFilter = finding.type === FindingType.Bug
 						break
 					}
@@ -389,10 +407,14 @@ const FindingsOverview: React.FC<IProps> = () => {
 			</Box>
 			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary">
 				<Tab label={Status.Open} />
-				<Tab label={Status.Geverifieerd} />
+				<Tab label={Status.Submitted} />
+				<Tab label={Status.Verified} />
+				<Tab label={Status.Gepland} />
+				<Tab label={Status.ReadyForRelease} />
 				<Tab label={Status.Hertest} />
-				<Tab label={Status.Afgewezen} />
-				<Tab label={Status.Gesloten} />
+				<Tab label={Status.TestFailed} />
+				<Tab label={Status.Denied} />
+				<Tab label={Status.Closed} />
 				<Tab label={Status.AllStatussus} />
 			</Tabs>
 			<Box

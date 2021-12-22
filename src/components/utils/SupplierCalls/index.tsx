@@ -1,4 +1,4 @@
-import React, {  } from 'react'
+import React, { useState } from 'react'
 import {
 	Typography,
 	Box,
@@ -7,12 +7,53 @@ import {
 
 import { SupplierCall } from '../../../types'
 import Call from './Call'
+import CallDetails from './CallDetails'
 
 interface IProps {
-	supplierCalls: SupplierCall[]
+	supplierCalls: SupplierCall[],
+	updateCalls: Function
 }
 
-const SupplierCalls: React.FC<IProps> = ({ supplierCalls }) => {
+const SupplierCalls: React.FC<IProps> = ({ supplierCalls, updateCalls }) => {
+	interface CallDetails {
+		call?: SupplierCall,
+		show: boolean
+	}
+
+	const [callDetails, setCallDetails] = useState<CallDetails | null>(null)
+
+	const showNewCall = () => {
+		setCallDetails({
+			show: true
+		})
+	}
+
+	const saveCall = (call: SupplierCall) => {
+		const found = supplierCalls.find((supplierCall) => supplierCall.callNumber === call.callNumber)
+		let newSupplierCalls: SupplierCall[] = []
+		if (found) {
+			newSupplierCalls = supplierCalls.map((supplierCall) => supplierCall.callNumber === call.callNumber ? call : supplierCall)
+		} else {
+			newSupplierCalls = [
+				...supplierCalls,
+				call
+			]
+		}
+		updateCalls(newSupplierCalls)
+		setCallDetails(null)
+	}
+
+	const hideCallDetails = () => {
+		setCallDetails(null)
+	}
+
+	// const showUpdateCall = (call: SupplierCall) => {
+	// 	setCallDetails({
+	// 		show: true,
+	// 		call
+	// 	})
+	// }
+	
 	return (
 		<Box
 			display="flex"
@@ -31,8 +72,18 @@ const SupplierCalls: React.FC<IProps> = ({ supplierCalls }) => {
 				pb={3}
 			>
 				<Typography variant="h6">Calls bij de leverancier</Typography>
-				<Button variant="contained" color="default">Call toevoegen</Button>
+				{!callDetails?.show && <Button variant="contained" color="default" onClick={showNewCall}>Call toevoegen</Button>}
 			</Box>
+			{callDetails?.show && <Box
+				display="flex"
+				flexDirection="column"
+				alignItems="flex-start"
+				justifyContent="flex-start"
+				width="100%"
+				mt={2}
+			>
+				<CallDetails call={callDetails?.call} cancel={hideCallDetails} save={saveCall}/>
+			</Box>}
 			<Box
 				display="flex"
 				flexDirection="column"

@@ -34,6 +34,9 @@ const useStyles: any = makeStyles(() => ({
 	prioBlocking: {
 		color: red[800]
 	},
+	buttonBase: {
+		width: '100%'
+	}
 }))
 
 interface IProps {
@@ -48,19 +51,20 @@ const Call: React.FC<IProps> = ({ item }) => {
 		<Box
 			display="flex"
 			flexDirection="column"
-			alignItems="center"
+			alignItems="flex-start"
 			justifyContent="center"
 			border={"1px solid rgba(0, 0, 0, 0.23)"}
 			borderRadius={11}
-			bgcolor="#FFF"
+			width="100%"
 			mb={2}
 		>
-			<ButtonBase onClick={() => setShowDetails(!showDetails)}>
+			<ButtonBase className={classes.buttonBase} onClick={() => setShowDetails(!showDetails)}>
 				<Box
 					display="flex"
 					flexDirection="column"
 					alignItems="center"
 					justifyContent="center"
+					width="100%"
 				>
 					<Box
 						display="flex"
@@ -92,10 +96,10 @@ const Call: React.FC<IProps> = ({ item }) => {
 							alignItems="center"
 							justifyContent="flex-start"
 						>
-							{item?.priority === SupplierPriority.p1 && <PriorityLowIcon className={classes.prioLow} />}
-							{item?.priority === SupplierPriority.p2 && <PriorityMediumIcon className={classes.prioMedium} />}
-							{item?.priority === SupplierPriority.p3 && <PriorityHighIcon className={classes.prioHigh} />}
-							{item?.priority === SupplierPriority.p4 && <PriorityBlockingIcon className={classes.prioBlocking} />}
+							{item?.priority === SupplierPriority.p4 && <PriorityLowIcon className={classes.prioLow} />}
+							{item?.priority === SupplierPriority.p3 && <PriorityMediumIcon className={classes.prioMedium} />}
+							{item?.priority === SupplierPriority.p2 && <PriorityHighIcon className={classes.prioHigh} />}
+							{item?.priority === SupplierPriority.p1 && <PriorityBlockingIcon className={classes.prioBlocking} />}
 						</Box>}
 						<Box
 							display="flex"

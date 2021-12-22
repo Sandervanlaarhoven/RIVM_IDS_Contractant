@@ -17,7 +17,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Browser, Finding, FindingData, FindingType, Priority, Status, Supplier } from '../../../types'
+import { Browser, Finding, FindingData, FindingFieldName, FindingType, Priority, Status, Supplier } from '../../../types'
 import { catitaliseFirstLetter } from '../../utils'
 import { FindingTheme } from '../../../types/index';
 import { format } from 'date-fns'
@@ -182,23 +182,6 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 				variant: 'error',
 			})
 		}
-	}
-
-	enum FindingFieldName {
-		description = 'description',
-		expectedResult = 'expectedResult',
-		actualResult = 'actualResult',
-		additionalInfo = 'additionalInfo',
-		type = 'type',
-		priority = 'priority',
-		findingTheme = 'theme',
-		browser = 'browser',
-		status = 'status',
-		feedbackTeam = 'feedbackTeam',
-		feedbackProductOwner = 'feedbackProductOwner',
-		featureRequestDescription = 'featureRequestDescription',
-		featureRequestProposal = 'featureRequestProposal',
-		supplier = "supplier"
 	}
 
 	const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: FindingFieldName) => {

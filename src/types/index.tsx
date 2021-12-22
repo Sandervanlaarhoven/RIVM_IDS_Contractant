@@ -104,10 +104,21 @@ export type Finding = {
 }
 
 export enum FindingFieldName {
-	description = 'description',
-	type = 'type',
-	findingTheme = 'theme',
 	userEmail = 'userEmail',
+	description = 'description',
+	expectedResult = 'expectedResult',
+	actualResult = 'actualResult',
+	additionalInfo = 'additionalInfo',
+	type = 'type',
+	priority = 'priority',
+	findingTheme = 'theme',
+	browser = 'browser',
+	status = 'status',
+	feedbackTeam = 'feedbackTeam',
+	feedbackProductOwner = 'feedbackProductOwner',
+	featureRequestDescription = 'featureRequestDescription',
+	featureRequestProposal = 'featureRequestProposal',
+	supplier = 'supplier',
 }
 
 export type LinkType = {
@@ -167,4 +178,14 @@ export type SupplierCall = {
 	priority: SupplierPriority;
 	callType: SupplierCallType;
 	extraInfo: string;
+}
+
+export enum CallFieldName {
+	callNumber = 'callNumber',
+	status = 'status',
+	createdOn = 'createdOn',
+	description = 'description',
+	priority = 'priority',
+	callType = 'callType',
+	extraInfo = 'extraInfo',
 }

@@ -20,7 +20,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Browser, Finding, FindingType, Priority, Status, Supplier } from '../../../types'
+import { Browser, Finding, FindingFieldName, FindingType, Priority, Status, Supplier, SupplierCall } from '../../../types'
 import { catitaliseFirstLetter } from '../../utils'
 import { FindingTheme, FindingData } from '../../../types/index';
 import { format } from 'date-fns'
@@ -204,22 +204,6 @@ const FindingDetails = () => {
 		}
 	}
 
-	enum FindingFieldName {
-		description = 'description',
-		expectedResult = 'expectedResult',
-		actualResult = 'actualResult',
-		additionalInfo = 'additionalInfo',
-		type = 'type',
-		priority = 'priority',
-		findingTheme = 'theme',
-		browser = 'browser',
-		status = 'status',
-		feedbackTeam = 'feedbackTeam',
-		featureRequestDescription = 'featureRequestDescription',
-		featureRequestProposal = 'featureRequestProposal',
-		supplier = "supplier"
-	}
-
 	const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: FindingFieldName) => {
 		if (finding) {
 			setFinding({
@@ -240,6 +224,17 @@ const FindingDetails = () => {
 				...finding,
 				[fieldName]: event.target.value
 			})
+		}
+	}
+
+	const updateCalls = (calls: SupplierCall[]) => {
+		if (finding) {
+			const newFinding: Finding = {
+				...finding
+			}
+			newFinding.supplierCalls = calls
+			debugger
+			setFinding(newFinding)
 		}
 	}
 
@@ -600,7 +595,7 @@ const FindingDetails = () => {
 				</FormGroup>
 			</Box>
 			<Paper className={`${classes.paperForForm} ${classes.marginBottom20}`}>
-				<SupplierCalls supplierCalls={finding?.supplierCalls || []} />
+				<SupplierCalls supplierCalls={finding?.supplierCalls || []} updateCalls={updateCalls} />
 			</Paper>
 			<Paper className={classes.paperForForm}>
 				<Box

@@ -17,11 +17,12 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Browser, Finding, FindingData, FindingType, Priority, Status, Supplier, FindingTheme, FindingFieldName } from '../../../types'
+import { Browser, Finding, FindingData, FindingType, Priority, Status, Supplier, FindingTheme, FindingFieldName, SupplierCall } from '../../../types'
 import { catitaliseFirstLetter } from '../../utils'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import HistoryOverview from '../../utils/HistoryOverview'
+import SupplierCalls from '../../utils/SupplierCalls'
 
 const useStyles: any = makeStyles((theme) => ({
 	optionListItem: {
@@ -40,6 +41,9 @@ const useStyles: any = makeStyles((theme) => ({
 		width: '100%',
 		padding: 20,
 		marginBottom: 20,
+	},
+	marginBottom20: {
+		marginBottom: 20
 	},
 	greyedOutText: {
 		color: 'grey'
@@ -207,7 +211,17 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 				newFinding.status = Status.Open
 			}
 			setFinding(newFinding)
+		}
 	}
+
+	const updateCalls = (calls: SupplierCall[]) => {
+		if (finding) {
+			const newFinding: Finding = {
+				...finding
+			}
+			newFinding.supplierCalls = calls
+			setFinding(newFinding)
+		}
 	}
 
 	return (
@@ -259,12 +273,13 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 					>
 						<Box
 							display="flex"
-							flexDirection="row"
-							alignItems="center"
-							justifyContent="flex-start"
+							flexDirection="column"
+							alignItems="flex-start"
+							justifyContent="center"
 							mb={2}
 						>
 							<Typography variant="caption">Testdatum: {finding?.testDate ? format(finding.testDate, 'Pp', { locale: nl }) : ""}</Typography>
+							{finding?.userEmail && <Typography variant="caption">Opgevoerd door: {finding?.userEmail}</Typography>}
 						</Box>
 						<Box
 							display="flex"
@@ -599,6 +614,9 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 						<Typography variant="body2"><b>"{finding?.testDate ? format(finding.testDate, 'Pp', { locale: nl }) : ""} - {finding?.userEmail || 'onbekend'}"</b></Typography>
 					</Box>
 				</Paper>
+				<Paper className={`${classes.paperForForm} ${classes.marginBottom20}`}>
+					<SupplierCalls supplierCalls={finding?.supplierCalls || []} updateCalls={updateCalls} />
+				</Paper>
 				<Paper className={classes.paperForForm}>
 					<Box
 						display="flex"
@@ -606,7 +624,7 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 						alignItems="center"
 						justifyContent="flex-start"
 						width="100%"
-						my={3}
+						my={1}
 					>
 						<Typography variant="h6">Terugkoppeling en status informatie</Typography>
 					</Box>
@@ -616,7 +634,6 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 						alignItems="center"
 						justifyContent="flex-start"
 						width="100%"
-						my={3}
 					>
 						<Box
 							display="flex"
@@ -660,6 +677,23 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 							fullWidth
 							variant="outlined"
 							onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackProductOwner)}
+						/>
+					</Box>
+					<Box
+						display="flex"
+						flexDirection="row"
+						alignItems="center"
+						justifyContent="center"
+						width="100%"
+						my={3}
+					>
+						<TextField
+							label="Terugkoppeling van contractmanagement"
+							value={finding?.feedbackContractManagement || ''}
+							multiline
+							fullWidth
+							variant="outlined"
+							onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackContractManagement)}
 						/>
 					</Box>
 				</Paper>

@@ -16,6 +16,7 @@ import { Finding, FindingType, Priority, Status, Supplier } from '../../../types
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import HistoryOverview from '../../utils/HistoryOverview'
+import SupplierCalls from '../../utils/SupplierCalls'
 
 const useStyles: any = makeStyles((theme) => ({
 	optionListItem: {
@@ -34,6 +35,9 @@ const useStyles: any = makeStyles((theme) => ({
 		width: '100%',
 		padding: 20,
 		marginBottom: 20,
+	},
+	marginBottom20: {
+		marginBottom: 20
 	},
 	greyedOutText: {
 		color: 'grey'
@@ -140,12 +144,13 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 					>
 						<Box
 							display="flex"
-							flexDirection="row"
-							alignItems="center"
-							justifyContent="flex-start"
+							flexDirection="column"
+							alignItems="flex-start"
+							justifyContent="center"
 							mb={2}
 						>
 							<Typography variant="caption">Testdatum: {finding?.testDate ? format(finding.testDate, 'Pp', { locale: nl }) : ""}</Typography>
+							{finding?.userEmail && <Typography variant="caption">Opgevoerd door: {finding?.userEmail}</Typography>}
 						</Box>
 						<Box
 							display="flex"
@@ -164,15 +169,18 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						width="100%"
 						pb={3}
 					>
-						{finding?.supplier && <Typography variant="body1">Leverancier: {finding?.supplier || ''}</Typography>}
-						{finding?.description && <Typography variant="body1">Omschrijving: {finding?.description || ''}</Typography>}
-						{finding?.type && <Typography variant="body1">Type bevinding: {finding?.type}</Typography>}
+						{finding?.description && <Typography variant="body1">Omschrijving: {finding?.description}</Typography>}
+						{finding?.supplier && <Typography variant="body1">Leverancier: {finding?.supplier}</Typography>}
+						{finding?.type && <Typography variant="body1">Type: {finding?.type}</Typography>}
+						{finding?.priority && <Typography variant="body1">Prioriteit: {finding?.priority}</Typography>}
+						{finding?.featureRequestDescription && <Typography variant="body1">Beschrijving van de verbetering: {finding?.featureRequestDescription}</Typography>}
+						{finding?.featureRequestProposal && <Typography variant="body1">Oplossingsrichting: {finding?.featureRequestProposal}</Typography>}
 						{finding?.theme && <Typography variant="body1">Thema: {finding?.theme}</Typography>}
-						{finding?.featureRequestDescription && <Typography variant="body1">Beschrijving: {finding?.featureRequestDescription}</Typography>}
 						{finding?.expectedResult && <Typography variant="body1">Verwachte uitkomst: {finding?.expectedResult}</Typography>}
 						{finding?.actualResult && <Typography variant="body1">Daadwerkelijke uitkomst: {finding?.actualResult}</Typography>}
 						{finding?.additionalInfo && <Typography variant="body1">Extra informatie: {finding?.additionalInfo}</Typography>}
 						{finding?.browser && <Typography variant="body1">Browser: {finding?.browser}</Typography>}
+						{finding?.status && <Typography variant="body1">Status: {finding?.status}</Typography>}
 					</Box>
 					<Box
 						display="flex"
@@ -195,6 +203,9 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						<Typography variant="body2"><b>"{finding?.testDate ? format(finding.testDate, 'Pp', { locale: nl }) : ""} - {finding?.userEmail || 'onbekend'}"</b></Typography>
 					</Box>
 				</Paper>
+				<Paper className={`${classes.paperForForm} ${classes.marginBottom20}`}>
+					<SupplierCalls supplierCalls={finding?.supplierCalls || []} readOnly={true} />
+				</Paper>
 				<Paper className={classes.paperForForm}>
 					<Box
 						display="flex"
@@ -202,7 +213,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						alignItems="center"
 						justifyContent="flex-start"
 						width="100%"
-						my={3}
+						mb={1}
 					>
 						<Typography variant="h6">Terugkoppeling en status informatie</Typography>
 					</Box>
@@ -212,11 +223,12 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						alignItems="flex-start"
 						justifyContent="center"
 						width="100%"
-						pb={3}
+						pb={1}
 					>
 						{finding?.status && <Typography variant="body1">Status: {finding.status}</Typography>}
 						{finding?.feedbackTeam && <Typography variant="body1">Terugkoppeling van het team: {finding.feedbackTeam}</Typography>}
 						{finding?.feedbackProductOwner && <Typography variant="body1">Terugkoppeling van de product owner: {finding.feedbackProductOwner}</Typography>}
+						{finding?.feedbackContractManagement && <Typography variant="body1">Terugkoppeling van contractmanagement: {finding.feedbackContractManagement}</Typography>}
 					</Box>
 				</Paper>
 			</>}

@@ -17,6 +17,7 @@ import { HistoryElement, Priority } from '../../../types'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import { blue, green, grey, orange, red } from '@material-ui/core/colors'
+import SupplierCalls from '../SupplierCalls'
 
 const useStyles: any = makeStyles(() => ({
 	greyedOutText: {
@@ -34,6 +35,9 @@ const useStyles: any = makeStyles(() => ({
 	prioBlocking: {
 		color: red[800]
 	},
+	buttonBase: {
+		flexGrow: 1
+	}
 }))
 
 interface IProps {
@@ -47,20 +51,21 @@ const HistoryItem: React.FC<IProps> = ({ item }) => {
 	return (
 		<Box
 			display="flex"
-			flexDirection="column"
+			flexDirection="row"
 			alignItems="center"
-			justifyContent="center"
+			justifyContent="space-between"
 			border={"1px solid rgba(0, 0, 0, 0.23)"}
 			borderRadius={11}
-			bgcolor="#FFF"
+			width="100%"
 			mb={2}
 		>
-			<ButtonBase onClick={() => setShowDetails(!showDetails)}>
+			<ButtonBase className={classes.buttonBase} onClick={() => setShowDetails(!showDetails)}>
 				<Box
 					display="flex"
 					flexDirection="column"
 					alignItems="center"
 					justifyContent="center"
+					width="100%"
 				>
 					<Box
 						display="flex"
@@ -125,26 +130,48 @@ const HistoryItem: React.FC<IProps> = ({ item }) => {
 							<Typography variant="caption">{item?.createdBy?.email ? ` - ${item.createdBy.email}` : ""}</Typography>
 						</Box>
 					</Box>
-					{showDetails && <Box
-						display="flex"
-						flexDirection="column"
-						alignItems="flex-start"
-						justifyContent="center"
-						width="100%"
-						p={1}
-						mb={1}
-					>
-						{item?.finding?.description && <Typography className={classes.greyedOutText} variant="caption">Omschrijving: {item?.finding?.description}</Typography>}
-						{item?.finding?.theme && <Typography className={classes.greyedOutText} variant="caption">Thema: {item?.finding?.theme}</Typography>}
-						{item?.finding?.featureRequestDescription && <Typography className={classes.greyedOutText} variant="caption">Beschrijving: {item?.finding?.featureRequestDescription}</Typography>}
-						{item?.finding?.expectedResult && <Typography className={classes.greyedOutText} variant="caption">Verwachte uitkomst: {item?.finding?.expectedResult}</Typography>}
-						{item?.finding?.actualResult && <Typography className={classes.greyedOutText} variant="caption">Daadwerkelijke uitkomst: {item?.finding?.actualResult}</Typography>}
-						{item?.finding?.additionalInfo && <Typography className={classes.greyedOutText} variant="caption">Extra informatie: {item?.finding?.additionalInfo}</Typography>}
-						{item?.finding?.browser && <Typography className={classes.greyedOutText} variant="caption">Browser: {item?.finding?.browser}</Typography>}
-						{item?.finding?.feedbackTeam && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van het team: {item?.finding?.feedbackTeam}</Typography>}
-						{item?.finding?.feedbackProductOwner && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van de product owner: {item?.finding?.feedbackProductOwner}</Typography>}
-						</Box>}
-					</Box>
+					{showDetails && <>
+						<Box
+							display="flex"
+							flexDirection="column"
+							alignItems="flex-start"
+							justifyContent="center"
+							width="100%"
+							p={1}
+						>
+							{item?.finding?.description && <Typography className={classes.greyedOutText} variant="caption">Omschrijving: {item?.finding?.description}</Typography>}
+							{item?.finding?.theme && <Typography className={classes.greyedOutText} variant="caption">Thema: {item?.finding?.theme}</Typography>}
+							{item?.finding?.featureRequestDescription && <Typography className={classes.greyedOutText} variant="caption">Beschrijving: {item?.finding?.featureRequestDescription}</Typography>}
+							{item?.finding?.expectedResult && <Typography className={classes.greyedOutText} variant="caption">Verwachte uitkomst: {item?.finding?.expectedResult}</Typography>}
+							{item?.finding?.actualResult && <Typography className={classes.greyedOutText} variant="caption">Daadwerkelijke uitkomst: {item?.finding?.actualResult}</Typography>}
+							{item?.finding?.additionalInfo && <Typography className={classes.greyedOutText} variant="caption">Extra informatie: {item?.finding?.additionalInfo}</Typography>}
+							{item?.finding?.browser && <Typography className={classes.greyedOutText} variant="caption">Browser: {item?.finding?.browser}</Typography>}
+						</Box>
+						<Box
+							display="flex"
+							flexDirection="column"
+							alignItems="flex-start"
+							justifyContent="center"
+							width="100%"
+							p={1}
+						>
+							<SupplierCalls supplierCalls={item?.finding?.supplierCalls || []} readOnly={true} />
+						</Box>
+						<Box
+							display="flex"
+							flexDirection="column"
+							alignItems="flex-start"
+							justifyContent="center"
+							width="100%"
+							p={1}
+						>
+							<Typography variant="h6">Terugkoppeling en status informatie</Typography>
+							{item?.finding?.feedbackTeam && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van het team: {item?.finding?.feedbackTeam}</Typography>}
+							{item?.finding?.feedbackProductOwner && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van de product owner: {item?.finding?.feedbackProductOwner}</Typography>}
+							{item?.finding?.feedbackContractManagement && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van contractmanagemnt: {item?.finding?.feedbackContractManagement}</Typography>}
+						</Box>
+					</>}
+				</Box>
 			</ButtonBase>
 		</Box>
 	)

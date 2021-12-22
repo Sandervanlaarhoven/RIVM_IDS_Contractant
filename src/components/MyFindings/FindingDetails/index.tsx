@@ -278,10 +278,9 @@ const FindingDetails = () => {
 			<Paper className={classes.paperForForm}>
 				<Box
 					display="flex"
-					flexDirection="row"
-					alignItems="center"
-					justifyContent="flex-start"
-					width="100%"
+					flexDirection="column"
+					alignItems="flex-start"
+					justifyContent="center"
 					mb={2}
 				>
 					<Typography variant="caption">Testdatum: {finding?.testDate ? format(finding.testDate, 'Pp', { locale: nl }) : ""}</Typography>
@@ -603,7 +602,7 @@ const FindingDetails = () => {
 					alignItems="center"
 					justifyContent="flex-start"
 					width="100%"
-					my={3}
+					mb={1}
 				>
 					<Typography variant="h6">Terugkoppeling en status informatie</Typography>
 				</Box>
@@ -613,7 +612,7 @@ const FindingDetails = () => {
 					alignItems="center"
 					justifyContent="flex-start"
 					width="100%"
-					mb={2}
+					mb={1}
 				>
 					<Typography variant="caption">Status: {finding?.status || Status.Open}</Typography>
 				</Box>
@@ -621,33 +620,21 @@ const FindingDetails = () => {
 					display="flex"
 					flexDirection="row"
 					alignItems="center"
-					justifyContent="center"
+					justifyContent="flex-start"
 					width="100%"
-					my={3}
+					mb={1}
 				>
-					<TextField
-						label="Terugkoppeling van het team"
-						value={finding?.feedbackTeam || ''}
-						fullWidth
-						multiline
-						variant="outlined"
-					/>
+					<Typography variant="caption">Terugkoppeling van het team: {finding?.feedbackTeam}</Typography>
 				</Box>}
 				{finding?.feedbackProductOwner && <Box
 					display="flex"
 					flexDirection="row"
 					alignItems="center"
-					justifyContent="center"
+					justifyContent="flex-start"
 					width="100%"
-					my={3}
+					mb={1}
 				>
-					<TextField
-						label="Terugkoppeling van de product owner"
-						value={finding?.feedbackProductOwner || ''}
-						fullWidth
-						multiline
-						variant="outlined"
-					/>
+					<Typography variant="caption">Terugkoppeling van de product owner: {finding?.feedbackProductOwner}</Typography>
 				</Box>}
 			</Paper>
 		</Box>

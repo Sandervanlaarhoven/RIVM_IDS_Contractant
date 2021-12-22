@@ -68,6 +68,7 @@ export type FindingData = {
 	status?: Status;
 	feedbackTeam?: string;
 	feedbackProductOwner?: string;
+	feedbackContractManagement?: string;
 	testDate: Date;
 	history?: HistoryElement[];
 	supplierCalls: SupplierCall[];
@@ -97,6 +98,7 @@ export type Finding = {
 	status?: Status;
 	feedbackTeam?: string;
 	feedbackProductOwner?: string;
+	feedbackContractManagement?: string;
 	testDate: Date;
 	history: HistoryElement[];
 	supplierCalls: SupplierCall[];
@@ -119,6 +121,7 @@ export enum FindingFieldName {
 	featureRequestDescription = 'featureRequestDescription',
 	featureRequestProposal = 'featureRequestProposal',
 	supplier = 'supplier',
+	feedbackContractManagement = 'feedbackContractManagement',
 }
 
 export type LinkType = {

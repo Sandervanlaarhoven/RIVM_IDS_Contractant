@@ -92,9 +92,8 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 					justifyContent="flex-start"
 				>
 					<Button variant="text" color="default" onClick={() => cancel()}>Annuleren</Button>
-					<Button variant="contained" color="primary" onClick={() => save(updatedCall)}>Opslaan</Button>
+					<Button variant="contained" color="primary" onClick={() => save(updatedCall)}>{call ? 'Bijwerken' : 'Toevoegen'}</Button>
 				</Box>
-				
 			</Box>
 			<Box
 				display="flex"

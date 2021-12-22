@@ -46,11 +46,12 @@ interface IProps {
 	call: SupplierCall,
 	editCall: Function,
 	deleteCall: Function,
+	readOnly?: boolean,
 }
 
-const Call: React.FC<IProps> = ({ call, editCall, deleteCall }) => {
+const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 	const classes = useStyles()
-	const [showDetails, setShowDetails] = useState<boolean>(false);
+	const [showDetails, setShowDetails] = useState<boolean>(!!readOnly);
 
 	const onEditClick = (call: SupplierCall) => {
 		editCall(call)
@@ -155,7 +156,7 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall }) => {
 					</Box>}
 				</Box>
 			</ButtonBase>
-			<Box
+			{!readOnly && <Box
 				display="flex"
 				flexDirection="row"
 				alignItems="center"
@@ -168,7 +169,7 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall }) => {
 				<IconButton aria-label="delete" className={classes.margin} color="secondary" onClick={() => onDeleteClick(call)}>
 					<DeleteIcon />
 				</IconButton>
-			</Box>
+			</Box>}
 		</Box>
 	)
 }

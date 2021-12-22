@@ -20,11 +20,12 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Browser, Finding, FindingType, Priority, Status } from '../../../types'
+import { Browser, Finding, FindingType, Priority, Status, Supplier } from '../../../types'
 import { catitaliseFirstLetter } from '../../utils'
 import { FindingTheme, FindingData } from '../../../types/index';
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
+import SupplierCalls from '../../utils/SupplierCalls'
 
 const useStyles: any = makeStyles((theme) => ({
 	optionListItem: {
@@ -41,7 +42,10 @@ const useStyles: any = makeStyles((theme) => ({
 	},
 	paperForForm: {
 		width: '100%',
-		padding: 20
+		padding: 20,
+	},
+	marginBottom20: {
+		marginBottom: 20
 	},
 	greyedOutText: {
 		color: 'grey'
@@ -72,6 +76,8 @@ const FindingDetails = () => {
 				status: Status.Open,
 				type: FindingType.Bug,
 				priority: Priority.low,
+				supplierCalls: [],
+				supplier: Supplier.iVention,
 				testDate: new Date(),
 				uid: app.currentUser.id,
 				userEmail: app.currentUser.profile?.email || "Onbekend",
@@ -167,6 +173,8 @@ const FindingDetails = () => {
 					description: '',
 					type: FindingType.Bug,
 					priority: Priority.low,
+					supplierCalls: [],
+					supplier: Supplier.iVention,
 					status: Status.Open,
 					testDate: new Date(),
 					uid: app.currentUser.id,
@@ -209,6 +217,7 @@ const FindingDetails = () => {
 		feedbackTeam = 'feedbackTeam',
 		featureRequestDescription = 'featureRequestDescription',
 		featureRequestProposal = 'featureRequestProposal',
+		supplier = "supplier"
 	}
 
 	const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: FindingFieldName) => {
@@ -299,6 +308,26 @@ const FindingDetails = () => {
 						onChange={(event) => handleChangeTextField(event, FindingFieldName.description)}
 						helperText="Korte omschrijving van de bevinding"
 					/>
+				</Box>
+				<Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="flex-start"
+					width="100%"
+					pb={3}
+				>
+					<FormControl className={classes.formControl}>
+						<InputLabel id="type">Leverancier</InputLabel>
+						<Select
+							labelId="supplier"
+							id="supplier"
+							value={finding?.supplier || ''}
+							onChange={(event) => handleChangeSelect(event, FindingFieldName.supplier)}
+						>
+							<MenuItem value={Supplier.iVention}>{Supplier.iVention}</MenuItem>
+						</Select>
+					</FormControl>
 				</Box>
 				<Box
 					display="flex"
@@ -570,6 +599,9 @@ const FindingDetails = () => {
 					/>
 				</FormGroup>
 			</Box>
+			<Paper className={`${classes.paperForForm} ${classes.marginBottom20}`}>
+				<SupplierCalls supplierCalls={finding?.supplierCalls || []} />
+			</Paper>
 			<Paper className={classes.paperForForm}>
 				<Box
 					display="flex"

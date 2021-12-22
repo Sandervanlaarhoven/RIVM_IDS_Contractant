@@ -196,7 +196,6 @@ const LogIn = () => {
 						fullWidth
 						onKeyDown={(event) => {
 							if (event.key === 'Enter') {
-								console.log(event.target.value)
 								isNewUser ? register() : login()
 							}
 						}}
@@ -212,7 +211,6 @@ const LogIn = () => {
 						fullWidth
 						onKeyDown={(event) => {
 							if (event.key === 'Enter') {
-								console.log(event.target.value)
 								isNewUser ? register() : login()
 							}
 						}}

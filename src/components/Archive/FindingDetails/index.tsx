@@ -12,7 +12,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Finding, FindingType, Priority, Status } from '../../../types'
+import { Finding, FindingType, Priority, Status, Supplier } from '../../../types'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import HistoryOverview from '../../utils/HistoryOverview'
@@ -65,6 +65,8 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 				status: Status.Open,
 				type: FindingType.Bug,
 				priority: Priority.low,
+				supplierCalls: [],
+				supplier: Supplier.iVention,
 				testDate: new Date(),
 				history: []
 			}
@@ -162,6 +164,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						width="100%"
 						pb={3}
 					>
+						{finding?.supplier && <Typography variant="body1">Leverancier: {finding?.supplier || ''}</Typography>}
 						{finding?.description && <Typography variant="body1">Omschrijving: {finding?.description || ''}</Typography>}
 						{finding?.type && <Typography variant="body1">Type bevinding: {finding?.type}</Typography>}
 						{finding?.theme && <Typography variant="body1">Thema: {finding?.theme}</Typography>}

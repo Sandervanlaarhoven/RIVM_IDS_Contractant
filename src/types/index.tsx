@@ -47,6 +47,10 @@ export enum Browser {
 	InternetExplorer = 'Internet Explorer',
 }
 
+export enum Supplier {
+	iVention = 'iVention',
+}
+
 export type FindingData = {
 	_id?: BSON.ObjectId;
 	uid?: BSON.ObjectId;
@@ -66,6 +70,8 @@ export type FindingData = {
 	feedbackProductOwner?: string;
 	testDate: Date;
 	history?: HistoryElement[];
+	supplierCalls: SupplierCall[];
+	supplier: Supplier;
 }
 
 export type HistoryElement = {
@@ -93,6 +99,8 @@ export type Finding = {
 	feedbackProductOwner?: string;
 	testDate: Date;
 	history: HistoryElement[];
+	supplierCalls: SupplierCall[];
+	supplier: Supplier;
 }
 
 export enum FindingFieldName {
@@ -127,4 +135,36 @@ export enum Priority {
 	medium = 'Normaal',
 	high = 'Hoog',
 	blocking = 'Blokkerend',
+}
+
+export enum SupplierPriority {
+	p1 = 'p1',
+	p2 = 'p2',
+	p3 = 'p3',
+	p4 = 'p4',
+}
+
+export enum SupplierCallType {
+	bug = 'Bug',
+	change = 'Change',
+}
+
+export enum SupplierCallStatus {
+	open = 'Open',
+	verified = 'Geverifieerd',
+	gepland = 'Ingepland',
+	test = 'Test',
+	readyForRelease = 'Klaar voor release',
+	denied = 'Afgewezen',
+	closed = 'Gesloten',
+}
+
+export type SupplierCall = {
+	callNumber: string;
+	status: SupplierCallStatus;
+	createdOn: Date;
+	description: string;
+	priority: SupplierPriority;
+	callType: SupplierCallType;
+	extraInfo: string;
 }

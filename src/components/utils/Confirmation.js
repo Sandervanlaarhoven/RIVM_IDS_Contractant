@@ -42,7 +42,6 @@ const Confirmation = () => {
 			await app.emailPasswordAuth.confirmUser(token, tokenId);
 			history.push('/')
 		} catch (error) {
-			console.log(error)
 			alert('Er is helaas iets mis gegaan bij het bevestigen.')
 		}
 	}

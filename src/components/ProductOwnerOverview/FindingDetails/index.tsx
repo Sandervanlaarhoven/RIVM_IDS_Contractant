@@ -17,9 +17,8 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Browser, Finding, FindingData, FindingType, Priority, Status } from '../../../types'
+import { Browser, Finding, FindingData, FindingType, Priority, Status, Supplier, FindingTheme } from '../../../types'
 import { catitaliseFirstLetter } from '../../utils'
-import { FindingTheme } from '../../../types/index';
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import HistoryOverview from '../../utils/HistoryOverview'
@@ -104,6 +103,8 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 				status: Status.Open,
 				type: FindingType.Bug,
 				priority: Priority.low,
+				supplierCalls: [],
+				supplier: Supplier.iVention,
 				testDate: new Date(),
 				history: [],
 			}
@@ -196,6 +197,7 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 		feedbackProductOwner = 'feedbackProductOwner',
 		featureRequestDescription = 'featureRequestDescription',
 		featureRequestProposal = 'featureRequestProposal',
+		supplier = "supplier",
 	}
 
 	const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: FindingFieldName) => {
@@ -299,6 +301,26 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 						pb={3}
 					>
 						<Typography variant="body1">Omschrijving: {finding?.description || ''}</Typography>
+					</Box>
+					<Box
+						display="flex"
+						flexDirection="row"
+						alignItems="center"
+						justifyContent="flex-start"
+						width="100%"
+						pb={3}
+					>
+						<FormControl className={classes.formControl}>
+							<InputLabel id="type">Leverancier</InputLabel>
+							<Select
+								labelId="supplier"
+								id="supplier"
+								value={finding?.supplier || ''}
+								onChange={(event) => handleChangeSelect(event, FindingFieldName.supplier)}
+							>
+								<MenuItem value={Supplier.iVention}>{Supplier.iVention}</MenuItem>
+							</Select>
+						</FormControl>
 					</Box>
 					<Box
 						display="flex"

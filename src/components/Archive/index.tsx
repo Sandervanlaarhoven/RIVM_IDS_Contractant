@@ -391,6 +391,15 @@ const Archive: React.FC<IProps> = () => {
 											justifyContent="flex-start"
 											ml={1}
 										>
+											<Typography variant="caption">{finding.supplier} - </Typography>
+										</Box>
+										<Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+											ml={1}
+										>
 											<Typography variant="caption">{finding.testDate ? format(finding.testDate, 'Pp', { locale: nl }) : ""}</Typography>
 										</Box>
 										{finding.userEmail && <Box

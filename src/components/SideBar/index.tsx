@@ -24,8 +24,7 @@ const SideBar: React.FC<IProps> = () => {
 	const dispatch = useDispatch()
 	const userDataState = useSelector((state: RootState) => state.userData)
 	const { userData, loading } = userDataState
-	const hasTestCoordinatorRole = !loading && userData && userData.roles?.find((el) => el === Role.test_coordinator)
-	const hasProductOwnerRole = !loading && userData && userData.roles?.find((el) => el === Role.product_owner)
+	const hasCallHandlerRole = !loading && userData && userData.roles?.find((el) => el === Role.call_handler)
 
 	const navigate = (target: string) => {
 		history.push(target)
@@ -78,7 +77,7 @@ const SideBar: React.FC<IProps> = () => {
 							primary='Mijn tickets'
 						/>
 					</ListItem>
-					{hasTestCoordinatorRole && <ListItem
+					{hasCallHandlerRole && <ListItem
 						button
 						onClick={() => navigate('/findingsoverview')}
 					>
@@ -87,7 +86,7 @@ const SideBar: React.FC<IProps> = () => {
 							primary='Calls'
 						/>
 					</ListItem>}
-					{hasProductOwnerRole && <ListItem
+					{hasCallHandlerRole && <ListItem
 						button
 						onClick={() => navigate('/productowneroverview')}
 					>
@@ -96,7 +95,7 @@ const SideBar: React.FC<IProps> = () => {
 							primary='Change requests'
 						/>
 					</ListItem>}
-					{hasTestCoordinatorRole && <ListItem
+					{hasCallHandlerRole && <ListItem
 						button
 						onClick={() => navigate('/settings')}
 					>
@@ -114,7 +113,7 @@ const SideBar: React.FC<IProps> = () => {
 							primary='Informatie'
 						/>
 					</ListItem>
-					<ListItem
+					{hasCallHandlerRole && <ListItem
 						button
 						onClick={() => navigate('/archive')}
 					>
@@ -122,7 +121,7 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Archief'
 						/>
-					</ListItem>
+					</ListItem>}
 				</List>
 			</Box>
 		</Box>

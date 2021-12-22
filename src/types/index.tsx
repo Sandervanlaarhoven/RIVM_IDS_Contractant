@@ -1,8 +1,7 @@
 import { BSON } from "realm-web";
 
 export enum Role {
-	test_coordinator = "test_coordinator",
-	product_owner = "product_owner",
+	call_handler = "call_handler",
 }
 
 export type UserData = {

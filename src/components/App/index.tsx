@@ -83,7 +83,7 @@ const App = () => {
           <Route exact path="/findingsoverview">
             <RequireLoggedInUser>
               <Framework>
-                <RequireRole role={Role.test_coordinator}>
+                <RequireRole role={Role.call_handler}>
                   <FindingsOverview />
                 </RequireRole>
               </Framework>
@@ -92,7 +92,7 @@ const App = () => {
           <Route exact path="/findingsoverview/:id">
             <RequireLoggedInUser>
               <Framework>
-                <RequireRole role={Role.test_coordinator}>
+                <RequireRole role={Role.call_handler}>
                   <FindingDetailsAdmin />
                 </RequireRole>
               </Framework>
@@ -101,7 +101,7 @@ const App = () => {
           <Route exact path="/productowneroverview">
             <RequireLoggedInUser>
               <Framework>
-                <RequireRole role={Role.product_owner}>
+                <RequireRole role={Role.call_handler}>
                   <ProductOwnerOverview />
                 </RequireRole>
               </Framework>
@@ -110,7 +110,7 @@ const App = () => {
           <Route exact path="/productowneroverview/:id">
             <RequireLoggedInUser>
               <Framework>
-                <RequireRole role={Role.product_owner}>
+                <RequireRole role={Role.call_handler}>
                   <FindingDetailsPO />
                 </RequireRole>
               </Framework>
@@ -119,7 +119,7 @@ const App = () => {
           <Route exact path="/settings">
             <RequireLoggedInUser>
               <Framework>
-                <RequireRole role={Role.test_coordinator}>
+                <RequireRole role={Role.call_handler}>
                   <Settings />
                 </RequireRole>
               </Framework>
@@ -135,7 +135,7 @@ const App = () => {
           <Route exact path="/archive">
             <RequireLoggedInUser>
               <Framework>
-                <RequireRole role={Role.test_coordinator}>
+                <RequireRole role={Role.call_handler}>
                   <Archive />
                 </RequireRole>
               </Framework>
@@ -144,7 +144,7 @@ const App = () => {
           <Route exact path="/archive/:id">
             <RequireLoggedInUser>
               <Framework>
-                <RequireRole role={Role.test_coordinator}>
+                <RequireRole role={Role.call_handler}>
                   <FindingDetailsArchive />
                 </RequireRole>
               </Framework>

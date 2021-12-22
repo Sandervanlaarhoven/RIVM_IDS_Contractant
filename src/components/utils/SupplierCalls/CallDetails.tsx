@@ -72,6 +72,7 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 			alignItems="flex-start"
 			justifyContent="center"
 			border={"1px solid rgba(0, 0, 0, 0.23)"}
+			borderRadius={11}
 			width="100%"
 			p={2}
 		>

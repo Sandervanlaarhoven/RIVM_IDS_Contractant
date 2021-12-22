@@ -233,7 +233,6 @@ const FindingDetails = () => {
 				...finding
 			}
 			newFinding.supplierCalls = calls
-			debugger
 			setFinding(newFinding)
 		}
 	}

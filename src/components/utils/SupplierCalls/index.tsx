@@ -47,12 +47,18 @@ const SupplierCalls: React.FC<IProps> = ({ supplierCalls, updateCalls }) => {
 		setCallDetails(null)
 	}
 
-	// const showUpdateCall = (call: SupplierCall) => {
-	// 	setCallDetails({
-	// 		show: true,
-	// 		call
-	// 	})
-	// }
+	const editCall = (call: SupplierCall) => {
+		setCallDetails({
+			show: true,
+			call
+		})
+	}
+	
+	const deleteCall = (call: SupplierCall) => {
+		const newSupplierCalls = supplierCalls.filter((supplierCall) => supplierCall.callNumber !== call.callNumber)
+		updateCalls(newSupplierCalls)
+		setCallDetails(null)
+	}
 	
 	return (
 		<Box
@@ -100,7 +106,7 @@ const SupplierCalls: React.FC<IProps> = ({ supplierCalls, updateCalls }) => {
 				>
 					<Typography variant="body2"><i>Er zijn (nog) geen calls gevonden.</i></Typography>
 				</Box>}
-				{supplierCalls && supplierCalls.map((supplierCall, index) => <Call key={index} item={supplierCall}/>)}
+				{supplierCalls && supplierCalls.map((supplierCall, index) => supplierCall.callNumber !== callDetails?.call?.callNumber ? <Call key={index} call={supplierCall} editCall={editCall} deleteCall={deleteCall}/> : null)}
 			</Box>
 		</Box>
 	)

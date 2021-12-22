@@ -4,6 +4,7 @@ import {
 	Box,
 	Chip,
 	ButtonBase,
+	IconButton,
 } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles'
 import BugReportIcon from '@material-ui/icons/BugReport'
@@ -12,6 +13,8 @@ import PriorityMediumIcon from '@material-ui/icons/KeyboardArrowUp'
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh'
 import PriorityBlockingIcon from '@material-ui/icons/Block'
 import MailOutlineIcon from '@material-ui/icons/MailOutline'
+import DeleteIcon from '@material-ui/icons/Delete'
+import EditIcon from '@material-ui/icons/Edit'
 
 import { SupplierCall, SupplierPriority } from '../../../types'
 import { format } from 'date-fns'
@@ -35,24 +38,34 @@ const useStyles: any = makeStyles(() => ({
 		color: red[800]
 	},
 	buttonBase: {
-		width: '100%'
+		flexGrow: 1
 	}
 }))
 
 interface IProps {
-	item: SupplierCall,
+	call: SupplierCall,
+	editCall: Function,
+	deleteCall: Function,
 }
 
-const Call: React.FC<IProps> = ({ item }) => {
+const Call: React.FC<IProps> = ({ call, editCall, deleteCall }) => {
 	const classes = useStyles()
 	const [showDetails, setShowDetails] = useState<boolean>(false);
+
+	const onEditClick = (call: SupplierCall) => {
+		editCall(call)
+	}
+
+	const onDeleteClick = (call: SupplierCall) => {
+		deleteCall(call)
+	}
 
 	return (
 		<Box
 			display="flex"
-			flexDirection="column"
-			alignItems="flex-start"
-			justifyContent="center"
+			flexDirection="row"
+			alignItems="center"
+			justifyContent="space-between"
 			border={"1px solid rgba(0, 0, 0, 0.23)"}
 			borderRadius={11}
 			width="100%"
@@ -74,7 +87,7 @@ const Call: React.FC<IProps> = ({ item }) => {
 						width="100%"
 						p={1}
 					>
-						{item.callType === 'Bug' && <Box
+						{call.callType === 'Bug' && <Box
 							display="flex"
 							flexDirection="row"
 							alignItems="center"
@@ -82,7 +95,7 @@ const Call: React.FC<IProps> = ({ item }) => {
 						>
 							<BugReportIcon />
 						</Box>}
-						{item.callType === 'Change' && <Box
+						{call.callType === 'Change' && <Box
 							display="flex"
 							flexDirection="row"
 							alignItems="center"
@@ -90,16 +103,16 @@ const Call: React.FC<IProps> = ({ item }) => {
 						>
 							<MailOutlineIcon />
 						</Box>}
-						{item?.priority && <Box
+						{call?.priority && <Box
 							display="flex"
 							flexDirection="row"
 							alignItems="center"
 							justifyContent="flex-start"
 						>
-							{item?.priority === SupplierPriority.p4 && <PriorityLowIcon className={classes.prioLow} />}
-							{item?.priority === SupplierPriority.p3 && <PriorityMediumIcon className={classes.prioMedium} />}
-							{item?.priority === SupplierPriority.p2 && <PriorityHighIcon className={classes.prioHigh} />}
-							{item?.priority === SupplierPriority.p1 && <PriorityBlockingIcon className={classes.prioBlocking} />}
+							{call?.priority === SupplierPriority.p4 && <PriorityLowIcon className={classes.prioLow} />}
+							{call?.priority === SupplierPriority.p3 && <PriorityMediumIcon className={classes.prioMedium} />}
+							{call?.priority === SupplierPriority.p2 && <PriorityHighIcon className={classes.prioHigh} />}
+							{call?.priority === SupplierPriority.p1 && <PriorityBlockingIcon className={classes.prioBlocking} />}
 						</Box>}
 						<Box
 							display="flex"
@@ -108,7 +121,7 @@ const Call: React.FC<IProps> = ({ item }) => {
 							justifyContent="flex-start"
 							ml={1}
 						>
-							<Chip variant="outlined" color="primary" label={item?.status} size="small" />
+							<Chip variant="outlined" color="primary" label={call?.status} size="small" />
 						</Box>
 						<Box
 							display="flex"
@@ -117,16 +130,16 @@ const Call: React.FC<IProps> = ({ item }) => {
 							justifyContent="flex-start"
 							ml={1}
 						>
-							<Typography variant="caption">{item?.createdOn ? format(item?.createdOn, 'Pp', { locale: nl }) : ""}</Typography>
+							<Typography variant="caption">{call?.createdOn ? format(call?.createdOn, 'Pp', { locale: nl }) : ""}</Typography>
 						</Box>
-						{item?.description && <Box
+						{call?.description && <Box
 							display="flex"
 							flexDirection="row"
 							alignItems="center"
 							justifyContent="flex-start"
 							ml={1}
 						>
-							<Typography className={classes.greyedOutText} variant="caption">{item?.description}</Typography>
+							<Typography className={classes.greyedOutText} variant="caption">{call?.description}</Typography>
 						</Box>}
 					</Box>
 					{showDetails && <Box
@@ -138,10 +151,24 @@ const Call: React.FC<IProps> = ({ item }) => {
 						p={1}
 						mb={1}
 					>
-						{item?.extraInfo && <Typography className={classes.greyedOutText} variant="caption">Extra info: {item?.extraInfo}</Typography>}
+						{call?.extraInfo && <Typography className={classes.greyedOutText} variant="caption">Extra info: {call?.extraInfo}</Typography>}
 					</Box>}
 				</Box>
 			</ButtonBase>
+			<Box
+				display="flex"
+				flexDirection="row"
+				alignItems="center"
+				justifyContent="flex-end"
+				flexGrow={0}
+			>
+				<IconButton aria-label="delete" className={classes.margin} color="primary" onClick={() => onEditClick(call)}>
+					<EditIcon />
+				</IconButton>
+				<IconButton aria-label="delete" className={classes.margin} color="secondary" onClick={() => onDeleteClick(call)}>
+					<DeleteIcon />
+				</IconButton>
+			</Box>
 		</Box>
 	)
 }

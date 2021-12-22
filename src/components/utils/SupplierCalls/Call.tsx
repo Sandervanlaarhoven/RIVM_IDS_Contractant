@@ -152,6 +152,8 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 						p={1}
 						mb={1}
 					>
+						{call?.callNumber && <Typography className={classes.greyedOutText} variant="caption">Call nummer: {call?.callNumber}</Typography>}
+						{call?.priority && <Typography className={classes.greyedOutText} variant="caption">Prioriteit: {call?.priority}</Typography>}
 						{call?.extraInfo && <Typography className={classes.greyedOutText} variant="caption">Extra info: {call?.extraInfo}</Typography>}
 					</Box>}
 				</Box>

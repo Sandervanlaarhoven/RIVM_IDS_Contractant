@@ -274,7 +274,7 @@ const ManageFindings: React.FC<IProps> = () => {
 					</Box>
 				</Box>
 			</Box>
-			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable">
+			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable" >
 				<Tab label={Status.Open} />
 				<Tab label={Status.Closed} />
 			</Tabs>

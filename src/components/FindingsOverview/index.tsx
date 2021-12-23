@@ -33,6 +33,7 @@ import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import { set } from '../../redux/findings/findingsSlice'
 import { useAppSelector, useAppDispatch } from '../../hooks'
+import theme from '../../theme'
 
 const useStyles: any = makeStyles(() => ({
 	button: {
@@ -53,6 +54,14 @@ const useStyles: any = makeStyles(() => ({
 	prioBlocking: {
 		color: red[800]
 	},
+	tabs: {
+		[theme.breakpoints.up('xs')]: {
+			width: "calc(100vw - 96px)"
+		},
+		[theme.breakpoints.up('md')]: {
+			width: "calc(100vw - 480px)"
+		}
+	}
 }))
 
 interface IProps {
@@ -404,7 +413,7 @@ const FindingsOverview: React.FC<IProps> = () => {
 					</Box>
 				</Box>
 			</Box>
-			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable">
+			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable" className={classes.tabs}>
 				<Tab label={Status.Open} />
 				<Tab label={Status.Submitted} />
 				<Tab label={Status.Verified} />

@@ -35,11 +35,6 @@ const theme = createTheme({
 				minWidth: '125px !important'
 			}
 		},
-		MuiTabs: {
-			root: {
-				width: 'calc(100vw - 480px) !important'
-			}
-		}
 	}
 });
 

@@ -15,6 +15,12 @@ export type User = {
 	email: string
 }
 
+export enum UserGroup {
+	rivm = 'RIVM',
+	ivention = 'iVention',
+	other = 'other'
+}
+
 export type FindingTheme = {
 	_id?: BSON.ObjectId;
 	name: string;
@@ -47,7 +53,7 @@ export enum Browser {
 }
 
 export enum Supplier {
-	iVention = 'iVention',
+	ivention = 'iVention',
 }
 
 export type FindingData = {
@@ -66,6 +72,7 @@ export type FindingData = {
 	theme?: string;
 	status?: Status;
 	feedbackTeam?: string;
+	feedbackSupplier?: string;
 	feedbackProductOwner?: string;
 	feedbackContractManagement?: string;
 	testDate: Date;
@@ -96,6 +103,7 @@ export type Finding = {
 	theme?: string;
 	status?: Status;
 	feedbackTeam?: string;
+	feedbackSupplier?: string;
 	feedbackProductOwner?: string;
 	feedbackContractManagement?: string;
 	testDate: Date;
@@ -121,6 +129,7 @@ export enum FindingFieldName {
 	featureRequestProposal = 'featureRequestProposal',
 	supplier = 'supplier',
 	feedbackContractManagement = 'feedbackContractManagement',
+	feedbackSupplier = 'feedbackSupplier',
 }
 
 export type LinkType = {

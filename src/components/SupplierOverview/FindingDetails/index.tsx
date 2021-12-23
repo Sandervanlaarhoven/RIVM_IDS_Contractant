@@ -4,6 +4,7 @@ import {
 	Box,
 	Button,
 	Paper,
+	TextField,
 } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles'
 import { useSnackbar } from 'notistack'
@@ -12,11 +13,12 @@ import { useParams, useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { Finding, FindingType, Priority, Status, Supplier } from '../../../types'
+import { Finding, FindingData, FindingFieldName, FindingType, Priority, Status, Supplier, SupplierCall } from '../../../types'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import HistoryOverview from '../../utils/HistoryOverview'
 import SupplierCalls from '../../utils/SupplierCalls'
+import { catitaliseFirstLetter } from '../../utils'
 
 const useStyles: any = makeStyles((theme) => ({
 	optionListItem: {
@@ -51,13 +53,13 @@ interface params {
 interface IProps {
 }
 
-const FindingDetailsAdmin: React.FC<IProps> = () => {
+const FindingDetailsSupplier: React.FC<IProps> = () => {
 	const classes = useStyles()
 	const app = useRealmApp()
 	const history = useHistory()
 	let { id } = useParams<params>()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoArchivedFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("archived_findings")
+	const mongoFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("findings")
 	const [finding, setFinding] = useState<Finding>()
 	const [showHistory, setShowHistory] = useState<boolean>(false);
 	const { enqueueSnackbar } = useSnackbar()
@@ -75,7 +77,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 				history: []
 			}
 			if (id) {
-				findingData = await mongoArchivedFindingsCollection.findOne({
+				findingData = await mongoFindingsCollection.findOne({
 					_id: new BSON.ObjectId(id)
 				})
 			}
@@ -94,8 +96,66 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-	const back = () => {
+	const cancel = () => {
 		history.goBack()
+	}
+
+	const save = async () => {
+		try {
+			if (id && finding) {
+				const updatedFinding: Finding = {
+					...finding
+				}
+				delete updatedFinding._id
+				const findingData: FindingData = {
+					...updatedFinding
+				}
+				delete findingData.history
+				updatedFinding.history.push({
+					finding: findingData,
+					createdOn: new Date(),
+					createdBy: {
+						_id: app.currentUser.id,
+						email: app.currentUser.profile?.email || "Onbekend",
+					}
+				})
+				await mongoFindingsCollection.updateOne({
+					_id: new BSON.ObjectId(id)
+				}, updatedFinding)
+				enqueueSnackbar('De bevinding is aangepast.', {
+					variant: 'success',
+				})
+			} else if (finding) {
+				await mongoFindingsCollection.insertOne(finding)
+				enqueueSnackbar('De nieuwe bevinding is aangemaakt.', {
+					variant: 'success',
+				})
+			}
+			history.push("/supplieroverview")
+		} catch (error) {
+			enqueueSnackbar('Er is helaas iets mis gegaan bij het opslaan van de bevinding.', {
+				variant: 'error',
+			})
+		}
+	}
+
+	const updateCalls = (calls: SupplierCall[]) => {
+		if (finding) {
+			const newFinding: Finding = {
+				...finding
+			}
+			newFinding.supplierCalls = calls
+			setFinding(newFinding)
+		}
+	}
+
+	const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: FindingFieldName) => {
+		if (finding) {
+			setFinding({
+				...finding,
+				[fieldName]: catitaliseFirstLetter(event.target.value)
+			})
+		}
 	}
 
 	return (
@@ -122,7 +182,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 					alignItems="flex-start"
 					justifyContent="center"
 				>
-					<Typography variant="h4">Gearchiveerde bevinding</Typography>
+					<Typography variant="h4">Ticket{finding?.supplier && ` voor ${finding?.supplier}`}</Typography>
 				</Box>
 				<Box
 					display="flex"
@@ -130,7 +190,10 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 					alignItems="center"
 					justifyContent="flex-end"
 				>
-					<Button variant="text" className={classes.button} onClick={back}>Terug</Button>
+					<Button variant="text" className={classes.button} onClick={cancel}>Annuleren</Button>
+					<Button variant="contained" className={classes.button} color="primary" onClick={save}>
+						Opslaan
+					</Button>
 				</Box>
 			</Box>
 			{!showHistory && <>
@@ -204,7 +267,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 					</Box>
 				</Paper>
 				<Paper className={`${classes.paperForForm} ${classes.marginBottom20}`}>
-					<SupplierCalls supplierCalls={finding?.supplierCalls || []} readOnly={true} />
+					<SupplierCalls supplierCalls={finding?.supplierCalls || []} updateCalls={updateCalls}  />
 				</Paper>
 				<Paper className={classes.paperForForm}>
 					<Box
@@ -229,7 +292,23 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						{finding?.feedbackTeam && <Typography variant="body1">Terugkoppeling van het team: {finding.feedbackTeam}</Typography>}
 						{finding?.feedbackProductOwner && <Typography variant="body1">Terugkoppeling van de product owner: {finding.feedbackProductOwner}</Typography>}
 						{finding?.feedbackContractManagement && <Typography variant="body1">Terugkoppeling van contractmanagement: {finding.feedbackContractManagement}</Typography>}
-						{finding?.feedbackSupplier && <Typography variant="body1">Terugkoppeling vanuit de leverancier: {finding.feedbackSupplier}</Typography>}
+						<Box
+							display="flex"
+							flexDirection="row"
+							alignItems="center"
+							justifyContent="center"
+							width="100%"
+							my={3}
+						>
+							<TextField
+								label="Terugkoppeling vanuit de leverancier"
+								value={finding?.feedbackSupplier || ''}
+								multiline
+								fullWidth
+								variant="outlined"
+								onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackSupplier)}
+							/>
+						</Box>
 					</Box>
 				</Paper>
 			</>}
@@ -265,4 +344,4 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 	)
 }
 
-export default FindingDetailsAdmin
+export default FindingDetailsSupplier

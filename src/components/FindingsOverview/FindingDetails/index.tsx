@@ -109,7 +109,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 				type: FindingType.Bug,
 				priority: Priority.low,
 				supplierCalls: [],
-				supplier: Supplier.iVention,
+				supplier: Supplier.ivention,
 				testDate: new Date(),
 				history: []
 			}
@@ -317,7 +317,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 							value={finding?.supplier || ''}
 							onChange={(event) => handleChangeSelect(event, FindingFieldName.supplier)}
 						>
-							<MenuItem value={Supplier.iVention}>{Supplier.iVention}</MenuItem>
+							<MenuItem value={Supplier.ivention}>{Supplier.ivention}</MenuItem>
 						</Select>
 					</FormControl>
 				</Box>
@@ -716,6 +716,16 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 							onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackContractManagement)}
 					/>
 				</Box>
+				{finding?.feedbackSupplier && <Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="flex-start"
+					width="100%"
+					my={3}
+				>
+					<Typography variant="caption">Terugkoppeling vanuit de leverancier: {finding.feedbackSupplier}</Typography>
+				</Box>}
 			</Paper>
 			</>}
 			{showHistory && finding?.history && <Paper className={classes.paperForForm}>

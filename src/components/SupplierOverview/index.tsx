@@ -9,6 +9,8 @@ import {
 	Select,
 	Chip,
 	ButtonBase,
+	Tab,
+	Tabs,
 } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles'
 import BugReportIcon from '@material-ui/icons/BugReport'
@@ -20,7 +22,7 @@ import PriorityBlockingIcon from '@material-ui/icons/Block'
 import { useSnackbar } from 'notistack'
 import { blue, green, orange, red } from '@material-ui/core/colors'
 
-import { Finding, FindingTheme, FindingType, FindingFieldName, Priority } from '../../types'
+import { Finding, FindingTheme, FindingType, FindingFieldName, Priority, Status, UserGroup } from '../../types'
 import { useRealmApp } from '../App/RealmApp'
 import { useHistory } from 'react-router-dom'
 import { format } from 'date-fns'
@@ -28,6 +30,7 @@ import { nl } from 'date-fns/locale'
 import { set } from '../../redux/findings/findingsSlice'
 import { useAppSelector, useAppDispatch } from '../../hooks'
 import { BSON } from 'realm-web'
+import { getUsergroupFromUserEmail } from '../utils'
 
 const useStyles: any = makeStyles(() => ({
 	button: {
@@ -62,7 +65,7 @@ type PropsFilter = {
 	userEmail?: string,
 }
 
-const Archive: React.FC<IProps> = () => {
+const SupplierOverview: React.FC<IProps> = () => {
 	const classes = useStyles()
 	const dispatch = useAppDispatch()
 	const [filteredFindings, setfilteredFindings] = useState<Finding[]>([])
@@ -72,18 +75,31 @@ const Archive: React.FC<IProps> = () => {
 	const app = useRealmApp()
 	const { enqueueSnackbar } = useSnackbar()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoArchivedFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("archived_findings")
+	const mongoFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("findings")
 	const mongoFindingThemesCollection = mongo.db("RIVM_CONTRACTANT").collection("finding_themes")
 	const [findingThemes, setFindingThemes] = useState<FindingTheme[]>([])
 	const findingsDataState = useAppSelector(state => state.findingsData)
 	const { findings } = findingsDataState
 	const [userEmails, setUserEmails] = useState<string[]>([])
+	const [currentTab, setCurrentTab] = React.useState(0);
+	const userEmail = app.currentUser?.profile?.email || 'onbekend'
+	const userGroup = getUsergroupFromUserEmail(userEmail)
 
 	const getData = async () => {
 		try {
-			const findingsData = mongoArchivedFindingsCollection.find(null, {
-				sort: { testDate: -1 }
-			})
+			let findingsData
+			if (userGroup !== UserGroup.other && userGroup !== UserGroup.rivm) {
+				findingsData = mongoFindingsCollection.find({
+					supplier: userGroup
+				}, {
+					sort: { testDate: -1 }
+				})
+			} else {
+				enqueueSnackbar('Je bent niet ingelogd als leverancier, daarom kun je geen gebruik maken van deze functionaliteit.', {
+					variant: 'error',
+				})
+				return
+			}
 			let findingThemesData = mongoFindingThemesCollection.find()
 			dispatch(set(await findingsData))
 			setFindingThemes(await findingThemesData)
@@ -102,7 +118,19 @@ const Archive: React.FC<IProps> = () => {
 	useEffect(() => {
 		const filterTimeout = setTimeout(() => {
 			const newFilteredFindings = findings.filter((finding) => {
+				let isGesloten: boolean = false
+				switch (finding.status) {
+					case Status.Closed:
+					case Status.Denied:
+						isGesloten = true
+						break;
+
+					default:
+						break;
+				}
 				let passedPropsFilter = true
+				if (!isGesloten && currentTab === 1) passedPropsFilter = false
+				if (isGesloten && currentTab === 0) passedPropsFilter = false
 				if (propsFilter) {
 					if (propsFilter.theme && finding.theme !== propsFilter.theme) passedPropsFilter = false
 				}
@@ -113,7 +141,7 @@ const Archive: React.FC<IProps> = () => {
 			setfilteredFindings(newFilteredFindings)
 		}, 500);
 		return () => clearTimeout(filterTimeout)
-	}, [filterString, propsFilter, findings])
+	}, [filterString, propsFilter, findings, currentTab])
 
 	const setUserEmailDropdownValues = (findings: Finding[]) => {
 		const emailList = findings.map((finding) => finding.userEmail || 'onbekend')
@@ -172,7 +200,7 @@ const Archive: React.FC<IProps> = () => {
 	}
 
 	const showDetails = (findingID: BSON.ObjectId | undefined) => {
-		if (findingID) history.push(`/archive/${findingID}`)
+		if (findingID) history.push(`/supplieroverview/${findingID}`)
 	}
 
 	const onChangeFilterString = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -189,6 +217,10 @@ const Archive: React.FC<IProps> = () => {
 			...propsFilter,
 			[fieldName]: event.target.value
 		})
+	}
+
+	const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
+		setCurrentTab(newValue)
 	}
 
 	return (
@@ -215,7 +247,7 @@ const Archive: React.FC<IProps> = () => {
 					alignItems="flex-start"
 					justifyContent="center"
 				>
-					<Typography variant="h4">Archief</Typography>
+					<Typography variant="h4">Leverancier overzicht</Typography>
 				</Box>
 			</Box>
 			<Box
@@ -299,6 +331,10 @@ const Archive: React.FC<IProps> = () => {
 					</Box>
 				</Box>
 			</Box>
+			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable" >
+				<Tab label={Status.Open} />
+				<Tab label={Status.Closed} />
+			</Tabs>
 			<Box
 				display="flex"
 				flexDirection="column"
@@ -306,6 +342,7 @@ const Archive: React.FC<IProps> = () => {
 				justifyContent="flex-start"
 				width="100%"
 				my={1}
+				mt={4}
 			>
 				{filteredFindings.length === 0 && <Box
 					display="flex"
@@ -422,4 +459,4 @@ const Archive: React.FC<IProps> = () => {
 	)
 }
 
-export default Archive
+export default SupplierOverview

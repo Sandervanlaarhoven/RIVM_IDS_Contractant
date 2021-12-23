@@ -13,7 +13,8 @@ import { toggle } from '../../redux/menu/menuSlice'
 import { RootState } from '../../redux/store'
 import { set } from '../../redux/user/userSlice'
 import { useRealmApp } from '../App/RealmApp'
-import { Role } from '../../types'
+import { Role, UserGroup } from '../../types'
+import { getUsergroupFromUserEmail } from '../utils'
 
 interface IProps { }
 
@@ -25,6 +26,10 @@ const SideBar: React.FC<IProps> = () => {
 	const userDataState = useSelector((state: RootState) => state.userData)
 	const { userData, loading } = userDataState
 	const hasCallHandlerRole = !loading && userData && userData.roles?.find((el) => el === Role.call_handler)
+	const userEmail = app.currentUser?.profile?.email || 'onbekend'
+	const userGroup = getUsergroupFromUserEmail(userEmail)
+	const isRIVM = userGroup === UserGroup.rivm
+	const isSupplier = userGroup !== UserGroup.rivm && userGroup !== UserGroup.other
 
 	const navigate = (target: string) => {
 		history.push(target)
@@ -68,7 +73,7 @@ const SideBar: React.FC<IProps> = () => {
 				minWidth={350}
 			>
 				<List dense>
-					<ListItem
+					{(isRIVM || hasCallHandlerRole) && <ListItem
 						button
 						onClick={() => navigate('/')}
 					>
@@ -76,7 +81,7 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Mijn tickets'
 						/>
-					</ListItem>
+					</ListItem>}
 					{hasCallHandlerRole && <ListItem
 						button
 						onClick={() => navigate('/findingsoverview')}
@@ -93,6 +98,15 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemIcon><ListIcon /></ListItemIcon>
 						<ListItemText
 							primary='Change requests'
+						/>
+					</ListItem>}
+					{isSupplier && <ListItem
+						button
+						onClick={() => navigate('/supplieroverview')}
+					>
+						<ListItemIcon><ListIcon /></ListItemIcon>
+						<ListItemText
+							primary='Leverancier overzicht'
 						/>
 					</ListItem>}
 					{hasCallHandlerRole && <ListItem

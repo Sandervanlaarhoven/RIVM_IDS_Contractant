@@ -77,7 +77,7 @@ const FindingDetails = () => {
 				type: FindingType.Bug,
 				priority: Priority.low,
 				supplierCalls: [],
-				supplier: Supplier.iVention,
+				supplier: Supplier.ivention,
 				testDate: new Date(),
 				uid: app.currentUser.id,
 				userEmail: app.currentUser.profile?.email || "Onbekend",
@@ -174,7 +174,7 @@ const FindingDetails = () => {
 					type: FindingType.Bug,
 					priority: Priority.low,
 					supplierCalls: [],
-					supplier: Supplier.iVention,
+					supplier: Supplier.ivention,
 					status: Status.Open,
 					testDate: new Date(),
 					uid: app.currentUser.id,
@@ -318,7 +318,7 @@ const FindingDetails = () => {
 							value={finding?.supplier || ''}
 							onChange={(event) => handleChangeSelect(event, FindingFieldName.supplier)}
 						>
-							<MenuItem value={Supplier.iVention}>{Supplier.iVention}</MenuItem>
+							<MenuItem value={Supplier.ivention}>{Supplier.ivention}</MenuItem>
 						</Select>
 					</FormControl>
 				</Box>
@@ -635,6 +635,16 @@ const FindingDetails = () => {
 					mb={1}
 				>
 					<Typography variant="caption">Terugkoppeling van de product owner: {finding?.feedbackProductOwner}</Typography>
+				</Box>}
+				{finding?.feedbackSupplier && <Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="flex-start"
+					width="100%"
+					mb={1}
+				>
+					<Typography variant="caption">Terugkoppeling vanuit de leverancier: {finding.feedbackSupplier}</Typography>
 				</Box>}
 			</Paper>
 		</Box>

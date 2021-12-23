@@ -1,4 +1,5 @@
 import logo from "../../images/logo.jpg";
+import { UserGroup } from "../../types";
 
 /**
  * @description Capitalises the first letter in a String (word of sentence)
@@ -32,7 +33,6 @@ export function replaceElementsInArray(array: any[], element: any, indexToReplac
   return array;
 }
 
-
 /**
  * @description sends a notification to the users browser
  * @param title
@@ -47,4 +47,15 @@ export function sendnotification(title: string, body: string, url: string) {
   notification.onclick = () => {
     window.location.href = url
   }
+}
+
+/**
+ * @description returns the usergroup of the current user
+ * @param userEmail
+*/
+export function getUsergroupFromUserEmail(userEmail: string) {
+  let userGroup: UserGroup = UserGroup.other
+  if (userEmail.trim().endsWith('@rivm.nl')) userGroup = UserGroup.rivm
+  if (userEmail.trim().endsWith('@ivention.nl')) userGroup = UserGroup.ivention
+  return userGroup
 }

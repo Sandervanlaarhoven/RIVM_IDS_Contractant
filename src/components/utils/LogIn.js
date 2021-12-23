@@ -89,9 +89,10 @@ const LogIn = () => {
 	const login = async () => {
 		if (emailValid && passwordValid) {
 			const isRIVMEmployee = credentials.email.trim().endsWith('@rivm.nl')
+			const isSupplier = credentials.email.trim().endsWith('@ivention.nl')
 			const isSander = credentials.email.trim().endsWith('sandervanlaarhoven@gmail.com')
 
-			if (!isRIVMEmployee && !isSander) {
+			if (!isRIVMEmployee && !isSander && !isSupplier) {
 				enqueueSnackbar('Alleen gebruikers van het NHS LIMS mogen deelnemen aan de GAT testen.', {
 					variant: 'error',
 				})
@@ -111,8 +112,9 @@ const LogIn = () => {
 	const register = async () => {
 		if (emailValid && passwordValid && validatePassWordCheck(credentials.password, credentials.passwordCheck)) {
 			const isRIVMEmployee = credentials.email.trim().endsWith('@rivm.nl')
+			const isSupplier = credentials.email.trim().endsWith('@ivention.nl')
 			const isSander = credentials.email.trim().endsWith('sandervanlaarhoven@gmail.com')
-			if (!isRIVMEmployee && !isSander) {
+			if (!isRIVMEmployee && !isSander && !isSupplier) {
 				enqueueSnackbar('Alleen gebruikers van het NHS LIMS mogen deelnemen aan de GAT testen.', {
 					variant: 'error',
 				})

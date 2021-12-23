@@ -20,10 +20,12 @@ import FindingsOverview from '../FindingsOverview/index';
 import FindingDetailsAdmin from '../FindingsOverview/FindingDetails/index';
 import Settings from '../Settings'
 import InformationPage from '../Information'
-import ChangesOverview from '../ChangesOverview'
-import FindingDetailsChanges from '../ChangesOverview/FindingDetails'
 import Archive from '../Archive'
 import FindingDetailsArchive from '../Archive/FindingDetails'
+import SupplierOverview from '../SupplierOverview/index';
+import FindingDetailsSupplier from '../SupplierOverview/FindingDetails'
+import ChangesOverview from '../ChangesOverview'
+import FindingDetailsChanges from '../ChangesOverview/FindingDetails'
 
 const REALM_APP_ID = "rivm_contractant-feeur"
 
@@ -147,6 +149,20 @@ const App = () => {
                 <RequireRole role={Role.call_handler}>
                   <FindingDetailsArchive />
                 </RequireRole>
+              </Framework>
+            </RequireLoggedInUser>
+          </Route>
+          <Route exact path="/supplieroverview">
+            <RequireLoggedInUser>
+              <Framework>
+                <SupplierOverview />
+              </Framework>
+            </RequireLoggedInUser>
+          </Route>
+          <Route exact path="/supplieroverview/:id">
+            <RequireLoggedInUser>
+              <Framework>
+                <FindingDetailsSupplier />
               </Framework>
             </RequireLoggedInUser>
           </Route>

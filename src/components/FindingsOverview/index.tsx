@@ -424,15 +424,6 @@ const FindingsOverview: React.FC<IProps> = () => {
 				width="100%"
 				my={5}
 			>
-				{currentTab === 0 && <Box
-					display="flex"
-					flexDirection="column"
-					alignItems="flex-start"
-					justifyContent="center"
-					mb={2}
-				>
-					<Typography variant="body2"><i>In deze tab worden zowel verbeteringen als bugs getoond zodat deze nog kunnen worden beoordeeld door de testcoördinator.</i></Typography>
-				</Box>}
 				{filteredFindings.length === 0 && <Box
 					display="flex"
 					flexDirection="column"

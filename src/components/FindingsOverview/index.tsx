@@ -117,39 +117,39 @@ const FindingsOverview: React.FC<IProps> = () => {
 						break
 					}
 					case 1: {
-						passedPropsFilter = finding.status === Status.Submitted && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Submitted
 						break
 					}
 					case 2: {
-						passedPropsFilter = finding.status === Status.Verified && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Verified
 						break
 					}
 					case 3: {
-						passedPropsFilter = finding.status === Status.Gepland && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Gepland
 						break
 					}
 					case 4: {
-						passedPropsFilter = finding.status === Status.ReadyForRelease && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.ReadyForRelease
 						break
 					}
 					case 5: {
-						passedPropsFilter = finding.status === Status.Hertest && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Hertest
 						break
 					}
 					case 6: {
-						passedPropsFilter = finding.status === Status.TestFailed && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.TestFailed
 						break
 					}
 					case 7: {
-						passedPropsFilter = finding.status === Status.Denied && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Denied
 						break
 					}
 					case 8: {
-						passedPropsFilter = finding.status === Status.Closed && finding.type === FindingType.Bug
+						passedPropsFilter = finding.status === Status.Closed
 						break
 					}
 					case 9: {
-						passedPropsFilter = finding.type === FindingType.Bug
+						passedPropsFilter = true
 						break
 					}
 

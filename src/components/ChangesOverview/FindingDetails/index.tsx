@@ -57,7 +57,7 @@ interface params {
 interface IProps {
 }
 
-const FindingDetailsPO: React.FC<IProps> = () => {
+const FindingDetailsChanges: React.FC<IProps> = () => {
 	const classes = useStyles()
 	const app = useRealmApp()
 	const history = useHistory()
@@ -730,4 +730,4 @@ const FindingDetailsPO: React.FC<IProps> = () => {
 	)
 }
 
-export default FindingDetailsPO
+export default FindingDetailsChanges

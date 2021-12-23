@@ -20,8 +20,8 @@ import FindingsOverview from '../FindingsOverview/index';
 import FindingDetailsAdmin from '../FindingsOverview/FindingDetails/index';
 import Settings from '../Settings'
 import InformationPage from '../Information'
-import ProductOwnerOverview from '../ProductOwnerOverview'
-import FindingDetailsPO from '../ProductOwnerOverview/FindingDetails'
+import ChangesOverview from '../ChangesOverview'
+import FindingDetailsChanges from '../ChangesOverview/FindingDetails'
 import Archive from '../Archive'
 import FindingDetailsArchive from '../Archive/FindingDetails'
 
@@ -102,7 +102,7 @@ const App = () => {
             <RequireLoggedInUser>
               <Framework>
                 <RequireRole role={Role.call_handler}>
-                  <ProductOwnerOverview />
+                  <ChangesOverview />
                 </RequireRole>
               </Framework>
             </RequireLoggedInUser>
@@ -111,7 +111,7 @@ const App = () => {
             <RequireLoggedInUser>
               <Framework>
                 <RequireRole role={Role.call_handler}>
-                  <FindingDetailsPO />
+                  <FindingDetailsChanges />
                 </RequireRole>
               </Framework>
             </RequireLoggedInUser>

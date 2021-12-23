@@ -404,7 +404,7 @@ const FindingsOverview: React.FC<IProps> = () => {
 					</Box>
 				</Box>
 			</Box>
-			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary">
+			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable">
 				<Tab label={Status.Open} />
 				<Tab label={Status.Submitted} />
 				<Tab label={Status.Verified} />

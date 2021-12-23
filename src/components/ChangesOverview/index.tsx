@@ -52,7 +52,7 @@ const useStyles: any = makeStyles(() => ({
 	},
 	prioBlocking: {
 		color: red[800]
-	},
+	}
 }))
 
 interface IProps {
@@ -403,7 +403,7 @@ const ChangesOverview: React.FC<IProps> = () => {
 					</Box>
 				</Box>
 			</Box>
-			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary">
+			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable">
 				<Tab label={Status.Open} />
 				<Tab label={Status.Submitted} />
 				<Tab label={Status.Verified} />

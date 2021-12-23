@@ -28,7 +28,19 @@ const theme = createTheme({
 		background: {
 			default: yellow[50],
 		},
-	},
+	}, 
+	overrides: {
+		MuiTab: {
+			root: {
+				minWidth: '125px !important'
+			}
+		},
+		MuiTabs: {
+			root: {
+				width: 'calc(100vw - 480px) !important'
+			}
+		}
+	}
 });
 
 export default theme;

@@ -131,7 +131,7 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 							justifyContent="flex-start"
 							ml={1}
 						>
-							<Typography variant="caption">{call.callNumber} - </Typography>
+							<Typography variant="caption">{call.callNumber} -</Typography>
 						</Box>}
 						<Box
 							display="flex"
@@ -140,7 +140,7 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 							justifyContent="flex-start"
 							ml={1}
 						>
-							<Typography variant="caption">{call?.createdOn ? format(call?.createdOn, 'Pp', { locale: nl }) : ""}</Typography>
+							<Typography variant="caption">{call?.createdOn ? format(call?.createdOn, 'dd-MM-yyyy', { locale: nl }) : ""} -</Typography>
 						</Box>
 						{call?.description && <Box
 							display="flex"

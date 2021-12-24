@@ -15,6 +15,10 @@ import { CallFieldName, SupplierCall, SupplierCallType } from '../../../types'
 import { SupplierCallStatus, SupplierPriority } from '../../../types/index';
 import { grey } from '@material-ui/core/colors';
 import { catitaliseFirstLetter } from '..';
+import format from 'date-fns/format';
+import { nl } from 'date-fns/locale';
+import { useSnackbar } from 'notistack';
+import { parse } from 'date-fns';
 
 const useStyles: any = makeStyles(() => ({
 	greyedOutText: {
@@ -33,6 +37,7 @@ interface IProps {
 
 const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 	const classes = useStyles()
+	const { enqueueSnackbar } = useSnackbar()
 	
 	const callData: SupplierCall = call || {
 		callNumber: '',
@@ -45,6 +50,8 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 	}
 
 	const [updatedCall, setUpdatedCall] = useState<SupplierCall>(callData)
+	const [enteredDate, setEnteredDate] = useState<string | ''>(format(callData.createdOn, 'dd-MM-yyyy', { locale: nl }))
+	const [enteredDateValid, setEnteredDateValid] = useState<boolean>(true);
 
 	type selectEventProps = {
 		name?: string | undefined,
@@ -63,6 +70,29 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 			...updatedCall,
 			[fieldName]: catitaliseFirstLetter(event.target.value)
 		})
+	}
+
+	const handleChangeEnteredDate = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		var pattern = new RegExp(/^([0-9]|[-/]){0,10}$/i)
+		if (pattern.test(event.target.value)) {
+			setEnteredDate(event.target.value.replace('/', '-'))
+			setEnteredDateValid(true)
+		}
+	}
+
+	const handleBlurEnteredDate = () => {
+		var pattern = new RegExp(/^(?:(?:31(-)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(-)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(-)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(-)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/i)
+		if (enteredDate && pattern.test(enteredDate)) {
+			setUpdatedCall({
+				...updatedCall,
+				createdOn: parse(enteredDate, 'dd-MM-yyyy', new Date(), { locale: nl })
+			})
+		} else {
+			enqueueSnackbar('De ingevoerde aanmaakdatum is niet correct.', {
+				variant: 'error',
+			})
+			setEnteredDateValid(false)
+		}
 	}
 
 	return (
@@ -141,6 +171,25 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 						<MenuItem value={SupplierCallType.change}>{SupplierCallType.change}</MenuItem>
 					</Select>
 				</FormControl>
+			</Box>
+			<Box
+				display="flex"
+				flexDirection="row"
+				alignItems="center"
+				justifyContent="center"
+				width="100%"
+				pb={3}
+			>
+				<TextField
+					label="Aanmaakdatum"
+					value={enteredDate}
+					fullWidth
+					error={!enteredDateValid}
+					variant="outlined"
+					onChange={(event) => handleChangeEnteredDate(event)}
+					onBlur={handleBlurEnteredDate}
+					helperText={enteredDateValid ? '' : 'Voer een juiste datum in: "dag-maand-jaar"'}
+				/>
 			</Box>
 			<Box
 				display="flex"

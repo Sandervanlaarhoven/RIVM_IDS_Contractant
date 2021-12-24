@@ -4,7 +4,6 @@ import {
   Switch,
   Route,
 } from "react-router-dom"
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 
 import { useRealmApp, RealmAppProvider } from "./RealmApp"
 
@@ -27,7 +26,6 @@ import SupplierOverview from '../SupplierOverview/index';
 import FindingDetailsSupplier from '../SupplierOverview/FindingDetails'
 import ChangesOverview from '../ChangesOverview'
 import FindingDetailsChanges from '../ChangesOverview/FindingDetails'
-import DateFnsUtils from '@date-io/date-fns'
 
 const REALM_APP_ID = "rivm_contractant-feeur"
 
@@ -42,7 +40,6 @@ const RequireLoggedInUser: React.FC<IProps> = ({ children }) => {
 const App = () => {
   return (
     <RealmAppProvider appId={REALM_APP_ID}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Router>
         <Switch>
           <Route exact path="/confirmation">
@@ -178,7 +175,6 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-      </MuiPickersUtilsProvider>
     </RealmAppProvider>
   )
 }

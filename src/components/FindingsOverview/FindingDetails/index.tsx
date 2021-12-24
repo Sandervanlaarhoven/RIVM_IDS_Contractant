@@ -708,6 +708,23 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 					my={3}
 				>
 					<TextField
+						label="Terugkoppeling vanuit het team"
+						value={finding?.feedbackTeam || ''}
+						multiline
+						fullWidth
+						variant="outlined"
+						onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackTeam)}
+					/>
+				</Box>
+				<Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="center"
+					width="100%"
+					my={3}
+				>
+					<TextField
 						label="Terugkoppeling van contractmanagement"
 						value={finding?.feedbackContractManagement || ''}
 						multiline

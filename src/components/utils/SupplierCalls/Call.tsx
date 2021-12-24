@@ -124,6 +124,15 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 						>
 							<Chip variant="outlined" color="primary" label={call?.status} size="small" />
 						</Box>
+						{call?.callNumber && <Box
+							display="flex"
+							flexDirection="row"
+							alignItems="center"
+							justifyContent="flex-start"
+							ml={1}
+						>
+							<Typography variant="caption">{call.callNumber} - </Typography>
+						</Box>}
 						<Box
 							display="flex"
 							flexDirection="row"

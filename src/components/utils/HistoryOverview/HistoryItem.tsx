@@ -166,9 +166,10 @@ const HistoryItem: React.FC<IProps> = ({ item }) => {
 							p={1}
 						>
 							<Typography variant="h6">Terugkoppeling en status informatie</Typography>
-							{item?.finding?.feedbackTeam && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van het team: {item?.finding?.feedbackTeam}</Typography>}
+							{item?.finding?.feedbackTeam && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling vanuit het team: {item?.finding?.feedbackTeam}</Typography>}
 							{item?.finding?.feedbackProductOwner && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van de product owner: {item?.finding?.feedbackProductOwner}</Typography>}
 							{item?.finding?.feedbackContractManagement && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling van contractmanagemnt: {item?.finding?.feedbackContractManagement}</Typography>}
+							{item?.finding?.feedbackSupplier && <Typography className={classes.greyedOutText} variant="caption">Terugkoppeling vanuit de leverancier: {item?.finding?.feedbackSupplier}</Typography>}
 						</Box>
 					</>}
 				</Box>

@@ -59,10 +59,18 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 	}
 
 	const handleChangeSelect = (event: React.ChangeEvent<selectEventProps>, fieldName: CallFieldName) => {
-		setUpdatedCall({
+		const newUpdatedCall = {
 			...updatedCall,
 			[fieldName]: event.target.value
-		})
+		}
+		if (fieldName === CallFieldName.callType) {
+			if (event.target.value === SupplierCallType.bug) {
+				newUpdatedCall.priority = SupplierPriority.p4
+			} else {
+				newUpdatedCall.priority = SupplierPriority.nvt
+			}
+		}
+		setUpdatedCall(newUpdatedCall)
 	}
 
 	const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: CallFieldName) => {
@@ -211,6 +219,7 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 						<MenuItem value={SupplierPriority.p2}>{SupplierPriority.p2}</MenuItem>
 						<MenuItem value={SupplierPriority.p3}>{SupplierPriority.p3}</MenuItem>
 						<MenuItem value={SupplierPriority.p4}>{SupplierPriority.p4}</MenuItem>
+						<MenuItem value={SupplierPriority.nvt}>{SupplierPriority.nvt}</MenuItem>
 					</Select>
 				</FormControl>
 			</Box>

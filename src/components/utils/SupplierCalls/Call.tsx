@@ -104,7 +104,7 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 						>
 							<MailOutlineIcon />
 						</Box>}
-						{call?.priority && <Box
+						{call?.priority && call.priority !== SupplierPriority.nvt && <Box
 							display="flex"
 							flexDirection="row"
 							alignItems="center"

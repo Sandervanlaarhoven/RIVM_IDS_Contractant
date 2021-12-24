@@ -164,6 +164,7 @@ export enum SupplierPriority {
 	p2 = 'p2',
 	p3 = 'p3',
 	p4 = 'p4',
+	nvt = 'nvt'
 }
 
 export enum SupplierCallType {

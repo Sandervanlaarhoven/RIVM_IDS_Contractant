@@ -672,12 +672,12 @@ const FindingDetailsChanges: React.FC<IProps> = () => {
 						my={3}
 					>
 						<TextField
-							label="Terugkoppeling van de product owner"
-							value={finding?.feedbackProductOwner || ''}
+							label="Terugkoppeling vanuit het team"
+							value={finding?.feedbackTeam || ''}
 							multiline
 							fullWidth
 							variant="outlined"
-							onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackProductOwner)}
+							onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackTeam)}
 						/>
 					</Box>
 					<Box
@@ -689,12 +689,12 @@ const FindingDetailsChanges: React.FC<IProps> = () => {
 						my={3}
 					>
 						<TextField
-							label="Terugkoppeling vanuit het team"
-							value={finding?.feedbackTeam || ''}
+							label="Terugkoppeling van de product owner"
+							value={finding?.feedbackProductOwner || ''}
 							multiline
 							fullWidth
 							variant="outlined"
-							onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackTeam)}
+							onChange={(event) => handleChangeTextField(event, FindingFieldName.feedbackProductOwner)}
 						/>
 					</Box>
 					<Box

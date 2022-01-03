@@ -24,6 +24,7 @@ import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import HistoryOverview from '../../utils/HistoryOverview'
 import SupplierCalls from '../../utils/SupplierCalls'
+import useGenericStyles from '../../utils/GenericStyles'
 
 const useStyles: any = makeStyles((theme) => ({
 	optionListItem: {
@@ -46,9 +47,6 @@ const useStyles: any = makeStyles((theme) => ({
 	marginBottom20: {
 		marginBottom: 20
 	},
-	greyedOutText: {
-		color: 'grey'
-	},
 }))
 
 interface params {
@@ -60,6 +58,7 @@ interface IProps {
 
 const FindingDetailsAdmin: React.FC<IProps> = () => {
 	const classes = useStyles()
+	const genericClasses = useGenericStyles()
 	const app = useRealmApp()
 	const history = useHistory()
 	let { id } = useParams<params>()
@@ -411,8 +410,8 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						width="100%"
 						pb={3}
 					>
-						<Typography className={classes.greyedOutText} variant="h6">Voorheen ingevoerd als verbetering</Typography>
-						<Typography className={classes.greyedOutText} variant="body2">Beschrijving: {finding?.featureRequestDescription || ''}</Typography>
+						<Typography align="left" className={genericClasses.greyedOutText} variant="h6">Voorheen ingevoerd als verbetering</Typography>
+						<Typography align="left" className={genericClasses.greyedOutText} variant="body2">Beschrijving: {finding?.featureRequestDescription || ''}</Typography>
 					</Box>
 				</>}
 				{finding?.type === FindingType.Verbetering && wasInitiallyEnteredAsBug() && <>
@@ -424,12 +423,12 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						width="100%"
 						pb={3}
 					>
-						<Typography className={classes.greyedOutText} variant="h6">Voorheen ingevoerd als Bug</Typography>
-						{finding?.theme && <Typography className={classes.greyedOutText} variant="body2">Thema: {finding?.theme}</Typography>}
-						{finding?.expectedResult && <Typography className={classes.greyedOutText} variant="body2">Verwachte uitkomst: {finding?.expectedResult}</Typography>}
-						{finding?.actualResult && <Typography className={classes.greyedOutText} variant="body2">Daadwerkelijke uitkomst: {finding?.actualResult}</Typography>}
-						{finding?.additionalInfo && <Typography className={classes.greyedOutText} variant="body2">Extra informatie: {finding?.additionalInfo}</Typography>}
-						{finding?.browser && <Typography className={classes.greyedOutText} variant="body2">Browser: {finding?.browser}</Typography>}
+						<Typography align="left" className={genericClasses.greyedOutText} variant="h6">Voorheen ingevoerd als Bug</Typography>
+						{finding?.theme && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Thema: {finding?.theme}</Typography>}
+						{finding?.expectedResult && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Verwachte uitkomst: {finding?.expectedResult}</Typography>}
+						{finding?.actualResult && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Daadwerkelijke uitkomst: {finding?.actualResult}</Typography>}
+						{finding?.additionalInfo && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Extra informatie: {finding?.additionalInfo}</Typography>}
+						{finding?.browser && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Browser: {finding?.browser}</Typography>}
 					</Box>
 				</>}
 				{finding?.type === FindingType.Bug && <>

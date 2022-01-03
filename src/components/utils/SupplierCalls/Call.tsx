@@ -19,27 +19,18 @@ import EditIcon from '@material-ui/icons/Edit'
 import { SupplierCall, SupplierPriority } from '../../../types'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
-import { blue, green, grey, orange, red } from '@material-ui/core/colors'
+import useGenericStyles from '../GenericStyles'
 
 const useStyles: any = makeStyles(() => ({
-	greyedOutText: {
-		color: grey[700]
-	},
-	prioLow: {
-		color: green[400]
-	},
-	prioMedium: {
-		color: blue[700]
-	},
-	prioHigh: {
-		color: orange[700]
-	},
-	prioBlocking: {
-		color: red[800]
-	},
 	buttonBase: {
 		flexGrow: 1
-	}
+	},
+	callNumber: {
+		minWidth: 61
+	},
+	date: {
+		minWidth: 72
+	},
 }))
 
 interface IProps {
@@ -51,6 +42,7 @@ interface IProps {
 
 const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 	const classes = useStyles()
+	const genericClasses = useGenericStyles()
 	const [showDetails, setShowDetails] = useState<boolean>(!!readOnly);
 
 	const onEditClick = (call: SupplierCall) => {
@@ -110,10 +102,10 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 							alignItems="center"
 							justifyContent="flex-start"
 						>
-							{call?.priority === SupplierPriority.p4 && <PriorityLowIcon className={classes.prioLow} />}
-							{call?.priority === SupplierPriority.p3 && <PriorityMediumIcon className={classes.prioMedium} />}
-							{call?.priority === SupplierPriority.p2 && <PriorityHighIcon className={classes.prioHigh} />}
-							{call?.priority === SupplierPriority.p1 && <PriorityBlockingIcon className={classes.prioBlocking} />}
+							{call?.priority === SupplierPriority.p4 && <PriorityLowIcon className={genericClasses.prioLow} />}
+							{call?.priority === SupplierPriority.p3 && <PriorityMediumIcon className={genericClasses.prioMedium} />}
+							{call?.priority === SupplierPriority.p2 && <PriorityHighIcon className={genericClasses.prioHigh} />}
+							{call?.priority === SupplierPriority.p1 && <PriorityBlockingIcon className={genericClasses.prioBlocking} />}
 						</Box>}
 						<Box
 							display="flex"
@@ -131,7 +123,7 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 							justifyContent="flex-start"
 							ml={1}
 						>
-							<Typography variant="caption">{call.callNumber} -</Typography>
+							<Typography align="left" className={classes.callNumber} variant="caption">{call.callNumber} -</Typography>
 						</Box>}
 						<Box
 							display="flex"
@@ -140,7 +132,7 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 							justifyContent="flex-start"
 							ml={1}
 						>
-							<Typography variant="caption">{call?.createdOn ? format(call?.createdOn, 'dd-MM-yyyy', { locale: nl }) : ""} -</Typography>
+							<Typography align="left" className={classes.date} variant="caption">{call?.createdOn ? format(call?.createdOn, 'dd-MM-yyyy', { locale: nl }) : ""} -</Typography>
 						</Box>
 						{call?.description && <Box
 							display="flex"
@@ -149,7 +141,7 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 							justifyContent="flex-start"
 							ml={1}
 						>
-							<Typography className={classes.greyedOutText} variant="caption">{call?.description}</Typography>
+							<Typography align="left" className={genericClasses.greyedOutText} variant="caption">{call?.description}</Typography>
 						</Box>}
 					</Box>
 					{showDetails && <Box
@@ -161,9 +153,9 @@ const Call: React.FC<IProps> = ({ call, editCall, deleteCall, readOnly }) => {
 						p={1}
 						mb={1}
 					>
-						{call?.callNumber && <Typography className={classes.greyedOutText} variant="caption">Call nummer: {call?.callNumber}</Typography>}
-						{call?.priority && <Typography className={classes.greyedOutText} variant="caption">Prioriteit: {call?.priority}</Typography>}
-						{call?.extraInfo && <Typography className={classes.greyedOutText} variant="caption">Extra info: {call?.extraInfo}</Typography>}
+						{call?.callNumber && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Call nummer: {call?.callNumber}</Typography>}
+						{call?.priority && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Prioriteit: {call?.priority}</Typography>}
+						{call?.extraInfo && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Extra info: {call?.extraInfo}</Typography>}
 					</Box>}
 				</Box>
 			</ButtonBase>

@@ -31,6 +31,9 @@ import { set } from '../../redux/findings/findingsSlice'
 import { useAppSelector, useAppDispatch } from '../../hooks'
 import { BSON } from 'realm-web'
 import { getUsergroupFromUserEmail } from '../utils'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+import { setSupplierOverview } from '../../redux/currentTabPosition/currentTabPositionSlice'
 
 const useStyles: any = makeStyles(() => ({
 	button: {
@@ -81,7 +84,7 @@ const SupplierOverview: React.FC<IProps> = () => {
 	const findingsDataState = useAppSelector(state => state.findingsData)
 	const { findings } = findingsDataState
 	const [userEmails, setUserEmails] = useState<string[]>([])
-	const [currentTab, setCurrentTab] = React.useState(0);
+	const currentTab = useSelector((state: RootState) => state.currentTabPosition.supplierOverview)
 	const userEmail = app.currentUser?.profile?.email || 'onbekend'
 	const userGroup = getUsergroupFromUserEmail(userEmail)
 
@@ -187,7 +190,7 @@ const SupplierOverview: React.FC<IProps> = () => {
 	}
 
 	const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
-		setCurrentTab(newValue)
+		dispatch(setSupplierOverview(newValue))
 	}
 
 	return (

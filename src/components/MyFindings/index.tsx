@@ -31,6 +31,10 @@ import { useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+import { setMyFindings } from '../../redux/currentTabPosition/currentTabPositionSlice'
+import { useAppDispatch } from '../../hooks'
 
 const useStyles: any = makeStyles(() => ({
 	button: {
@@ -62,6 +66,7 @@ type PropsFilter = {
 
 const ManageFindings: React.FC<IProps> = () => {
 	const classes = useStyles()
+	const dispatch = useAppDispatch()
 	const [filteredFindings, setfilteredFindings] = useState<Finding[]>([])
 	const [filterString, setFilterString] = useState<string>('')
 	const [propsFilter, setPropsFilter] = useState<PropsFilter>({})
@@ -74,7 +79,7 @@ const ManageFindings: React.FC<IProps> = () => {
 	const mongoFindingThemesCollection = mongo.db("RIVM_CONTRACTANT").collection("finding_themes")
 	const [findingThemes, setFindingThemes] = useState<FindingTheme[]>([])
 	const [findings, setFindings] = useState<Finding[]>([])
-	const [currentTab, setCurrentTab] = React.useState(0);
+	const currentTab = useSelector((state: RootState) => state.currentTabPosition.myFindings)
 
 	const getData = async () => {
 		try {
@@ -180,7 +185,7 @@ const ManageFindings: React.FC<IProps> = () => {
 	}
 
 	const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
-		setCurrentTab(newValue)
+		dispatch(setMyFindings(newValue))
 	}
 
 	return (

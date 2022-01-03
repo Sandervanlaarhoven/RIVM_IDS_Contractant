@@ -378,6 +378,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 							label="Beschrijving van de verbetering"
 							value={finding?.featureRequestDescription || ''}
 							fullWidth
+							multiline
 							variant="outlined"
 							onChange={(event) => handleChangeTextField(event, FindingFieldName.featureRequestDescription)}
 							helperText="Beschrijf zo goed mogelijk wat je graag zou willen verbeteren in de applicatie"
@@ -395,6 +396,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 							label="Oplossingsrichting"
 							value={finding?.featureRequestProposal || ''}
 							fullWidth
+							multiline
 							variant="outlined"
 							onChange={(event) => handleChangeTextField(event, FindingFieldName.featureRequestProposal)}
 							helperText="Beschrijf zo goed mogelijk wat de voorgestelde oplossingsrichting is"

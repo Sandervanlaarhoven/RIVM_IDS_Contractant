@@ -24,6 +24,12 @@ const findingsData = createSlice({
 			state.findings.push(action.payload)
 			state.loading = false
 		},
+		updateFinding: (state, action: PayloadAction<Finding>) => {
+			const updatedFinding = action.payload
+			console.log(updatedFinding)
+			state.findings = state.findings.map(finding => finding._id?.toString() === updatedFinding._id?.toString() ? updatedFinding : finding)
+			state.loading = false
+		},
 		deleteFinding: (state, action: PayloadAction<BSON.ObjectId>) => {
 			const id = action.payload
 			state.findings = state.findings.filter((finding) => finding._id?.toString() !== id.toString())
@@ -35,6 +41,7 @@ const findingsData = createSlice({
 export const {
 	set,
 	addFinding,
+	updateFinding,
 	deleteFinding,
 } = findingsData.actions
 

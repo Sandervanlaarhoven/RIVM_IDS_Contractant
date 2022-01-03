@@ -23,7 +23,7 @@ import PriorityMediumIcon from '@material-ui/icons/KeyboardArrowUp'
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh'
 import PriorityBlockingIcon from '@material-ui/icons/Block'
 import { useSnackbar } from 'notistack'
-import { blue, green, orange, red } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
 
 import { Finding, FindingTheme, FindingType, FindingFieldName, Status, FindingData, Priority } from '../../types'
 import { useRealmApp } from '../App/RealmApp'
@@ -34,6 +34,7 @@ import { nl } from 'date-fns/locale'
 import { set } from '../../redux/findings/findingsSlice'
 import { useAppSelector, useAppDispatch } from '../../hooks'
 import theme from '../../theme'
+import useGenericStyles from '../utils/GenericStyles'
 
 const useStyles: any = makeStyles(() => ({
 	button: {
@@ -41,18 +42,6 @@ const useStyles: any = makeStyles(() => ({
 	},
 	formControl: {
 		minWidth: 200
-	},
-	prioLow: {
-		color: green[400]
-	},
-	prioMedium: {
-		color: blue[700]
-	},
-	prioHigh: {
-		color: orange[700]
-	},
-	prioBlocking: {
-		color: red[800]
 	},
 	tabs: {
 		[theme.breakpoints.up('xs')]: {
@@ -74,6 +63,7 @@ type PropsFilter = {
 
 const FindingsOverview: React.FC<IProps> = () => {
 	const classes = useStyles()
+	const genericClasses = useGenericStyles()
 	const dispatch = useAppDispatch()
 	const [filteredFindings, setfilteredFindings] = useState<Finding[]>([])
 	const [filterString, setFilterString] = useState<string>('')
@@ -449,9 +439,9 @@ const FindingsOverview: React.FC<IProps> = () => {
 						alignItems="flex-start"
 						justifyContent="center"
 						width="100%"
-						border={"1px solid rgba(0, 0, 0, 0.23)"}
+						border={finding.lastUpdatedBySupplier ? `1px solid ${blue[600]}` : '1px solid rgba(0, 0, 0, 0.23)'}
 						borderRadius={11}
-						bgcolor="#FFF"
+						bgcolor={finding.lastUpdatedBySupplier ? blue[50] : '#FFF'}
 						p={1}
 						pb={2}
 						mb={2}
@@ -491,10 +481,10 @@ const FindingsOverview: React.FC<IProps> = () => {
 									alignItems="center"
 									justifyContent="flex-start"
 								>
-									{finding?.priority === Priority.low && <PriorityLowIcon className={classes.prioLow} />}
-									{finding?.priority === Priority.medium && <PriorityMediumIcon className={classes.prioMedium} />}
-									{finding?.priority === Priority.high && <PriorityHighIcon className={classes.prioHigh} />}
-									{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={classes.prioBlocking} />}
+									{finding?.priority === Priority.low && <PriorityLowIcon className={genericClasses.prioLow} />}
+									{finding?.priority === Priority.medium && <PriorityMediumIcon className={genericClasses.prioMedium} />}
+									{finding?.priority === Priority.high && <PriorityHighIcon className={genericClasses.prioHigh} />}
+									{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={genericClasses.prioBlocking} />}
 								</Box>}
 								<Box
 									display="flex"
@@ -539,6 +529,7 @@ const FindingsOverview: React.FC<IProps> = () => {
 								alignItems="center"
 								justifyContent="flex-end"
 							>
+								{finding.lastUpdatedBySupplier && <Chip variant="outlined" color="primary" label={finding.supplier ? `update van ${finding.supplier}` : 'update'} size="small" />}
 								<IconButton aria-label="delete" className={classes.margin} color="primary" onClick={() => onEditClick(finding._id)}>
 									<EditIcon />
 								</IconButton>

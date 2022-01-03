@@ -124,6 +124,7 @@ const FindingDetails = () => {
 				const updatedFinding: Finding = {
 					...finding,
 				}
+				updatedFinding.lastUpdatedBySupplier = false
 				const findingData: FindingData = {
 					...updatedFinding
 				}

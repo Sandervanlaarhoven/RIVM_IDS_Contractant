@@ -106,6 +106,7 @@ const FindingDetailsSupplier: React.FC<IProps> = () => {
 				const updatedFinding: Finding = {
 					...finding
 				}
+				updatedFinding.lastUpdatedBySupplier = true
 				delete updatedFinding._id
 				const findingData: FindingData = {
 					...updatedFinding

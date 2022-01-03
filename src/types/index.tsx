@@ -79,6 +79,7 @@ export type FindingData = {
 	history?: HistoryElement[];
 	supplierCalls: SupplierCall[];
 	supplier: Supplier;
+	lastUpdatedBySupplier?: boolean;
 }
 
 export type HistoryElement = {
@@ -110,6 +111,7 @@ export type Finding = {
 	history: HistoryElement[];
 	supplierCalls: SupplierCall[];
 	supplier: Supplier;
+	lastUpdatedBySupplier?: boolean;
 }
 
 export enum FindingFieldName {

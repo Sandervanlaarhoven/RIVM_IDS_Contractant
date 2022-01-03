@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { useRealmApp } from '../../App/RealmApp'
-import { addFinding, deleteFinding } from '../../../redux/findings/findingsSlice'
+import { addFinding, deleteFinding, updateFinding } from '../../../redux/findings/findingsSlice'
 import { useDispatch } from 'react-redux'
 
 
@@ -18,6 +18,12 @@ const CollectionWatches = () => {
 			switch (operationType) {
 				case 'insert': {
 					dispatch(addFinding(fullDocument))
+					break
+				}
+
+				case 'replace': {
+					console.log('update triggered')
+					dispatch(updateFinding(fullDocument))
 					break
 				}
 

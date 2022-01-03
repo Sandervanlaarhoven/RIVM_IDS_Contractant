@@ -22,7 +22,7 @@ import PriorityBlockingIcon from '@material-ui/icons/Block'
 import { useSnackbar } from 'notistack'
 import { blue, green, orange, red } from '@material-ui/core/colors'
 
-import { Finding, FindingTheme, FindingType, FindingFieldName, Priority, Status, UserGroup } from '../../types'
+import { Finding, FindingTheme, FindingFieldName, Priority, Status, UserGroup } from '../../types'
 import { useRealmApp } from '../App/RealmApp'
 import { useHistory } from 'react-router-dom'
 import { format } from 'date-fns'
@@ -149,54 +149,21 @@ const SupplierOverview: React.FC<IProps> = () => {
 		setUserEmails(uniqueEmailList)
 	}
 
-	const VerbeteringFinding = (finding: Finding) => {
-		return <Box
-			display="flex"
-			flexDirection="row"
-			alignItems="center"
-			justifyContent="space-between"
-			width="100%"
-		>
-			<Box>
-				<Typography>{finding.description}</Typography>
-			</Box>
-			{finding.theme && <Box ml={2}>
-				<Chip label={finding.theme} size="small" />
-			</Box>}
-		</Box>
-	}
-
-	const OpenFinding = (finding: Finding) => {
-		return <Box
-			display="flex"
-			flexDirection="row"
-			alignItems="center"
-			justifyContent="space-between"
-			width="100%"
-		>
-			<Box>
-				<Typography>{finding.description}</Typography>
-			</Box>
-			{finding.theme && <Box ml={2}>
-				<Chip label={finding.theme} size="small" />
-			</Box>}
-		</Box>
-	}
-
 	const FindingComponent = (finding: Finding) => {
-		switch (finding.type) {
-
-			case FindingType.Bug: {
-				return OpenFinding(finding)
-			}
-
-			case FindingType.Verbetering: {
-				return VerbeteringFinding(finding)
-			}
-
-			default:
-				break
-		}
+		return <Box
+			display="flex"
+			flexDirection="row"
+			alignItems="center"
+			justifyContent="space-between"
+			width="100%"
+		>
+			<Box>
+				<Typography>{finding.description}</Typography>
+			</Box>
+			{finding.theme && <Box ml={2}>
+				<Chip label={finding.theme} size="small" />
+			</Box>}
+		</Box>
 	}
 
 	const showDetails = (findingID: BSON.ObjectId | undefined) => {
@@ -359,9 +326,9 @@ const SupplierOverview: React.FC<IProps> = () => {
 						alignItems="flex-start"
 						justifyContent="center"
 						width="100%"
-						border={"1px solid rgba(0, 0, 0, 0.23)"}
+						border={finding.lastUpdatedBySupplier ? `1px solid ${blue[600]}` : '1px solid rgba(0, 0, 0, 0.23)'}
 						borderRadius={11}
-						bgcolor="#FFF"
+						bgcolor={finding.lastUpdatedBySupplier ? blue[50] : '#FFF'}
 						p={1}
 					>
 							<Box
@@ -449,6 +416,14 @@ const SupplierOverview: React.FC<IProps> = () => {
 											<Typography variant="caption"> - {finding.userEmail}</Typography>
 										</Box>}
 									</Box>
+									{finding._id && <Box
+										display="flex"
+										flexDirection="row"
+										alignItems="center"
+										justifyContent="flex-end"
+									>
+										{finding.lastUpdatedBySupplier && <Chip variant="outlined" color="primary" label="behandeld" size="small" />}
+									</Box>}
 								</Box>
 								{FindingComponent(finding)}
 							</Box>

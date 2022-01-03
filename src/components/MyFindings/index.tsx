@@ -302,9 +302,9 @@ const ManageFindings: React.FC<IProps> = () => {
 						alignItems="flex-start"
 						justifyContent="center"
 						width="100%"
-						border={"1px solid rgba(0, 0, 0, 0.23)"}
+						border={finding.lastUpdatedBySupplier ? `1px solid ${blue[600]}` : '1px solid rgba(0, 0, 0, 0.23)'}
 						borderRadius={11}
-						bgcolor="#FFF"
+						bgcolor={finding.lastUpdatedBySupplier ? blue[50] : '#FFF'}
 						p={1}
 						pb={2}
 						mb={2}
@@ -383,6 +383,7 @@ const ManageFindings: React.FC<IProps> = () => {
 								alignItems="center"
 								justifyContent="flex-end"
 							>
+								{finding.lastUpdatedBySupplier && <Chip variant="outlined" color="primary" label={finding.supplier ? `update van ${finding.supplier}` : 'update'} size="small" />}
 								<IconButton aria-label="delete" className={classes.margin} color="primary" onClick={() => onEditClick(finding._id)}>
 									<EditIcon />
 								</IconButton>

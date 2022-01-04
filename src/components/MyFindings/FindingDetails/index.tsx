@@ -27,6 +27,7 @@ import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import SupplierCalls from '../../utils/SupplierCalls'
 import useGenericStyles from '../../utils/GenericStyles'
+import FindingDetailsReadOnly from './FindingDetailsReadOnly'
 
 const useStyles: any = makeStyles((theme) => ({
 	optionListItem: {
@@ -237,8 +238,18 @@ const FindingDetails = () => {
 		}
 	}
 
-	return (
-		<Box
+	let isGesloten: boolean = false
+	switch (finding?.status) {
+		case Status.Closed:
+		case Status.Denied:
+			isGesloten = true
+			break;
+
+		default:
+			break;
+	}
+
+	return (isGesloten ? <FindingDetailsReadOnly finding={ finding }/> : <Box
 			display="flex"
 			width="100%"
 			flexDirection="column"
@@ -261,7 +272,7 @@ const FindingDetails = () => {
 					alignItems="flex-start"
 					justifyContent="center"
 				>
-					<Typography variant="h4">{id ? 'Bevinding aanpassen' : 'Nieuwe bevinding'}</Typography>
+					<Typography variant="h4">{id ? 'Ticket aanpassen' : 'Nieuw ticket'}</Typography>
 				</Box>
 				<Box
 					display="flex"

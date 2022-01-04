@@ -20,7 +20,7 @@ import PriorityBlockingIcon from '@material-ui/icons/Block'
 import { useSnackbar } from 'notistack'
 import { blue, green, orange, red } from '@material-ui/core/colors'
 
-import { Finding, FindingTheme, FindingType, FindingFieldName, Priority } from '../../types'
+import { Finding, FindingTheme, FindingFieldName, Priority } from '../../types'
 import { useRealmApp } from '../App/RealmApp'
 import { useHistory } from 'react-router-dom'
 import { format } from 'date-fns'
@@ -121,54 +121,21 @@ const Archive: React.FC<IProps> = () => {
 		setUserEmails(uniqueEmailList)
 	}
 
-	const VerbeteringFinding = (finding: Finding) => {
-		return <Box
-			display="flex"
-			flexDirection="row"
-			alignItems="center"
-			justifyContent="space-between"
-			width="100%"
-		>
-			<Box>
-				<Typography>{finding.description}</Typography>
-			</Box>
-			{finding.theme && <Box ml={2}>
-				<Chip label={finding.theme} size="small" />
-			</Box>}
-		</Box>
-	}
-
-	const OpenFinding = (finding: Finding) => {
-		return <Box
-			display="flex"
-			flexDirection="row"
-			alignItems="center"
-			justifyContent="space-between"
-			width="100%"
-		>
-			<Box>
-				<Typography>{finding.description}</Typography>
-			</Box>
-			{finding.theme && <Box ml={2}>
-				<Chip label={finding.theme} size="small" />
-			</Box>}
-		</Box>
-	}
-
 	const FindingComponent = (finding: Finding) => {
-		switch (finding.type) {
-
-			case FindingType.Bug: {
-				return OpenFinding(finding)
-			}
-
-			case FindingType.Verbetering: {
-				return VerbeteringFinding(finding)
-			}
-
-			default:
-				break
-		}
+		return <Box
+			display="flex"
+			flexDirection="row"
+			alignItems="center"
+			justifyContent="space-between"
+			width="100%"
+		>
+			<Box>
+				<Typography align="left" variant="body2">{finding.description}</Typography>
+			</Box>
+			{finding.theme && <Box ml={2}>
+				<Chip label={finding.theme} size="small" />
+			</Box>}
+		</Box>
 	}
 
 	const showDetails = (findingID: BSON.ObjectId | undefined) => {

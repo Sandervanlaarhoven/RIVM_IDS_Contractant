@@ -161,7 +161,7 @@ const SupplierOverview: React.FC<IProps> = () => {
 			width="100%"
 		>
 			<Box>
-				<Typography>{finding.description}</Typography>
+				<Typography align="left" variant="body2">{finding.description}</Typography>
 			</Box>
 			{finding.theme && <Box ml={2}>
 				<Chip label={finding.theme} size="small" />

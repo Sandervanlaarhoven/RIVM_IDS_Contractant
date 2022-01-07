@@ -175,10 +175,11 @@ export enum SupplierCallType {
 }
 
 export enum SupplierCallStatus {
+	new = 'Nieuw',
 	open = 'Open',
-	verified = 'Geverifieerd',
 	gepland = 'Ingepland',
 	test = 'Test',
+	verified = 'Geverifieerd',
 	readyForRelease = 'Klaar voor release',
 	denied = 'Afgewezen',
 	closed = 'Gesloten',

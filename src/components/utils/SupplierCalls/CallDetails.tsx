@@ -149,10 +149,11 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 						value={updatedCall?.status}
 						onChange={(event) => handleChangeSelect(event, CallFieldName.status)}
 					>
+						<MenuItem value={SupplierCallStatus.new}>{SupplierCallStatus.new}</MenuItem>
 						<MenuItem value={SupplierCallStatus.open}>{SupplierCallStatus.open}</MenuItem>
-						<MenuItem value={SupplierCallStatus.verified}>{SupplierCallStatus.verified}</MenuItem>
 						<MenuItem value={SupplierCallStatus.gepland}>{SupplierCallStatus.gepland}</MenuItem>
 						<MenuItem value={SupplierCallStatus.test}>{SupplierCallStatus.test}</MenuItem>
+						<MenuItem value={SupplierCallStatus.verified}>{SupplierCallStatus.verified}</MenuItem>
 						<MenuItem value={SupplierCallStatus.readyForRelease}>{SupplierCallStatus.readyForRelease}</MenuItem>
 						<MenuItem value={SupplierCallStatus.denied}>{SupplierCallStatus.denied}</MenuItem>
 						<MenuItem value={SupplierCallStatus.closed}>{SupplierCallStatus.closed}</MenuItem>

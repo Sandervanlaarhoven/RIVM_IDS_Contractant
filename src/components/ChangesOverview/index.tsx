@@ -161,7 +161,7 @@ const ChangesOverview: React.FC<IProps> = () => {
 				}
 				if (propsFilter.userEmail && finding.userEmail !== propsFilter.userEmail) passedPropsFilter = false
 				return passedPropsFilter && (finding.description.toLowerCase().includes(filterString.toLowerCase()) || format(finding.testDate, 'Pp', { locale: nl }).includes(filterString.toLowerCase()))
-			}).sort((a, b) => b.testDate.valueOf() - a.testDate.valueOf())
+			})
 			setUserEmailDropdownValues(newFilteredFindings)
 			setfilteredFindings(newFilteredFindings)
 		}, 500);

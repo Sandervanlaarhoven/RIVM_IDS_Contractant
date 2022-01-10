@@ -123,7 +123,7 @@ const ManageFindings: React.FC<IProps> = () => {
 				if (!isGesloten && currentTab === 1) passedPropsFilter = false
 				if (isGesloten && currentTab === 0) passedPropsFilter = false
 				return passedPropsFilter && (finding.description.toLowerCase().includes(filterString.toLowerCase()) || format(finding.testDate, 'Pp', { locale: nl }).includes(filterString.toLowerCase()))
-			}).sort((a, b) => b.testDate.valueOf() - a.testDate.valueOf()))
+			}))
 		}, 500);
 		return () => clearTimeout(filterTimeout)
 	}, [filterString, propsFilter, findings, currentTab])

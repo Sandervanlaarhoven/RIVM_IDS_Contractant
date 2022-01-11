@@ -12,10 +12,10 @@ import {
 	Chip,
 	Tab,
 	Tabs,
+	ButtonBase,
 } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles'
 import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
 import BugReportIcon from '@material-ui/icons/BugReport'
 import MailOutlineIcon from '@material-ui/icons/MailOutline'
 import PriorityLowIcon from '@material-ui/icons/KeyboardArrowDown'
@@ -54,6 +54,10 @@ const useStyles: any = makeStyles(() => ({
 	},
 	prioBlocking: {
 		color: red[800]
+	},
+	buttonBase: {
+		flexGrow: 1,
+		padding: 10
 	},
 }))
 
@@ -134,6 +138,7 @@ const ManageFindings: React.FC<IProps> = () => {
 			flexDirection="row"
 			alignItems="center"
 			justifyContent="space-between"
+			marginTop={1}
 			width="100%"
 		>
 			<Box>
@@ -303,101 +308,108 @@ const ManageFindings: React.FC<IProps> = () => {
 					return finding ? <Box
 						display="flex"
 						key={index}
-						flexDirection="column"
-						alignItems="flex-start"
-						justifyContent="center"
+						flexDirection="row"
+						alignItems="center"
+						justifyContent="space-between"
 						width="100%"
 						border={finding.lastUpdatedBySupplier ? `1px solid ${blue[600]}` : '1px solid rgba(0, 0, 0, 0.23)'}
 						borderRadius={11}
 						bgcolor={finding.lastUpdatedBySupplier ? blue[50] : '#FFF'}
-						p={1}
-						pb={2}
 						mb={2}
 					>
-						<Box
+						<ButtonBase className={classes.buttonBase} onClick={() => onEditClick(finding._id)}>
+							<Box
+								display="flex"
+								flexGrow={1}
+								flexDirection="column"
+								alignItems="center"
+								justifyContent="center"
+								width="100%"
+							>
+								<Box
+									display="flex"
+									flexDirection="row"
+									alignItems="center"
+									justifyContent="space-between"
+									width="100%"
+								>
+									<Box
+										display="flex"
+										flexDirection="row"
+										alignItems="center"
+										justifyContent="flex-start"
+										flexGrow={1}
+									>
+										{finding.type === 'bug' && <Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+										>
+											<BugReportIcon />
+										</Box>}
+										{finding.type === 'verbetering' && <Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+										>
+											<MailOutlineIcon />
+										</Box>}
+										{finding?.priority && <Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+										>
+											{finding?.priority === Priority.low && <PriorityLowIcon className={classes.prioLow} />}
+											{finding?.priority === Priority.medium && <PriorityMediumIcon className={classes.prioMedium} />}
+											{finding?.priority === Priority.high && <PriorityHighIcon className={classes.prioHigh} />}
+											{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={classes.prioBlocking} />}
+										</Box>}
+										<Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+											ml={1}
+										>
+											<Chip variant="outlined" color="primary" label={finding.status} size="small" />
+										</Box>
+										<Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+											ml={1}
+										>
+											<Typography variant="caption">{finding.supplier} - </Typography>
+										</Box>
+										<Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+											ml={1}
+										>
+											<Typography variant="caption">{finding.testDate ? format(finding.testDate, 'Pp', { locale: nl }) : ""}</Typography>
+										</Box>
+									</Box>
+								</Box>
+								{FindingComponent(finding)}
+							</Box>
+						</ButtonBase>
+						{finding._id && <Box
 							display="flex"
 							flexDirection="row"
 							alignItems="center"
-							justifyContent="space-between"
-							width="100%"
+							justifyContent="flex-end"
 						>
-							<Box
-								display="flex"
-								flexDirection="row"
-								alignItems="center"
-								justifyContent="flex-start"
-							>
-								{finding.type === 'bug' && <Box
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="flex-start"
-								>
-									<BugReportIcon />
-								</Box>}
-								{finding.type === 'verbetering' && <Box
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="flex-start"
-								>
-									<MailOutlineIcon />
-								</Box>}
-								{finding?.priority && <Box
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="flex-start"
-								>
-									{finding?.priority === Priority.low && <PriorityLowIcon className={classes.prioLow} />}
-									{finding?.priority === Priority.medium && <PriorityMediumIcon className={classes.prioMedium} />}
-									{finding?.priority === Priority.high && <PriorityHighIcon className={classes.prioHigh} />}
-									{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={classes.prioBlocking} />}
-								</Box>}
-								<Box
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="flex-start"
-									ml={1}
-								>
-									<Chip variant="outlined" color="primary" label={finding.status} size="small" />
-								</Box>
-								<Box
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="flex-start"
-									ml={1}
-								>
-									<Typography variant="caption">{finding.supplier} - </Typography>
-								</Box>
-								<Box
-									display="flex"
-									flexDirection="row"
-									alignItems="center"
-									justifyContent="flex-start"
-									ml={1}
-								>
-									<Typography variant="caption">{finding.testDate ? format(finding.testDate, 'Pp', { locale: nl }) : ""}</Typography>
-								</Box>
-							</Box>
-							{finding._id && <Box
-								display="flex"
-								flexDirection="row"
-								alignItems="center"
-								justifyContent="flex-end"
-							>
-								{finding.lastUpdatedBySupplier && <Chip variant="outlined" color="primary" label={finding.supplier ? `update van ${finding.supplier}` : 'update'} size="small" />}
-								<IconButton aria-label="delete" className={classes.margin} color="primary" onClick={() => onEditClick(finding._id)}>
-									<EditIcon />
-								</IconButton>
-								{finding.status === Status.Open && <IconButton aria-label="delete" className={classes.margin} color="secondary" onClick={() => onDeleteClick(finding._id)}>
-									<DeleteIcon />
-								</IconButton>}
-							</Box>}
-						</Box>
-						{FindingComponent(finding)}
+							{finding.lastUpdatedBySupplier && <Chip variant="outlined" color="primary" label={finding.supplier ? `update van ${finding.supplier}` : 'update'} size="small" />}
+							{finding.status === Status.Open && <IconButton aria-label="delete" className={classes.margin} color="secondary" onClick={() => onDeleteClick(finding._id)}>
+								<DeleteIcon />
+							</IconButton>}
+						</Box>}
 					</Box> : null
 				})}
 			</Box>

@@ -23,7 +23,7 @@ import PriorityMediumIcon from '@material-ui/icons/KeyboardArrowUp'
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh'
 import PriorityBlockingIcon from '@material-ui/icons/Block'
 import { useSnackbar } from 'notistack'
-import { blue, green, orange, red } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
 
 import { Finding, FindingTheme, FindingFieldName, Status, Priority } from '../../types'
 import { useRealmApp } from '../App/RealmApp'
@@ -35,6 +35,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { setMyFindings } from '../../redux/currentTabPosition/currentTabPositionSlice'
 import { useAppDispatch } from '../../hooks'
+import useGenericStyles from '../utils/GenericStyles'
 
 const useStyles: any = makeStyles(() => ({
 	button: {
@@ -42,18 +43,6 @@ const useStyles: any = makeStyles(() => ({
 	},
 	formControl: {
 		minWidth: 200
-	},
-	prioLow: {
-		color: green[400]
-	},
-	prioMedium: {
-		color: blue[700]
-	},
-	prioHigh: {
-		color: orange[700]
-	},
-	prioBlocking: {
-		color: red[800]
 	},
 	buttonBase: {
 		flexGrow: 1,
@@ -71,6 +60,7 @@ type PropsFilter = {
 const ManageFindings: React.FC<IProps> = () => {
 	const classes = useStyles()
 	const dispatch = useAppDispatch()
+	const genericClasses = useGenericStyles()
 	const [filteredFindings, setfilteredFindings] = useState<Finding[]>([])
 	const [filterString, setFilterString] = useState<string>('')
 	const [propsFilter, setPropsFilter] = useState<PropsFilter>({})
@@ -362,10 +352,10 @@ const ManageFindings: React.FC<IProps> = () => {
 											alignItems="center"
 											justifyContent="flex-start"
 										>
-											{finding?.priority === Priority.low && <PriorityLowIcon className={classes.prioLow} />}
-											{finding?.priority === Priority.medium && <PriorityMediumIcon className={classes.prioMedium} />}
-											{finding?.priority === Priority.high && <PriorityHighIcon className={classes.prioHigh} />}
-											{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={classes.prioBlocking} />}
+											{finding?.priority === Priority.low && <PriorityLowIcon className={genericClasses.prioLow} />}
+											{finding?.priority === Priority.medium && <PriorityMediumIcon className={genericClasses.prioMedium} />}
+											{finding?.priority === Priority.high && <PriorityHighIcon className={genericClasses.prioHigh} />}
+											{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={genericClasses.prioBlocking} />}
 										</Box>}
 										<Box
 											display="flex"

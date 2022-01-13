@@ -100,7 +100,7 @@ const App = () => {
               </Framework>
             </RequireLoggedInUser>
           </Route>
-          <Route exact path="/productowneroverview">
+          <Route exact path="/changesoverview">
             <RequireLoggedInUser>
               <Framework>
                 <RequireRole role={Role.call_handler}>
@@ -109,7 +109,7 @@ const App = () => {
               </Framework>
             </RequireLoggedInUser>
           </Route>
-          <Route exact path="/productowneroverview/:id">
+          <Route exact path="/changesoverview/:id">
             <RequireLoggedInUser>
               <Framework>
                 <RequireRole role={Role.call_handler}>

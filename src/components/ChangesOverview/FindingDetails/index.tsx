@@ -179,7 +179,7 @@ const FindingDetailsChanges: React.FC<IProps> = () => {
 					variant: 'success',
 				})
 			}
-			history.push("/productowneroverview")
+			history.push("/changesoverview")
 		} catch (error) {
 			enqueueSnackbar('Er is helaas iets mis gegaan bij het opslaan van de bevinding.', {
 				variant: 'error',

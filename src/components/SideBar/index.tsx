@@ -93,7 +93,7 @@ const SideBar: React.FC<IProps> = () => {
 					</ListItem>}
 					{hasCallHandlerRole && <ListItem
 						button
-						onClick={() => navigate('/productowneroverview')}
+						onClick={() => navigate('/changesoverview')}
 					>
 						<ListItemIcon><ListIcon /></ListItemIcon>
 						<ListItemText

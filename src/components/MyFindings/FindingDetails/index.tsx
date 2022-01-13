@@ -74,7 +74,7 @@ const FindingDetails = () => {
 			let findingData = {
 				description: "",
 				status: Status.Open,
-				type: FindingType.Bug,
+				type: FindingType.bug,
 				priority: Priority.low,
 				supplierCalls: [],
 				supplier: Supplier.ivention,
@@ -172,7 +172,7 @@ const FindingDetails = () => {
 			} else {
 				const newFinding: Finding = {
 					description: '',
-					type: FindingType.Bug,
+					type: FindingType.bug,
 					priority: Priority.low,
 					supplierCalls: [],
 					supplier: Supplier.ivention,
@@ -350,8 +350,9 @@ const FindingDetails = () => {
 							onChange={(event) => handleChangeSelect(event, FindingFieldName.type)}
 						>
 							<MenuItem value={''}></MenuItem>
-							<MenuItem value={FindingType.Bug}>Bug</MenuItem>
-							<MenuItem value={FindingType.Verbetering}>Verbetering</MenuItem>
+							<MenuItem value={FindingType.bug}>Bug</MenuItem>
+							<MenuItem value={FindingType.verbetering}>Verbetering</MenuItem>
+							<MenuItem value={FindingType.infoRequest}>Informatieaanvraag</MenuItem>
 						</Select>
 					</FormControl>
 				</Box>
@@ -378,7 +379,36 @@ const FindingDetails = () => {
 						</Select>
 					</FormControl>
 				</Box>
-				{finding?.type === FindingType.Verbetering && <>
+				{finding?.type === FindingType.infoRequest && <Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="center"
+					width="100%"
+					pb={3}
+				>
+					<TextField
+						label="Vraag aan de leverancier"
+						value={finding?.informationRequestDescription || ''}
+						fullWidth
+						multiline
+						variant="outlined"
+						onChange={(event) => handleChangeTextField(event, FindingFieldName.informationRequestDescription)}
+						helperText="Beschrijf zo goed mogelijk waarover je graag informatie zou willen ontvangen"
+					/>
+				</Box>}
+				{finding?.type !== FindingType.infoRequest && finding?.informationRequestDescription && <Box
+					display="flex"
+					flexDirection="column"
+					alignItems="flex-start"
+					justifyContent="center"
+					width="100%"
+					pb={3}
+				>
+					<Typography align="left" className={genericClasses.greyedOutText} variant="h6">Voorheen ingevoerd als informatieverzoek</Typography>
+					<Typography align="left" className={genericClasses.greyedOutText} variant="body2">Vraag aan de leverancier: {finding?.informationRequestDescription}</Typography>
+				</Box>}
+				{finding?.type === FindingType.verbetering && <>
 					<Box
 						display="flex"
 						flexDirection="row"
@@ -416,7 +446,7 @@ const FindingDetails = () => {
 						/>
 					</Box>
 				</>}
-				{finding?.type === FindingType.Bug && finding?.featureRequestDescription && <>
+				{finding?.type !== FindingType.verbetering && finding?.featureRequestDescription && <>
 					<Box
 						display="flex"
 						flexDirection="column"
@@ -429,24 +459,22 @@ const FindingDetails = () => {
 						<Typography align="left" className={genericClasses.greyedOutText} variant="body2">Beschrijving: {finding?.featureRequestDescription || ''}</Typography>
 					</Box>
 				</>}
-				{finding?.type === FindingType.Verbetering && wasInitiallyEnteredAsBug() && <>
-					<Box
-						display="flex"
-						flexDirection="column"
-						alignItems="flex-start"
-						justifyContent="center"
-						width="100%"
-						pb={3}
-					>
-						<Typography align="left" className={genericClasses.greyedOutText} variant="h6">Voorheen ingevoerd als Bug</Typography>
-						{finding?.theme && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Thema: {finding?.theme}</Typography>}
-						{finding?.expectedResult && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Verwachte uitkomst: {finding?.expectedResult}</Typography>}
-						{finding?.actualResult && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Daadwerkelijke uitkomst: {finding?.actualResult}</Typography>}
-						{finding?.additionalInfo && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Extra informatie: {finding?.additionalInfo}</Typography>}
-						{finding?.browser && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Browser: {finding?.browser}</Typography>}
-					</Box>
-				</>}
-				{finding?.type === FindingType.Bug && <>
+				{finding?.type !== FindingType.bug && wasInitiallyEnteredAsBug() && <Box
+					display="flex"
+					flexDirection="column"
+					alignItems="flex-start"
+					justifyContent="center"
+					width="100%"
+					pb={3}
+				>
+					<Typography align="left" className={genericClasses.greyedOutText} variant="h6">Voorheen ingevoerd als Bug</Typography>
+					{finding?.theme && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Thema: {finding?.theme}</Typography>}
+					{finding?.expectedResult && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Verwachte uitkomst: {finding?.expectedResult}</Typography>}
+					{finding?.actualResult && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Daadwerkelijke uitkomst: {finding?.actualResult}</Typography>}
+					{finding?.additionalInfo && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Extra informatie: {finding?.additionalInfo}</Typography>}
+					{finding?.browser && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Browser: {finding?.browser}</Typography>}
+				</Box>}
+				{finding?.type === FindingType.bug && <>
 					<Box
 						display="flex"
 						flexDirection="row"

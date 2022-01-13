@@ -7,6 +7,7 @@ const currentTabPosition = createSlice({
 		changesOverview: 0,
 		findingsOverview: 0,
 		supplierOverview: 0,
+		informationRequestOverview: 0,
 	},
 	reducers: {
 		set: (state, action) => {
@@ -24,6 +25,9 @@ const currentTabPosition = createSlice({
 		setSupplierOverview: (state, action) => {
 			state.supplierOverview = action.payload
 		},
+		setInformationRequestOverview: (state, action) => {
+			state.informationRequestOverview = action.payload
+		},
 	}
 })
 
@@ -33,6 +37,7 @@ export const {
 	setChangesOverview,
 	setFindingsOverview,
 	setSupplierOverview,
+	setInformationRequestOverview,
 } = currentTabPosition.actions
 
 export default currentTabPosition.reducer

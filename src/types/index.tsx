@@ -27,8 +27,9 @@ export type FindingTheme = {
 }
 
 export enum FindingType {
-	Bug = 'bug',
-	Verbetering = 'verbetering',
+	bug = 'bug',
+	verbetering = 'verbetering',
+	infoRequest = 'Informatieaanvraag',
 }
 
 export enum Status {
@@ -65,6 +66,7 @@ export type FindingData = {
 	description: string;
 	featureRequestDescription?: string;
 	featureRequestProposal?: string;
+	informationRequestDescription?: string;
 	expectedResult?: string;
 	actualResult?: string;
 	additionalInfo?: string;
@@ -97,6 +99,7 @@ export type Finding = {
 	description: string;
 	featureRequestDescription?: string;
 	featureRequestProposal?: string;
+	informationRequestDescription?: string;
 	expectedResult?: string;
 	actualResult?: string;
 	additionalInfo?: string;
@@ -132,6 +135,7 @@ export enum FindingFieldName {
 	supplier = 'supplier',
 	feedbackContractManagement = 'feedbackContractManagement',
 	feedbackSupplier = 'feedbackSupplier',
+	informationRequestDescription = 'informationRequestDescription',
 }
 
 export type LinkType = {
@@ -153,7 +157,6 @@ export type Information = {
 	contacts: Contact[]
 }
 
-
 export enum Priority {
 	low = 'Laag',
 	medium = 'Normaal',
@@ -166,12 +169,13 @@ export enum SupplierPriority {
 	p2 = 'p2',
 	p3 = 'p3',
 	p4 = 'p4',
-	nvt = 'nvt'
+	nvt = 'nvt',
 }
 
 export enum SupplierCallType {
 	bug = 'Bug',
 	change = 'Change',
+	infoRequest = 'Informatieaanvraag',
 }
 
 export enum SupplierCallStatus {

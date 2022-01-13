@@ -69,7 +69,7 @@ const FindingDetailsSupplier: React.FC<IProps> = () => {
 			let findingData = {
 				description: "",
 				status: Status.Open,
-				type: FindingType.Bug,
+				type: FindingType.bug,
 				priority: Priority.low,
 				supplierCalls: [],
 				supplier: Supplier.ivention,
@@ -239,6 +239,7 @@ const FindingDetailsSupplier: React.FC<IProps> = () => {
 						{finding?.priority && <Typography variant="body1">Prioriteit: {finding?.priority}</Typography>}
 						{finding?.featureRequestDescription && <Typography variant="body1">Beschrijving van de verbetering: {finding?.featureRequestDescription}</Typography>}
 						{finding?.featureRequestProposal && <Typography variant="body1">Oplossingsrichting: {finding?.featureRequestProposal}</Typography>}
+						{finding?.informationRequestDescription && <Typography variant="body1">Vraag aan de leverancier: {finding?.informationRequestDescription}</Typography>}
 						{finding?.theme && <Typography variant="body1">Thema: {finding?.theme}</Typography>}
 						{finding?.expectedResult && <Typography variant="body1">Verwachte uitkomst: {finding?.expectedResult}</Typography>}
 						{finding?.actualResult && <Typography variant="body1">Daadwerkelijke uitkomst: {finding?.actualResult}</Typography>}

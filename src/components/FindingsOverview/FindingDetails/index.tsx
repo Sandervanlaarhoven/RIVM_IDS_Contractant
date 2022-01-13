@@ -105,7 +105,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 			let findingData = {
 				description: "",
 				status: Status.Open,
-				type: FindingType.Bug,
+				type: FindingType.bug,
 				priority: Priority.low,
 				supplierCalls: [],
 				supplier: Supplier.ivention,
@@ -249,7 +249,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 					alignItems="flex-start"
 					justifyContent="center"
 				>
-					<Typography variant="h4">{id ? 'Bevinding aanpassen' : 'Nieuwe bevinding'}</Typography>
+					<Typography variant="h4">{id ? 'Ticket aanpassen' : 'Nieuw ticket'}</Typography>
 				</Box>
 				<Box
 					display="flex"
@@ -338,8 +338,9 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 							onChange={(event) => handleChangeSelect(event, FindingFieldName.type)}
 						>
 							<MenuItem value={''}></MenuItem>
-							<MenuItem value={FindingType.Bug}>Bug</MenuItem>
-							<MenuItem value={FindingType.Verbetering}>Verbetering</MenuItem>
+							<MenuItem value={FindingType.bug}>Bug</MenuItem>
+								<MenuItem value={FindingType.verbetering}>Verbetering</MenuItem>
+								<MenuItem value={FindingType.infoRequest}>Informatieaanvraag</MenuItem>
 						</Select>
 					</FormControl>
 				</Box>
@@ -366,7 +367,36 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						</Select>
 					</FormControl>
 				</Box>
-				{finding?.type === FindingType.Verbetering && <>
+				{finding?.type === FindingType.infoRequest && <Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="center"
+					width="100%"
+					pb={3}
+				>
+					<TextField
+						label="Vraag aan de leverancier"
+						value={finding?.informationRequestDescription || ''}
+						fullWidth
+						multiline
+						variant="outlined"
+						onChange={(event) => handleChangeTextField(event, FindingFieldName.informationRequestDescription)}
+						helperText="Beschrijf zo goed mogelijk waarover je graag informatie zou willen ontvangen"
+					/>
+				</Box>}
+				{finding?.type !== FindingType.infoRequest && finding?.informationRequestDescription && <Box
+					display="flex"
+					flexDirection="column"
+					alignItems="flex-start"
+					justifyContent="center"
+					width="100%"
+					pb={3}
+				>
+					<Typography align="left" className={genericClasses.greyedOutText} variant="h6">Voorheen ingevoerd als informatieverzoek</Typography>
+					<Typography align="left" className={genericClasses.greyedOutText} variant="body2">Vraag aan de leverancier: {finding?.informationRequestDescription}</Typography>
+				</Box>}
+				{finding?.type === FindingType.verbetering && <>
 					<Box
 						display="flex"
 						flexDirection="row"
@@ -404,7 +434,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						/>
 					</Box>
 				</>}
-				{finding?.type === FindingType.Bug && finding?.featureRequestDescription && <>
+				{finding?.type !== FindingType.verbetering && finding?.featureRequestDescription && <>
 					<Box
 						display="flex"
 						flexDirection="column"
@@ -417,7 +447,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						<Typography align="left" className={genericClasses.greyedOutText} variant="body2">Beschrijving: {finding?.featureRequestDescription || ''}</Typography>
 					</Box>
 				</>}
-				{finding?.type === FindingType.Verbetering && wasInitiallyEnteredAsBug() && <>
+				{finding?.type !== FindingType.bug && wasInitiallyEnteredAsBug() && <>
 					<Box
 						display="flex"
 						flexDirection="column"
@@ -434,7 +464,7 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 						{finding?.browser && <Typography align="left" className={genericClasses.greyedOutText} variant="body2">Browser: {finding?.browser}</Typography>}
 					</Box>
 				</>}
-				{finding?.type === FindingType.Bug && <>
+				{finding?.type === FindingType.bug && <>
 					{!showNewTheme && <Box
 						display="flex"
 						flexDirection="row"
@@ -655,13 +685,15 @@ const FindingDetailsAdmin: React.FC<IProps> = () => {
 								onChange={(event) => handleChangeSelect(event, FindingFieldName.status)}
 							>
 									<MenuItem key={Status.Open} value={Status.Open}>{Status.Open}</MenuItem>
-									<MenuItem key={Status.Submitted} value={Status.Submitted}>{Status.Submitted}</MenuItem>
-									<MenuItem key={Status.Verified} value={Status.Verified}>{Status.Verified}</MenuItem>
-									<MenuItem key={Status.Gepland} value={Status.Gepland}>{Status.Gepland}</MenuItem>
-									<MenuItem key={Status.ReadyForRelease} value={Status.ReadyForRelease}>{Status.ReadyForRelease}</MenuItem>
-									<MenuItem key={Status.Hertest} value={Status.Hertest}>{Status.Hertest}</MenuItem>
-									<MenuItem key={Status.TestFailed} value={Status.TestFailed}>{Status.TestFailed}</MenuItem>
-									<MenuItem key={Status.Denied} value={Status.Denied}>{Status.Denied}</MenuItem>
+									{finding?.type === FindingType.bug || finding?.type === FindingType.verbetering ? <>
+										<MenuItem key={Status.Submitted} value={Status.Submitted}>{Status.Submitted}</MenuItem>
+										<MenuItem key={Status.Verified} value={Status.Verified}>{Status.Verified}</MenuItem>
+										<MenuItem key={Status.Gepland} value={Status.Gepland}>{Status.Gepland}</MenuItem>
+										<MenuItem key={Status.ReadyForRelease} value={Status.ReadyForRelease}>{Status.ReadyForRelease}</MenuItem>
+										<MenuItem key={Status.Hertest} value={Status.Hertest}>{Status.Hertest}</MenuItem>
+										<MenuItem key={Status.TestFailed} value={Status.TestFailed}>{Status.TestFailed}</MenuItem>
+										<MenuItem key={Status.Denied} value={Status.Denied}>{Status.Denied}</MenuItem>
+									</> : null}
 									<MenuItem key={Status.Closed} value={Status.Closed}>{Status.Closed}</MenuItem>
 							</Select>
 						</FormControl>

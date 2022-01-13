@@ -22,10 +22,11 @@ import PriorityLowIcon from '@material-ui/icons/KeyboardArrowDown'
 import PriorityMediumIcon from '@material-ui/icons/KeyboardArrowUp'
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh'
 import PriorityBlockingIcon from '@material-ui/icons/Block'
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer"
 import { useSnackbar } from 'notistack'
 import { blue } from '@material-ui/core/colors'
 
-import { Finding, FindingTheme, FindingFieldName, Status, Priority } from '../../types'
+import { Finding, FindingTheme, FindingFieldName, Status, Priority, FindingType } from '../../types'
 import { useRealmApp } from '../App/RealmApp'
 import { useHistory } from 'react-router-dom'
 import { BSON } from 'realm-web'
@@ -330,7 +331,7 @@ const ManageFindings: React.FC<IProps> = () => {
 										justifyContent="flex-start"
 										flexGrow={1}
 									>
-										{finding.type === 'bug' && <Box
+										{finding.type === FindingType.bug && <Box
 											display="flex"
 											flexDirection="row"
 											alignItems="center"
@@ -338,13 +339,21 @@ const ManageFindings: React.FC<IProps> = () => {
 										>
 											<BugReportIcon />
 										</Box>}
-										{finding.type === 'verbetering' && <Box
+										{finding.type === FindingType.verbetering && <Box
 											display="flex"
 											flexDirection="row"
 											alignItems="center"
 											justifyContent="flex-start"
 										>
 											<MailOutlineIcon />
+										</Box>}
+										{finding.type === FindingType.infoRequest && <Box
+											display="flex"
+											flexDirection="row"
+											alignItems="center"
+											justifyContent="flex-start"
+										>
+											<QuestionAnswerIcon />
 										</Box>}
 										{finding?.priority && <Box
 											display="flex"

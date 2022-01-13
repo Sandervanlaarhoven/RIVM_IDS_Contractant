@@ -4,6 +4,9 @@ import ListIcon from "@material-ui/icons/List"
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd"
 import SettingsIcon from "@material-ui/icons/Settings"
 import InfoIcon from "@material-ui/icons/InfoOutlined"
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer"
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import BugReportIcon from "@material-ui/icons/BugReport"
 import ArchiveIcon from "@material-ui/icons/ArchiveOutlined"
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -86,7 +89,7 @@ const SideBar: React.FC<IProps> = () => {
 						button
 						onClick={() => navigate('/findingsoverview')}
 					>
-						<ListItemIcon><ListIcon /></ListItemIcon>
+						<ListItemIcon><BugReportIcon /></ListItemIcon>
 						<ListItemText
 							primary='Calls'
 						/>
@@ -95,9 +98,18 @@ const SideBar: React.FC<IProps> = () => {
 						button
 						onClick={() => navigate('/changesoverview')}
 					>
-						<ListItemIcon><ListIcon /></ListItemIcon>
+						<ListItemIcon><MailOutlineIcon /></ListItemIcon>
 						<ListItemText
 							primary='Change requests'
+						/>
+					</ListItem>}
+					{hasCallHandlerRole && <ListItem
+						button
+						onClick={() => navigate('/informationrequestoverview')}
+					>
+						<ListItemIcon><QuestionAnswerIcon /></ListItemIcon>
+						<ListItemText
+							primary='Informatieaanvragen'
 						/>
 					</ListItem>}
 					{isSupplier && <ListItem

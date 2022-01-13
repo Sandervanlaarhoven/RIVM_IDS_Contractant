@@ -131,6 +131,7 @@ const HistoryItem: React.FC<IProps> = ({ item }) => {
 							{item?.finding?.description && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Omschrijving: {item?.finding?.description}</Typography>}
 							{item?.finding?.theme && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Thema: {item?.finding?.theme}</Typography>}
 							{item?.finding?.featureRequestDescription && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Beschrijving: {item?.finding?.featureRequestDescription}</Typography>}
+							{item?.finding?.informationRequestDescription && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Vraag aan de leverancier: {item?.finding?.informationRequestDescription}</Typography>}
 							{item?.finding?.expectedResult && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Verwachte uitkomst: {item?.finding?.expectedResult}</Typography>}
 							{item?.finding?.actualResult && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Daadwerkelijke uitkomst: {item?.finding?.actualResult}</Typography>}
 							{item?.finding?.additionalInfo && <Typography align="left" className={genericClasses.greyedOutText} variant="caption">Extra informatie: {item?.finding?.additionalInfo}</Typography>}

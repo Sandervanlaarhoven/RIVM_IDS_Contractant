@@ -16,7 +16,6 @@ import {
 } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles'
 import ArchiveIcon from '@material-ui/icons/Archive'
-import BugReportIcon from '@material-ui/icons/BugReport'
 import MailOutlineIcon from '@material-ui/icons/MailOutline'
 import PriorityLowIcon from '@material-ui/icons/KeyboardArrowDown'
 import PriorityMediumIcon from '@material-ui/icons/KeyboardArrowUp'
@@ -441,14 +440,6 @@ const ChangesOverview: React.FC<IProps> = () => {
 										justifyContent="flex-start"
 										flexGrow={1}
 									>
-										{finding.type === 'bug' && <Box
-											display="flex"
-											flexDirection="row"
-											alignItems="center"
-											justifyContent="flex-start"
-										>
-											<BugReportIcon />
-										</Box>}
 										{finding.type === 'verbetering' && <Box
 											display="flex"
 											flexDirection="row"

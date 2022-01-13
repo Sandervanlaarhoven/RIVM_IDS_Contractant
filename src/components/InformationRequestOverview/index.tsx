@@ -4,15 +4,18 @@ import {
 	Box,
 	FormControl,
 	TextField,
+	Button,
+	IconButton,
 	InputLabel,
 	MenuItem,
 	Select,
 	Chip,
-	ButtonBase,
 	Tab,
 	Tabs,
+	ButtonBase,
 } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles'
+import ArchiveIcon from '@material-ui/icons/Archive'
 import BugReportIcon from '@material-ui/icons/BugReport'
 import MailOutlineIcon from '@material-ui/icons/MailOutline'
 import PriorityLowIcon from '@material-ui/icons/KeyboardArrowDown'
@@ -21,20 +24,21 @@ import PriorityHighIcon from '@material-ui/icons/PriorityHigh'
 import PriorityBlockingIcon from '@material-ui/icons/Block'
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer"
 import { useSnackbar } from 'notistack'
-import { blue, green, orange, red } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
 
-import { Finding, FindingTheme, FindingFieldName, Priority, Status, UserGroup, FindingType } from '../../types'
+import { Finding, FindingFieldName, Status, FindingData, Priority, FindingType } from '../../types'
 import { useRealmApp } from '../App/RealmApp'
 import { useHistory } from 'react-router-dom'
+import { BSON } from 'realm-web'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
 import { set } from '../../redux/findings/findingsSlice'
 import { useAppSelector, useAppDispatch } from '../../hooks'
-import { BSON } from 'realm-web'
-import { getUsergroupFromUserEmail } from '../utils'
-import { useSelector } from 'react-redux'
+import theme from '../../theme'
+import useGenericStyles from '../utils/GenericStyles'
 import { RootState } from '../../redux/store'
-import { setSupplierOverview } from '../../redux/currentTabPosition/currentTabPositionSlice'
+import { useSelector } from 'react-redux'
+import { setInformationRequestOverview } from '../../redux/currentTabPosition/currentTabPositionSlice'
 
 const useStyles: any = makeStyles(() => ({
 	button: {
@@ -43,21 +47,17 @@ const useStyles: any = makeStyles(() => ({
 	formControl: {
 		minWidth: 200
 	},
+	tabs: {
+		[theme.breakpoints.up('xs')]: {
+			width: "calc(100vw - 96px)"
+		},
+		[theme.breakpoints.up('md')]: {
+			width: "calc(100vw - 480px)"
+		}
+	},
 	buttonBase: {
-		width: "100%",
-		marginBottom: 10
-	},
-	prioLow: {
-		color: green[400]
-	},
-	prioMedium: {
-		color: blue[700]
-	},
-	prioHigh: {
-		color: orange[700]
-	},
-	prioBlocking: {
-		color: red[800]
+		flexGrow: 1,
+		padding: 10
 	},
 }))
 
@@ -69,8 +69,9 @@ type PropsFilter = {
 	userEmail?: string,
 }
 
-const SupplierOverview: React.FC<IProps> = () => {
+const InformationRequestOverview: React.FC<IProps> = () => {
 	const classes = useStyles()
+	const genericClasses = useGenericStyles()
 	const dispatch = useAppDispatch()
 	const [filteredFindings, setfilteredFindings] = useState<Finding[]>([])
 	const [filterString, setFilterString] = useState<string>('')
@@ -80,33 +81,20 @@ const SupplierOverview: React.FC<IProps> = () => {
 	const { enqueueSnackbar } = useSnackbar()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
 	const mongoFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("findings")
-	const mongoFindingThemesCollection = mongo.db("RIVM_CONTRACTANT").collection("finding_themes")
-	const [findingThemes, setFindingThemes] = useState<FindingTheme[]>([])
+	const mongoArchivedFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("archived_findings")
 	const findingsDataState = useAppSelector(state => state.findingsData)
 	const { findings } = findingsDataState
 	const [userEmails, setUserEmails] = useState<string[]>([])
-	const currentTab = useSelector((state: RootState) => state.currentTabPosition.supplierOverview)
-	const userEmail = app.currentUser?.profile?.email || 'onbekend'
-	const userGroup = getUsergroupFromUserEmail(userEmail)
+	const currentTab = useSelector((state: RootState) => state.currentTabPosition.informationRequestOverview)
 
 	const getData = async () => {
 		try {
-			let findingsData
-			if (userGroup !== UserGroup.other && userGroup !== UserGroup.rivm) {
-				findingsData = mongoFindingsCollection.find({
-					supplier: userGroup
-				}, {
-					sort: { testDate: -1 }
-				})
-			} else {
-				enqueueSnackbar('Je bent niet ingelogd als leverancier, daarom kun je geen gebruik maken van deze functionaliteit.', {
-					variant: 'error',
-				})
-				return
-			}
-			let findingThemesData = mongoFindingThemesCollection.find()
+			const findingsData = mongoFindingsCollection.find({
+				type: FindingType.infoRequest
+			}, {
+				sort: { testDate: -1 },
+			})
 			dispatch(set(await findingsData))
-			setFindingThemes(await findingThemesData)
 		} catch (error) {
 			enqueueSnackbar('Er is helaas iets mis gegaan bij het ophalen van de gegevens.', {
 				variant: 'error',
@@ -122,21 +110,24 @@ const SupplierOverview: React.FC<IProps> = () => {
 	useEffect(() => {
 		const filterTimeout = setTimeout(() => {
 			const newFilteredFindings = findings.filter((finding) => {
-				let isGesloten: boolean = false
-				switch (finding.status) {
-					case Status.Closed:
-					case Status.Denied:
-						isGesloten = true
-						break;
+				let passedPropsFilter = true
+				switch (currentTab) {
+					case 0: {
+						passedPropsFilter = finding.status === Status.Open
+						break
+					}
+					case 1: {
+						passedPropsFilter = finding.status === Status.Closed
+						break
+					}
+					case 2: {
+						passedPropsFilter = true
+						break
+					}
 
 					default:
-						break;
-				}
-				let passedPropsFilter = true
-				if (!isGesloten && currentTab === 1) passedPropsFilter = false
-				if (isGesloten && currentTab === 0) passedPropsFilter = false
-				if (propsFilter) {
-					if (propsFilter.theme && finding.theme !== propsFilter.theme) passedPropsFilter = false
+						passedPropsFilter = false
+						break
 				}
 				if (propsFilter.userEmail && finding.userEmail !== propsFilter.userEmail) passedPropsFilter = false
 				return passedPropsFilter && (finding.description.toLowerCase().includes(filterString.toLowerCase()) || format(finding.testDate, 'Pp', { locale: nl }).includes(filterString.toLowerCase()))
@@ -159,6 +150,7 @@ const SupplierOverview: React.FC<IProps> = () => {
 			flexDirection="row"
 			alignItems="center"
 			justifyContent="space-between"
+			marginTop={1}
 			width="100%"
 		>
 			<Box>
@@ -170,8 +162,47 @@ const SupplierOverview: React.FC<IProps> = () => {
 		</Box>
 	}
 
-	const showDetails = (findingID: BSON.ObjectId | undefined) => {
-		if (findingID) history.push(`/supplieroverview/${findingID}`)
+	const onCreateNewFindingClick = () => {
+		history.push('/findings/new')
+	}
+
+	const onEditClick = (findingID: BSON.ObjectId | undefined) => {
+		if (findingID) history.push(`/informationrequestoverview/${findingID}`)
+	}
+
+	const onArchiveClick = async (finding: Finding) => {
+		if (finding?._id) {
+			try {
+				const updatedFinding = {
+					...finding,
+					status: Status.Archived,
+					history: [...finding.history],
+				}
+				const findingData: FindingData = {
+					...updatedFinding,
+				}
+				delete findingData.history
+				updatedFinding.history.push({
+					finding: findingData,
+					createdOn: new Date(),
+					createdBy: {
+						_id: app.currentUser.id,
+						email: app.currentUser.profile?.email || "Onbekend",
+					}
+				})
+
+
+				await mongoFindingsCollection.deleteOne({
+					_id: new BSON.ObjectId(finding._id)
+				})
+				await mongoArchivedFindingsCollection.insertOne(updatedFinding)
+				getData()
+			} catch (error) {
+				enqueueSnackbar('Er is helaas iets mis gegaan bij het verwijderen.', {
+					variant: 'error',
+				})
+			}
+		}
 	}
 
 	const onChangeFilterString = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,7 +222,7 @@ const SupplierOverview: React.FC<IProps> = () => {
 	}
 
 	const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
-		dispatch(setSupplierOverview(newValue))
+		dispatch(setInformationRequestOverview(newValue))
 	}
 
 	return (
@@ -218,7 +249,17 @@ const SupplierOverview: React.FC<IProps> = () => {
 					alignItems="flex-start"
 					justifyContent="center"
 				>
-					<Typography variant="h4">Leverancier overzicht</Typography>
+					<Typography variant="h4">Informatieaanvragen</Typography>
+				</Box>
+				<Box
+					display="flex"
+					flexDirection="row"
+					alignItems="center"
+					justifyContent="flex-end"
+				>
+					<Button variant="contained" className={classes.button} color="primary" onClick={onCreateNewFindingClick}>
+						Nieuwe bevinding
+					</Button>
 				</Box>
 			</Box>
 			<Box
@@ -274,37 +315,11 @@ const SupplierOverview: React.FC<IProps> = () => {
 						</FormControl>
 					</Box>
 				</Box>
-				<Box
-					display="flex"
-					flexDirection="row"
-					alignItems="center"
-					justifyContent="flex-end"
-					ml={2}
-				>
-					<Box
-						display="flex"
-						flexDirection="row"
-						alignItems="center"
-						justifyContent="center"
-					>
-						<FormControl className={classes.formControl}>
-							<InputLabel id="type">Thema</InputLabel>
-							<Select
-								labelId="type"
-								id="type"
-								value={propsFilter.theme || ''}
-								onChange={(event) => handleChangeSelect(event, FindingFieldName.findingTheme)}
-							>
-								<MenuItem key="" value={''}>Geen specifiek thema</MenuItem>
-								{findingThemes.map((findingTheme) => <MenuItem key={findingTheme.name} value={findingTheme.name}>{findingTheme.name}</MenuItem>)}
-							</Select>
-						</FormControl>
-					</Box>
-				</Box>
 			</Box>
-			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable" >
+			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable" className={classes.tabs}>
 				<Tab label={Status.Open} />
 				<Tab label={Status.Closed} />
+				<Tab label={Status.AllStatussus} />
 			</Tabs>
 			<Box
 				display="flex"
@@ -312,8 +327,7 @@ const SupplierOverview: React.FC<IProps> = () => {
 				alignItems="flex-start"
 				justifyContent="flex-start"
 				width="100%"
-				my={1}
-				mt={4}
+				my={5}
 			>
 				{filteredFindings.length === 0 && <Box
 					display="flex"
@@ -321,24 +335,27 @@ const SupplierOverview: React.FC<IProps> = () => {
 					alignItems="flex-start"
 					justifyContent="center"
 				>
-					<Typography variant="body2"><i>Er zijn geen bevindingen gevonden.</i></Typography>
+					<Typography variant="body2"><i>Er zijn geen bevindingen met deze status.</i></Typography>
 				</Box>}
 				{filteredFindings && filteredFindings.map((finding, index) => {
-					return finding ? <ButtonBase key={index} className={classes.buttonBase} onClick={() => showDetails(finding._id)}><Box
+					return finding ? <Box
 						display="flex"
-						flexDirection="column"
-						alignItems="flex-start"
-						justifyContent="center"
+						key={index}
+						flexDirection="row"
+						alignItems="center"
+						justifyContent="space-between"
 						width="100%"
 						border={finding.lastUpdatedBySupplier ? `1px solid ${blue[600]}` : '1px solid rgba(0, 0, 0, 0.23)'}
 						borderRadius={11}
 						bgcolor={finding.lastUpdatedBySupplier ? blue[50] : '#FFF'}
-						p={1}
+						mb={2}
 					>
+						<ButtonBase className={classes.buttonBase} onClick={() => onEditClick(finding._id)}>
 							<Box
 								display="flex"
+								flexGrow={1}
 								flexDirection="column"
-								alignItems="flex-start"
+								alignItems="center"
 								justifyContent="center"
 								width="100%"
 							>
@@ -348,13 +365,13 @@ const SupplierOverview: React.FC<IProps> = () => {
 									alignItems="center"
 									justifyContent="space-between"
 									width="100%"
-									pb={1}
 								>
 									<Box
 										display="flex"
 										flexDirection="row"
 										alignItems="center"
 										justifyContent="flex-start"
+										flexGrow={1}
 									>
 										{finding.type === FindingType.bug && <Box
 											display="flex"
@@ -386,10 +403,10 @@ const SupplierOverview: React.FC<IProps> = () => {
 											alignItems="center"
 											justifyContent="flex-start"
 										>
-											{finding?.priority === Priority.low && <PriorityLowIcon className={classes.prioLow} />}
-											{finding?.priority === Priority.medium && <PriorityMediumIcon className={classes.prioMedium} />}
-											{finding?.priority === Priority.high && <PriorityHighIcon className={classes.prioHigh} />}
-											{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={classes.prioBlocking} />}
+											{finding?.priority === Priority.low && <PriorityLowIcon className={genericClasses.prioLow} />}
+											{finding?.priority === Priority.medium && <PriorityMediumIcon className={genericClasses.prioMedium} />}
+											{finding?.priority === Priority.high && <PriorityHighIcon className={genericClasses.prioHigh} />}
+											{finding?.priority === Priority.blocking && <PriorityBlockingIcon className={genericClasses.prioBlocking} />}
 										</Box>}
 										<Box
 											display="flex"
@@ -428,22 +445,25 @@ const SupplierOverview: React.FC<IProps> = () => {
 											<Typography variant="caption"> - {finding.userEmail}</Typography>
 										</Box>}
 									</Box>
-									{finding._id && <Box
-										display="flex"
-										flexDirection="row"
-										alignItems="center"
-										justifyContent="flex-end"
-									>
-										{finding.lastUpdatedBySupplier && <Chip variant="outlined" color="primary" label="behandeld" size="small" />}
-									</Box>}
 								</Box>
 								{FindingComponent(finding)}
 							</Box>
-					</Box></ButtonBase> : null
+						</ButtonBase>
+						{finding._id && <Box
+							display="flex"
+							flexDirection="row"
+							alignItems="center"
+							justifyContent="flex-end"
+						>
+							<IconButton aria-label="archive" className={classes.margin} color="secondary" onClick={() => onArchiveClick(finding)}>
+								<ArchiveIcon />
+							</IconButton>
+						</Box>}
+					</Box> : null
 				})}
 			</Box>
 		</Box>
 	)
 }
 
-export default SupplierOverview
+export default InformationRequestOverview

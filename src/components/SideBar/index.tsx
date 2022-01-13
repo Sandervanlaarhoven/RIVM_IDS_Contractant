@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { List, ListItem, ListItemText, Box, ListItemIcon } from "@material-ui/core"
+import React, { useEffect, useState } from 'react'
+import { ListItemText, Box, ListItemIcon, MenuList, MenuItem } from "@material-ui/core"
 import ListIcon from "@material-ui/icons/List"
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd"
 import SettingsIcon from "@material-ui/icons/Settings"
@@ -33,6 +33,7 @@ const SideBar: React.FC<IProps> = () => {
 	const userGroup = getUsergroupFromUserEmail(userEmail)
 	const isRIVM = userGroup === UserGroup.rivm
 	const isSupplier = userGroup !== UserGroup.rivm && userGroup !== UserGroup.other
+	const [currentMenuItem, setCurrentMenuItem] = useState<string>('root');
 
 	const navigate = (target: string) => {
 		history.push(target)
@@ -45,6 +46,12 @@ const SideBar: React.FC<IProps> = () => {
 			await dispatch(set(customUserData))
 		}
 	}
+
+	useEffect(() => {
+		const basePath = history.location.pathname.split('/')[1]
+		setCurrentMenuItem(basePath)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [history.location.pathname])
 
 	useEffect(() => {
 		checkRoles()
@@ -75,8 +82,9 @@ const SideBar: React.FC<IProps> = () => {
 				justifyContent="flex-start"
 				minWidth={350}
 			>
-				<List dense>
-					{(isRIVM || hasCallHandlerRole) && <ListItem
+				<MenuList dense>
+					{(isRIVM || hasCallHandlerRole) && <MenuItem
+						selected={!currentMenuItem}
 						button
 						onClick={() => navigate('/')}
 					>
@@ -84,8 +92,9 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Mijn tickets'
 						/>
-					</ListItem>}
-					{hasCallHandlerRole && <ListItem
+					</MenuItem>}
+					{hasCallHandlerRole && <MenuItem
+						selected={currentMenuItem === 'findingsoverview'}
 						button
 						onClick={() => navigate('/findingsoverview')}
 					>
@@ -93,8 +102,9 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Calls'
 						/>
-					</ListItem>}
-					{hasCallHandlerRole && <ListItem
+					</MenuItem>}
+					{hasCallHandlerRole && <MenuItem
+						selected={currentMenuItem === 'changesoverview'}
 						button
 						onClick={() => navigate('/changesoverview')}
 					>
@@ -102,8 +112,9 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Change requests'
 						/>
-					</ListItem>}
-					{hasCallHandlerRole && <ListItem
+					</MenuItem>}
+					{hasCallHandlerRole && <MenuItem
+						selected={currentMenuItem === 'informationrequestoverview'}
 						button
 						onClick={() => navigate('/informationrequestoverview')}
 					>
@@ -111,8 +122,9 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Informatieaanvragen'
 						/>
-					</ListItem>}
-					{isSupplier && <ListItem
+					</MenuItem>}
+					{isSupplier && <MenuItem
+						selected={currentMenuItem === 'supplieroverview'}
 						button
 						onClick={() => navigate('/supplieroverview')}
 					>
@@ -120,8 +132,9 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Leverancier overzicht'
 						/>
-					</ListItem>}
-					{hasCallHandlerRole && <ListItem
+					</MenuItem>}
+					{hasCallHandlerRole && <MenuItem
+						selected={currentMenuItem === 'settings'}
 						button
 						onClick={() => navigate('/settings')}
 					>
@@ -129,8 +142,9 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Instellingen en masterdata'
 						/>
-					</ListItem>}
-					<ListItem
+					</MenuItem>}
+					<MenuItem
+						selected={currentMenuItem === 'information'}
 						button
 						onClick={() => navigate('/information')}
 					>
@@ -138,8 +152,9 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Informatie'
 						/>
-					</ListItem>
-					{hasCallHandlerRole && <ListItem
+					</MenuItem>
+					{hasCallHandlerRole && <MenuItem
+						selected={currentMenuItem === 'archive'}
 						button
 						onClick={() => navigate('/archive')}
 					>
@@ -147,8 +162,8 @@ const SideBar: React.FC<IProps> = () => {
 						<ListItemText
 							primary='Archief'
 						/>
-					</ListItem>}
-				</List>
+					</MenuItem>}
+				</MenuList>
 			</Box>
 		</Box>
 	)

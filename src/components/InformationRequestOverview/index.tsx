@@ -455,6 +455,7 @@ const InformationRequestOverview: React.FC<IProps> = () => {
 							alignItems="center"
 							justifyContent="flex-end"
 						>
+							{finding.lastUpdatedBySupplier && <Chip variant="outlined" color="primary" label={finding.supplier ? `update van ${finding.supplier}` : 'update'} size="small" />}
 							<IconButton aria-label="archive" className={classes.margin} color="secondary" onClick={() => onArchiveClick(finding)}>
 								<ArchiveIcon />
 							</IconButton>

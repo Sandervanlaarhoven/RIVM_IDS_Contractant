@@ -673,7 +673,7 @@ const FindingDetailsInformationRequest: React.FC<IProps> = () => {
 							alignItems="center"
 							justifyContent="center"
 						>
-							<FormControl className={classes.formControl}>
+							{finding?.type === FindingType.bug || finding?.type === FindingType.verbetering ? <FormControl className={classes.formControl}>
 								<InputLabel id="status">Status</InputLabel>
 								<Select
 									labelId="status"
@@ -682,18 +682,27 @@ const FindingDetailsInformationRequest: React.FC<IProps> = () => {
 									onChange={(event) => handleChangeSelect(event, FindingFieldName.status)}
 								>
 									<MenuItem key={Status.Open} value={Status.Open}>{Status.Open}</MenuItem>
-									{finding?.type === FindingType.bug || finding?.type === FindingType.verbetering ? <>
-										<MenuItem key={Status.Submitted} value={Status.Submitted}>{Status.Submitted}</MenuItem>
-										<MenuItem key={Status.Verified} value={Status.Verified}>{Status.Verified}</MenuItem>
-										<MenuItem key={Status.Gepland} value={Status.Gepland}>{Status.Gepland}</MenuItem>
-										<MenuItem key={Status.ReadyForRelease} value={Status.ReadyForRelease}>{Status.ReadyForRelease}</MenuItem>
-										<MenuItem key={Status.Hertest} value={Status.Hertest}>{Status.Hertest}</MenuItem>
-										<MenuItem key={Status.TestFailed} value={Status.TestFailed}>{Status.TestFailed}</MenuItem>
-										<MenuItem key={Status.Denied} value={Status.Denied}>{Status.Denied}</MenuItem>
-									</> : null}
+									<MenuItem key={Status.Submitted} value={Status.Submitted}>{Status.Submitted}</MenuItem>
+									<MenuItem key={Status.Verified} value={Status.Verified}>{Status.Verified}</MenuItem>
+									<MenuItem key={Status.Gepland} value={Status.Gepland}>{Status.Gepland}</MenuItem>
+									<MenuItem key={Status.ReadyForRelease} value={Status.ReadyForRelease}>{Status.ReadyForRelease}</MenuItem>
+									<MenuItem key={Status.Hertest} value={Status.Hertest}>{Status.Hertest}</MenuItem>
+									<MenuItem key={Status.TestFailed} value={Status.TestFailed}>{Status.TestFailed}</MenuItem>
+									<MenuItem key={Status.Denied} value={Status.Denied}>{Status.Denied}</MenuItem>
 									<MenuItem key={Status.Closed} value={Status.Closed}>{Status.Closed}</MenuItem>
 								</Select>
-							</FormControl>
+							</FormControl> : <FormControl className={classes.formControl}>
+								<InputLabel id="status">Status</InputLabel>
+								<Select
+									labelId="status"
+									id="status"
+									value={finding?.status || Status.Open}
+									onChange={(event) => handleChangeSelect(event, FindingFieldName.status)}
+								>
+									<MenuItem key={Status.Open} value={Status.Open}>{Status.Open}</MenuItem>
+									<MenuItem key={Status.Closed} value={Status.Closed}>{Status.Closed}</MenuItem>
+								</Select>
+							</FormControl>}
 						</Box>
 					</Box>
 					<Box

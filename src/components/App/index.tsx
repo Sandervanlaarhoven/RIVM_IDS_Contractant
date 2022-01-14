@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  useHistory,
 } from "react-router-dom"
 
 import { useRealmApp, RealmAppProvider } from "./RealmApp"
@@ -13,7 +14,7 @@ import ResetPassword from '../utils/ResetPassword'
 import ResetPasswordConfirm from "../utils/ResetPasswordConfirm"
 import Framework from '../Framework'
 import RequireRole from '../utils/RequireRole'
-import { Role } from '../../types/index';
+import { Role, UserGroup } from '../../types';
 import MyFindings from '../MyFindings'
 import FindingDetails from '../MyFindings/FindingDetails'
 import FindingsOverview from '../FindingsOverview/index';
@@ -28,6 +29,7 @@ import ChangesOverview from '../ChangesOverview'
 import FindingDetailsChanges from '../ChangesOverview/FindingDetails'
 import InformationRequestOverview from '../InformationRequestOverview'
 import FindingDetailsInformationRequest from '../InformationRequestOverview/FindingDetails'
+import { getUsergroupFromUserEmail } from '../utils'
 
 const REALM_APP_ID = "rivm_contractant-feeur"
 
@@ -37,6 +39,16 @@ interface IProps { }
 const RequireLoggedInUser: React.FC<IProps> = ({ children }) => {
   const app: any = useRealmApp()
   return app.currentUser ? <>{children}</> : <LogIn />
+}
+
+const RootPage: React.FC<IProps> = () => {
+  const app = useRealmApp()
+  const history = useHistory()
+  const userEmail = app.currentUser?.profile?.email || 'onbekend'
+  const userGroup = getUsergroupFromUserEmail(userEmail)
+  const isSupplier = userGroup !== UserGroup.rivm && userGroup !== UserGroup.other
+  if (isSupplier) history.push('supplieroverview')
+  return isSupplier ? <SupplierOverview /> : <MyFindings />
 }
 
 const App = () => {
@@ -59,7 +71,7 @@ const App = () => {
           <Route exact path="/">
             <RequireLoggedInUser>
               <Framework>
-                <MyFindings />
+                <RootPage />
               </Framework>
             </RequireLoggedInUser>
           </Route>

@@ -22,7 +22,6 @@ const CollectionWatches = () => {
 				}
 
 				case 'replace': {
-					console.log('update triggered')
 					dispatch(updateFinding(fullDocument))
 					break
 				}

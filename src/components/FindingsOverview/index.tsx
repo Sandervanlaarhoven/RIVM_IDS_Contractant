@@ -120,49 +120,30 @@ const FindingsOverview: React.FC<IProps> = () => {
 				switch (currentTab) {
 					case 0: {
 						passedPropsFilter = finding.status === Status.Open
+						passedPropsFilter = passedPropsFilter || finding.status === Status.Submitted
+						passedPropsFilter = passedPropsFilter || finding.status === Status.Verified
+						passedPropsFilter = passedPropsFilter || finding.status === Status.Gepland
+						passedPropsFilter = passedPropsFilter || finding.status === Status.ReadyForRelease
+						passedPropsFilter = passedPropsFilter || finding.status === Status.Hertest
+						passedPropsFilter = passedPropsFilter || finding.status === Status.TestFailed
 						break
 					}
 					case 1: {
-						passedPropsFilter = finding.status === Status.Submitted
-						break
-					}
-					case 2: {
-						passedPropsFilter = finding.status === Status.Verified
-						break
-					}
-					case 3: {
-						passedPropsFilter = finding.status === Status.Gepland
-						break
-					}
-					case 4: {
-						passedPropsFilter = finding.status === Status.ReadyForRelease
-						break
-					}
-					case 5: {
-						passedPropsFilter = finding.status === Status.Hertest
-						break
-					}
-					case 6: {
-						passedPropsFilter = finding.status === Status.TestFailed
-						break
-					}
-					case 7: {
 						passedPropsFilter = finding.status === Status.Denied
 						break
 					}
-					case 8: {
+					case 2: {
 						passedPropsFilter = finding.status === Status.Closed
 						break
 					}
-					case 9: {
+					case 3: {
 						passedPropsFilter = true
 						break
 					}
 
-					default: {
+					default:
 						passedPropsFilter = false
 						break
-					}
 				}
 				if (propsFilter.userEmail && finding.userEmail !== propsFilter.userEmail) passedPropsFilter = false
 				return passedPropsFilter && (finding.description.toLowerCase().includes(filterString.toLowerCase()) || format(finding.testDate, 'Pp', { locale: nl }).includes(filterString.toLowerCase()))
@@ -380,12 +361,6 @@ const FindingsOverview: React.FC<IProps> = () => {
 			</Box>
 			<Tabs value={currentTab} onChange={handleChangeTab} indicatorColor="primary" variant="scrollable" className={classes.tabs}>
 				<Tab label={Status.Open} />
-				<Tab label={Status.Submitted} />
-				<Tab label={Status.Verified} />
-				<Tab label={Status.Gepland} />
-				<Tab label={Status.ReadyForRelease} />
-				<Tab label={Status.Hertest} />
-				<Tab label={Status.TestFailed} />
 				<Tab label={Status.Denied} />
 				<Tab label={Status.Closed} />
 				<Tab label={Status.AllStatussus} />

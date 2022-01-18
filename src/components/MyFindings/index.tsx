@@ -217,7 +217,7 @@ const ManageFindings: React.FC<IProps> = () => {
 					justifyContent="flex-end"
 				>
 					<Button variant="contained" className={classes.button} color="primary" onClick={onCreateNewFindingClick}>
-						Nieuwe bevinding
+						Nieuw ticket
 					</Button>
 				</Box>
 			</Box>

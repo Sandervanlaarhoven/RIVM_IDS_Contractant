@@ -598,7 +598,7 @@ const FindingDetails = () => {
 					width="100%"
 					mb={2}
 				>
-					<Typography variant="body2"><i>Screenshots kunnen door middel van een word document via Teams worden gedeeld met de testcoördinator. Geef het word document daarbij de volgende naam (kopiëren): </i></Typography>
+					<Typography variant="body2"><i>Screenshots kunnen door middel van een word document via Teams worden gedeeld. Geef het word document daarbij de volgende naam (kopiëren): </i></Typography>
 				</Box>
 				<Box
 					display="flex"

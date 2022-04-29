@@ -47,8 +47,8 @@ const Settings: React.FC<IProps> = () => {
 	const classes = useStyles()
 	const app = useRealmApp()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoFindingThemesCollection = mongo.db("RIVM_CONTRACTANT").collection("finding_themes")
-	const mongoInformationCollection = mongo.db("RIVM_CONTRACTANT").collection("information")
+	const mongoFindingThemesCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("finding_themes")
+	const mongoInformationCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("information")
 	const [information, setInformation] = useState<Information>()
 	const [findingThemes, setFindingThemes] = useState<FindingTheme[]>([])
 	const [showNewTheme, setShowNewTheme] = useState<boolean>(false)
@@ -87,7 +87,11 @@ const Settings: React.FC<IProps> = () => {
 		try {
 			let findingThemesDataRequest = mongoFindingThemesCollection.find()
 			const informationDataRequest = await mongoInformationCollection.find()
-			const info = informationDataRequest[0] || {}
+			const info = informationDataRequest[0] || {
+				text: "",
+				contacts: [],
+				links: []
+			}
 			setFindingThemes(await findingThemesDataRequest)
 			setInformation(info)
 		} catch (error) {
@@ -221,16 +225,23 @@ const Settings: React.FC<IProps> = () => {
 	const saveInformationPage = async () => {
 		try {
 			if (information) {
-				const updatedInformation: Information = {
-					...information
+				if (information._id) {
+					const updatedInformation: Information = {
+						...information
+					}
+					delete updatedInformation._id
+					await mongoInformationCollection.updateOne({
+						_id: new BSON.ObjectId(information._id)
+					}, updatedInformation)
+					enqueueSnackbar('De informatiepagina is aangepast.', {
+						variant: 'success',
+					})
+				} else {
+					await mongoInformationCollection.insertOne(information)
+					enqueueSnackbar('De informatiepagina is aangemaakt.', {
+						variant: 'success',
+					})
 				}
-				delete updatedInformation._id
-				await mongoInformationCollection.updateOne({
-					_id: new BSON.ObjectId(information._id)
-				}, updatedInformation)
-				enqueueSnackbar('De informatiepagina is aangepast.', {
-					variant: 'success',
-				})
 			} else {
 				enqueueSnackbar('Er is helaas iets mis gegaan bij het opslaan van de informatiepagina.', {
 					variant: 'error',

@@ -70,8 +70,8 @@ const ManageFindings: React.FC<IProps> = () => {
 	const uid = app.currentUser.id
 	const { enqueueSnackbar } = useSnackbar()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("findings")
-	const mongoFindingThemesCollection = mongo.db("RIVM_CONTRACTANT").collection("finding_themes")
+	const mongoFindingsCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("findings")
+	const mongoFindingThemesCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("finding_themes")
 	const [findingThemes, setFindingThemes] = useState<FindingTheme[]>([])
 	const [findings, setFindings] = useState<Finding[]>([])
 	const currentTab = useSelector((state: RootState) => state.currentTabPosition.myFindings)

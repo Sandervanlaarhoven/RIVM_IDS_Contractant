@@ -31,7 +31,7 @@ import InformationRequestOverview from '../InformationRequestOverview'
 import FindingDetailsInformationRequest from '../InformationRequestOverview/FindingDetails'
 import { getUsergroupFromUserEmail } from '../utils'
 
-const REALM_APP_ID = "rivm_contractant-feeur"
+const REALM_APP_ID = "rivm_ids_contractant-eiroc"
 
 interface IProps { }
 

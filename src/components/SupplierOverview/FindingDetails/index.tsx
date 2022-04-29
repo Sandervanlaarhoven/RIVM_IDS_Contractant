@@ -59,7 +59,7 @@ const FindingDetailsSupplier: React.FC<IProps> = () => {
 	const history = useHistory()
 	let { id } = useParams<params>()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("findings")
+	const mongoFindingsCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("findings")
 	const [finding, setFinding] = useState<Finding>()
 	const [showHistory, setShowHistory] = useState<boolean>(false);
 	const { enqueueSnackbar } = useSnackbar()

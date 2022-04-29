@@ -79,8 +79,8 @@ const SupplierOverview: React.FC<IProps> = () => {
 	const app = useRealmApp()
 	const { enqueueSnackbar } = useSnackbar()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("findings")
-	const mongoFindingThemesCollection = mongo.db("RIVM_CONTRACTANT").collection("finding_themes")
+	const mongoFindingsCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("findings")
+	const mongoFindingThemesCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("finding_themes")
 	const [findingThemes, setFindingThemes] = useState<FindingTheme[]>([])
 	const findingsDataState = useAppSelector(state => state.findingsData)
 	const { findings } = findingsDataState

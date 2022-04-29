@@ -73,8 +73,8 @@ const Archive: React.FC<IProps> = () => {
 	const app = useRealmApp()
 	const { enqueueSnackbar } = useSnackbar()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoArchivedFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("archived_findings")
-	const mongoFindingThemesCollection = mongo.db("RIVM_CONTRACTANT").collection("finding_themes")
+	const mongoArchivedFindingsCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("archived_findings")
+	const mongoFindingThemesCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("finding_themes")
 	const [findingThemes, setFindingThemes] = useState<FindingTheme[]>([])
 	const findingsDataState = useAppSelector(state => state.findingsData)
 	const { findings } = findingsDataState

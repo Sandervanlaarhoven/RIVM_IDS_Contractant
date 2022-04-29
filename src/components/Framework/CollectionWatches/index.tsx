@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 const CollectionWatches = () => {
 	const app = useRealmApp()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("findings")
+	const mongoFindingsCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("findings")
 
 	let dispatch = useDispatch()
 

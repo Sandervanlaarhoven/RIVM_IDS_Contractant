@@ -1,5 +1,5 @@
 {
-  "name": "RIVM_Contractant",
+  "name": "RIVM_IDS_Contractant",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

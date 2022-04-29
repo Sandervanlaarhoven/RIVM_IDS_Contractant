@@ -34,7 +34,7 @@ const InformationPage: React.FC<IProps> = () => {
 	const classes = useStyles()
 	const app = useRealmApp()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoInformationCollection = mongo.db("RIVM_CONTRACTANT").collection("information")
+	const mongoInformationCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("information")
 	const [information, setInformation] = useState<Information>()
 	const { enqueueSnackbar } = useSnackbar()
 

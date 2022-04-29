@@ -80,8 +80,8 @@ const InformationRequestOverview: React.FC<IProps> = () => {
 	const app = useRealmApp()
 	const { enqueueSnackbar } = useSnackbar()
 	const mongo = app.currentUser.mongoClient("mongodb-atlas")
-	const mongoFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("findings")
-	const mongoArchivedFindingsCollection = mongo.db("RIVM_CONTRACTANT").collection("archived_findings")
+	const mongoFindingsCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("findings")
+	const mongoArchivedFindingsCollection = mongo.db("RIVM_IDS_CONTRACTANT").collection("archived_findings")
 	const findingsDataState = useAppSelector(state => state.findingsData)
 	const { findings } = findingsDataState
 	const [userEmails, setUserEmails] = useState<string[]>([])

@@ -1,4 +1,4 @@
-# RIVM_Contractant
+# RIVM_IDS_Contractant
 Registratie van calls en change requests voor contractanten
 
 # Getting Started with Create React App

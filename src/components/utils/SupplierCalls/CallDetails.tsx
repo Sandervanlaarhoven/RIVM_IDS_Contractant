@@ -251,6 +251,7 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 				<TextField
 					label="Omschrijving"
 					value={updatedCall.description}
+					multiline
 					fullWidth
 					variant="outlined"
 					onChange={(event) => handleChangeTextField(event, CallFieldName.description)}
@@ -267,6 +268,7 @@ const CallDetails: React.FC<IProps> = ({ call, cancel, save }) => {
 				<TextField
 					label="Extra informatie"
 					value={updatedCall.extraInfo}
+					multiline
 					fullWidth
 					variant="outlined"
 					onChange={(event) => handleChangeTextField(event, CallFieldName.extraInfo)}
